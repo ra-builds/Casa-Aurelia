@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wine: #8B2635;
+  --color-wine-dark: #6B1D28;
+  --color-wine-light: #A83244;
+  --color-gold: #C9A962;
+  --color-gold-light: #D4BC7E;
+  --color-cream: #FAF7F2;
+  --color-cream-dark: #F0EBE3;
+  --color-charcoal: #1A1612;
+  --color-charcoal-light: #2C2419;
+  --color-stone: #6B635A;
+  --color-stone-light: #9A9289;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-charcoal-light font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-wine text-cream font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-wine-dark focus:outline-none focus:ring-2 focus:ring-wine focus:ring-offset-2 focus:ring-offset-cream disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-charcoal-light text-charcoal-light font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-charcoal-light hover:text-cream focus:outline-none focus:ring-2 focus:ring-charcoal-light focus:ring-offset-2 focus:ring-offset-cream disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary-light {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-cream text-cream font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-cream hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-cream focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-gold text-charcoal font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-gold-light focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .section-heading {
+    @apply font-display text-4xl md:text-5xl font-semibold text-charcoal-light tracking-tight;
+  }
+
+  .section-subheading {
+    @apply text-gold font-medium text-sm uppercase tracking-[0.2em] mb-3;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-stone-light/40 text-charcoal-light placeholder:text-stone-light focus:outline-none focus:ring-2 focus:ring-wine/30 focus:border-wine transition-colors;
+  }
+
+  .label-field {
+    @apply block text-sm font-medium text-charcoal-light mb-1.5;
+  }
+
+  .card {
+    @apply bg-white border border-cream-dark shadow-sm;
+  }
+}

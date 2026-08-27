@@ -1,0 +1,428 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "menu": "Speisekarte",
+    "about": "Über Uns",
+    "gallery": "Galerie",
+    "reservations": "Reservierungen",
+    "contact": "Kontakt",
+    "reserveTable": "Tisch Reservieren",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
+  },
+  "home": {
+    "welcome": "Willkommen bei Casa Aurelia",
+    "subtitle": "Authentische italienische Küche im Herzen von Novara",
+    "viewMenu": "Speisekarte Ansehen",
+    "bookTable": "Tisch Reservieren",
+    "featuredDishes": "Empfohlene Gerichte",
+    "openHours": "Öffnungszeiten",
+    "monday": "Montag",
+    "tuesday": "Dienstag",
+    "wednesday": "Mittwoch",
+    "thursday": "Donnerstag",
+    "friday": "Freitag",
+    "saturday": "Samstag",
+    "sunday": "Sonntag",
+    "hero": {
+      "ariaLabel": "Elegantes Restaurantinterieur mit warmem Licht"
+    },
+    "intro": {
+      "title": "Ein Geschmack des modernen Italiens",
+      "subtitle": "Willkommen",
+      "paragraph1": "Im Herzen des historischen Zentrums von Novara bietet Casa Aurelia eine raffinierte Interpretation der italienischen Küche. Unsere Küche feiert saisonale Zutaten von lokalen Erzeugern und den besten Regionen Italiens.",
+      "paragraph2": "Jedes Gericht erzählt eine Geschichte — von Tradition neu interpretiert, von Aromen, die nachhallen, und von Abenden, die durch herzliche Gastfreundschaft und eine Atmosphäre zurückhaltender Eleganz unvergesslich werden.",
+      "ourStory": "Unsere Geschichte →",
+      "imageAlt": "Warmes und einladendes Restaurantambiente"
+    },
+    "signatureDishes": {
+      "title": "Signaturgerichte",
+      "subtitle": "Aus unserer Küche",
+      "exploreMenu": "Vollständige Speisekarte Ansehen"
+    },
+    "philosophy": {
+      "title": "Unsere Philosophie",
+      "subtitle": "Handwerk & Hingabe",
+      "paragraph1": "Wir glauben, dass großes Essen mit Respekt beginnt — vor Zutaten, vor Tradition und vor den Menschen, sich um unseren Tisch versammeln. Unser Ansatz ist einfach: die besten Zutaten auswählen, klassische Techniken ehren und eine zeitgenössische Note hinzufügen, die überrascht und erfreut.",
+      "paragraph2": "Von handgerollter Pasta bis hin zu perfekt angerichteten Meeresfrüchten spiegelt jedes Gericht bei Casa Aurelia unser Engagement für Authentizität ohne Kompromisse wider.",
+      "imageAlt": "Koch, der ein Gericht sorgfältig anrichtet"
+    },
+    "experience": {
+      "title": "Das Casa Aurelia Erlebnis",
+      "subtitle": "Speisen Sie bei Uns",
+      "paragraph": "Sanftes Kerzenlicht, kuratierte Weine und aufmerksamer Service schaffen eine Atmosphäre, die perfekt für intime Abende, Feiern und Momente kulinarischer Entdeckung ist.",
+      "viewGallery": "Galerie Ansehen"
+    },
+    "testimonials": {
+      "title": "Was Unsere Gäste Sagen",
+      "subtitle": "Testimonials",
+      "rating": "{{rating}} von 5 Sternen",
+      "items": {
+        "elena": {
+          "name": "Elena M.",
+          "text": "Ein unvergesslicher Abend. Die Tagliatelle mit Trüffel waren perfekt, und der Service wirkte herzlich, ohne aufdringlich zu sein.",
+          "rating": 5
+        },
+        "marco": {
+          "name": "Marco R.",
+          "text": "Casa Aurelia vereint alles, was wir am italienischen Essen lieben — hochwertige Zutaten, elegante Präsentation und eine romantische Atmosphäre.",
+          "rating": 5
+        },
+        "sophie": {
+          "name": "Sophie L.",
+          "text": "Wir haben hier unseren Jahrestag gefeiert und es hat alle Erwartungen übertroffen. Der Branzino und das Tiramisù waren die Höhepunkte unserer Italienreise.",
+          "rating": 5
+        }
+      }
+    },
+    "hours": {
+      "title": "Öffnungszeiten",
+      "lunch": "Mittagessen",
+      "dinner": "Abendessen",
+      "closed": "Geschlossen"
+    },
+    "location": {
+      "title": "So Finden Sie Uns",
+      "mapLabel": "Karte — Novara, Italien"
+    },
+    "cta": {
+      "title": "Reservieren Sie Ihren Tisch",
+      "description": "Genießen Sie einen Abend mit außergewöhnlicher italienischer Küche. Wir freuen uns auf Ihren Besuch.",
+      "button": "Jetzt Buchen"
+    }
+  },
+  "menu": {
+    "title": "Unsere Speisekarte",
+    "subtitle": "Entdecken Sie unsere sorgfältig zubereiteten Gerichte",
+    "appetizers": "Vorspeisen",
+    "mainCourses": "Hauptgerichte",
+    "desserts": "Nachspeisen",
+    "beverages": "Getränke",
+    "description": "Saisonale Zutaten, traditionsbewahrte Rezepte und eine zeitgenössische Note.",
+    "all": "Alle",
+    "empty": "Keine Gerichte in dieser Kategorie.",
+    "signature": "Signature",
+    "unavailable": "Derzeit nicht verfügbar",
+    "loadError": "Speisekarte konnte nicht geladen werden. Bitte versuchen Sie es später erneut."
+  },
+  "about": {
+    "title": "Über Uns",
+    "subtitle": "Unsere Geschichte und Leidenschaft für authentische italienische Küche",
+    "heroTitle": "Unsere Geschichte",
+    "heroSubtitle": "Über Uns",
+    "story": {
+      "p1": "Casa Aurelia entstand aus einer einfachen Vision: ein Restaurant zu schaffen, in dem die Seele der italienischen Küche auf die Eleganz des modernen Essens trifft. Gegründet 2018 im Herzen von Novara, ist unser Restaurant für Liebhaber zu einem Zielort geworden, die Essen schätzen, das mit Hingabe zubereitet und mit Wärme serviert wird.",
+      "p2": "Der Name „Aurelia“ ruft goldenes Licht hervor — die Art, die unseren Speisesaal in der Dämmerung füllt und einen warmen Schein über gemeinsame Teller und leise Gespräche wirft. Genau diese Atmosphäre streben wir jeden Abend an: intim, elegant und herzlich einladend."
+    },
+    "chef": {
+      "title": "Kühenchef Marco Bellini",
+      "subtitle": "Unser Kühenchef",
+      "p1": "Geschult in den Küchen von Mailand und Bologna bringt Kühenchef Marco über fünfzehn Jahre Erfahrung zu Casa Aurelia mit. Seine Philosophie basiert auf dem Glauben, dass Einfachheit, wenn sie mit Präzision ausgeführt wird, die unvergesslichsten Gerichte kreiert.",
+      "p2": "„Italienische Küche handelt nicht von Komplexität — sie handelt vom Respekt vor der Zutat. Meine Rolle ist es, jedem Element für sich selbst sprechen zu lassen, veredelt durch Technik und eine Prise Kreativität.“",
+      "attribution": "— Marco Bellini, Chefkoch",
+      "imageAlt": "Kühenchef Marco Bellini in der Küche"
+    },
+    "approach": {
+      "title": "Zutaten & Tradition",
+      "subtitle": "Unser Ansatz",
+      "p1": "Wir arbeiten mit lokalen Landwirten im Piemont für saisonales Gemüse zusammen, beziehen Burrata und Olivenöl direkt aus Apulien und wählen unsere Weine von kleinen italienischen Produzenten, die unsere Werte von Qualität und Authentizität teilen.",
+      "p2": "Unsere Pasta wird jeden Tag frisch hergestellt. Unser Brot wird im eigenen Ofen gebacken. Unsere Saucen kochen stundenlang. Das sind keine Marketingversprechen — sie sind das Fundament jedes Gerichts, das unsere Küche verlässt.",
+      "imageAlt": "Frische saisonale Zutaten, die für das Kochen vorbereitet wurden"
+    },
+    "cta": {
+      "title": "Italienische Tradition, Moderner Geist",
+      "description": "Bei {{name}} ehren wir die Rezepte, die über Generationen weitergegeben wurden, und setzen gleichzeitig die Kreativität ein, die die italienische Küche lebendig und in Entwicklung hält. Jeder Besuch ist eine Einladung, das Beste aus beiden Welten zu erleben."
+    }
+  },
+  "gallery": {
+    "title": "Galerie",
+    "subtitle": "Visuelle Reise",
+    "categories": {
+      "all": "Alle",
+      "food": "Essen",
+      "interior": "Innenräume",
+      "chef": "Koch",
+      "events": "Veranstaltungen"
+    },
+    "viewImage": "{{alt}} ansehen",
+    "lightbox": {
+      "ariaLabel": "Bild-Lichtbox",
+      "closeLabel": "Lichtbox schließen"
+    }
+  },
+  "reservation": {
+    "title": "Reservierungen",
+    "subtitle": "Reservieren Sie Ihren Tisch bei Casa Aurelia",
+    "heroTitle": "Tisch Reservieren",
+    "heroSubtitle": "Online Buchen",
+    "intro": "Wir freuen uns, Sie begrüßen zu dürfen. Bitte füllen Sie das untenstehende Formular aus.",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "guests": "Anzahl der Gäste",
+    "selectTime": "Uhrzeit wählen",
+    "specialRequests": "Besondere Wünsche",
+    "specialRequestsOptional": "Besondere Wünsche (optional)",
+    "specialRequestsPlaceholder": "Allergien, Feiern, Sitzwünsche...",
+    "checkingAvailability": "Verfügbarkeit prüfen...",
+    "timeUnavailable": "Dieser Zeitraum ist nicht verfügbar. Bitte wählen Sie eine andere Uhrzeit.",
+    "submitting": "Wird gesendet...",
+    "confirmButton": "Reservierung Bestätigen",
+    "submit": "Tisch Reservieren",
+    "createFailed": "Reservierung konnte nicht erstellt werden",
+    "lunchLabel": "Mittagessen",
+    "dinnerLabel": "Abendessen",
+    "closedLabel": "Geschlossen",
+    "closedDayNote": "Hinweis: Das Restaurant ist am {{day}} geschlossen.",
+    "lookup": {
+      "title": "Reservierung Verwalten",
+      "subtitle": "Finden Sie Ihre Buchung",
+      "intro": "Geben Sie Ihren Referenzcode und Ihre E-Mail-Adresse ein, um Ihre Reservierung anzuzeigen oder zu stornieren.",
+      "referenceCode": "Referenzcode",
+      "searching": "Suche...",
+      "findButton": "Reservierung Finden",
+      "notFound": "Reservierung nicht gefunden. Bitte überprüfen Sie Ihren Referenzcode und Ihre E-Mail-Adresse.",
+      "cancelButton": "Reservierung Stornieren",
+      "cancelConfirmMessage": "Sind Sie sicher, dass Sie diese Reservierung stornieren möchten? Dies kann nicht rückgängig gemacht werden.",
+      "keepButton": "Reservierung Behalten",
+      "confirmCancelButton": "Ja, Stornieren",
+      "cancelling": "Stornierung...",
+      "cancelSuccess": "Ihre Reservierung wurde erfolgreich storniert.",
+      "cancelFailed": "Stornierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "alreadyCancelled": "Diese Reservierung wurde bereits storniert.",
+      "lookupAnother": "Weitere Reservierung Suchen",
+      "validation": {
+        "referenceRequired": "Referenzcode ist erforderlich",
+        "emailRequired": "E-Mail-Adresse ist erforderlich",
+        "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+      }
+    },
+    "validation": {
+      "firstNameRequired": "Vorname ist erforderlich",
+      "lastNameRequired": "Nachname ist erforderlich",
+      "emailRequired": "E-Mail-Adresse ist erforderlich",
+      "emailInvalid": "Ungültige E-Mail-Adresse",
+      "phoneRequired": "Telefonnummer ist erforderlich",
+      "phoneInvalid": "Ungültige Telefonnummer",
+      "dateRequired": "Datum ist erforderlich",
+      "timeRequired": "Uhrzeit ist erforderlich",
+      "guestsRange": "Die Anzahl der Gäste muss zwischen 1 und 12 liegen"
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie Uns",
+    "subtitle": "Nehmen Sie Kontakt mit uns auf",
+    "visitUs": "Besuchen Sie Uns",
+    "addressLabel": "Adresse",
+    "phoneLabel": "Telefon",
+    "emailLabel": "E-Mail",
+    "hoursLabel": "Öffnungszeiten",
+    "lunchLabel": "Mittagessen",
+    "dinnerLabel": "Abendessen",
+    "closedLabel": "Geschlossen",
+    "mapPlaceholder": "Karte — Novara, Italien",
+    "sendMessage": "Nachricht Senden",
+    "successMessage": "Vielen Dank! Ihre Nachricht wurde gesendet. Wir werden Ihnen in Kürze antworten.",
+    "sending": "Wird gesendet...",
+    "name": "Name",
+    "email": "E-Mail",
+    "subject": "Betreff",
+    "message": "Nachricht",
+    "send": "Nachricht Senden",
+    "validation": {
+      "nameRequired": "Name ist erforderlich",
+      "emailRequired": "E-Mail-Adresse ist erforderlich",
+      "emailInvalid": "Ungültige E-Mail-Adresse",
+      "subjectRequired": "Betreff ist erforderlich",
+      "messageRequired": "Nachricht ist erforderlich",
+      "messageMinLength": "Nachricht muss mindestens 10 Zeichen enthalten"
+    }
+  },
+  "confirmation": {
+    "title": "Reservierung Bestätigt",
+    "message": "Eine Bestätigung wurde an Ihre E-Mail-Adresse gesendet.",
+    "reference": "Referenz",
+    "guest": "Gast",
+    "guests": "Gäste",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "addToCalendar": "Zum Kalender Hinzufügen",
+    "calendarTitle": "Abendessen bei {{name}}",
+    "calendarDescription": "Reservierung {{code}} für {{guests}} Gäste",
+    "returnHome": "Zurück zur Startseite",
+    "viewMenu": "Speisekarte Ansehen",
+    "backToHome": "Zurück zur Startseite",
+    "manageReservation": "Reservierung Verwalten"
+  },
+  "notFound": {
+    "title": "Seite Nicht Gefunden",
+    "message": "Die Seite, die Sie suchen, existiert nicht.",
+    "backToHome": "Zurück zur Startseite"
+  },
+  "footer": {
+    "description": "Moderne italienische Küche im Herzen von Novara. Ein elegantes kulinarisches Erlebnis, in dem Tradition auf Zeitgenössisches trifft.",
+    "navigate": "Navigation",
+    "contact": "Kontakt",
+    "hours": "Öffnungszeiten",
+    "lunch": "Mittagessen",
+    "dinner": "Abendessen",
+    "closed": "Geschlossen",
+    "staffLogin": "Mitarbeiter Login",
+    "allRightsReserved": "Alle Rechte vorbehalten."
+  },
+  "pageTitles": {
+    "home": "Casa Aurelia | Modernes italienisches Restaurant in Novara",
+    "menu": "Speisekarte | Casa Aurelia",
+    "about": "Über Uns | Casa Aurelia",
+    "gallery": "Galerie | Casa Aurelia",
+    "reservations": "Reservierungen | Casa Aurelia",
+    "contact": "Kontakt | Casa Aurelia",
+    "confirmation": "Reservierung Bestätigt | Casa Aurelia",
+    "reservationLookup": "Reservierung Verwalten | Casa Aurelia",
+    "notFound": "Seite Nicht Gefunden | Casa Aurelia",
+    "admin": "Admin | Casa Aurelia"
+  },
+  "meta": {
+    "home": "Casa Aurelia — Modernes italienisches Restaurant in Novara. Reservieren Sie Ihren Tisch für ein unvergessliches kulinarisches Erlebnis.",
+    "menu": "Entdecken Sie die Speisekarte von Casa Aurelia — Antipasti, Primi, Secondi, Dolci und Getränke.",
+    "about": "Entdecken Sie die Geschichte von Casa Aurelia — moderne italienische Küche, verwurzelt in der Tradition, in Novara, Italien.",
+    "gallery": "Durchstöbern Sie Fotos von Casa Aurelia — unsere Gerichte, unser Interieur, unser Koch und unsere Veranstaltungen.",
+    "reservations": "Reservieren Sie einen Tisch bei Casa Aurelia in Novara. Online buchen für Mittag- oder Abendessen.",
+    "reservationLookup": "Suchen oder stornieren Sie Ihre Reservierung bei Casa Aurelia. Geben Sie Ihren Referenzcode und Ihre E-Mail-Adresse ein.",
+    "contact": "Kontaktieren Sie Casa Aurelia in Novara — Adresse, Telefon, E-Mail und Öffnungszeiten."
+  },
+  "admin": {
+    "loginTitle": "Mitarbeiter Login",
+    "loginSubtitle": "Casa Aurelia Admin Dashboard",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Anmelden",
+    "signingIn": "Anmeldung läuft...",
+    "loginFailed": "Anmeldung fehlgeschlagen",
+    "dashboardTitle": "Admin Dashboard",
+    "logout": "Abmelden",
+    "tab": {
+      "reservations": "Reservierungen",
+      "menu": "Speisekarte",
+      "items": "Gerichte"
+    },
+    "searchPlaceholder": "Suche nach Name, E-Mail oder Referenz...",
+    "empty": "Keine Reservierungen gefunden.",
+    "deleteConfirm": "Diese Reservierung dauerhaft löschen?",
+    "loadDataFailed": "Daten konnten nicht geladen werden",
+    "actionFailed": "Aktion fehlgeschlagen",
+    "deleteFailed": "Löschung fehlgeschlagen",
+    "stats": {
+      "totalReservations": "Reservierungen Gesamt",
+      "today": "Heute",
+      "guestsToday": "Gäste Heute",
+      "upcoming": "Bevorstehend"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Storniert",
+      "allStatuses": "Alle Status"
+    },
+    "table": {
+      "customer": "Kunde",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "guests": "Gäste",
+      "phone": "Telefon",
+      "status": "Status",
+      "requests": "Wünsche",
+      "actions": "Aktionen"
+    },
+    "action": {
+      "confirm": "Bestätigen",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
+    },
+    "pagination": {
+      "previous": "Vorherige Seite",
+      "previousShort": "Zurück",
+      "next": "Nächste Seite",
+      "nextShort": "Weiter",
+      "pageOf": "Seite {{page}} von {{totalPages}}",
+      "showing": "{{from}}–{{to}} von {{total}}",
+      "label": "Seitennavigation der Reservierungsliste"
+    },
+    "menu": {
+      "title": "Speisekartenverwaltung",
+      "addItem": "Gericht hinzufügen",
+      "editItem": "Gericht bearbeiten",
+      "name": "Name",
+      "description": "Beschreibung",
+      "price": "Preis",
+      "category": "Kategorie",
+      "categoryRequired": "Bitte wählen Sie eine Kategorie.",
+      "dietaryInfo": "Ernährungshinweise",
+      "allergens": "Allergene",
+      "available": "Verfügbar",
+      "featured": "Empfohlen",
+      "sortOrder": "Sortierreihenfolge",
+      "image": "Bild",
+      "uploadImage": "Bild hochladen",
+      "replaceImage": "Bild ersetzen",
+      "removeImage": "Bild entfernen",
+      "invalidType": "Nicht unterstütztes Bildformat. Bitte JPEG, PNG oder WebP verwenden.",
+      "tooLarge": "Das Bild ist zu groß. Maximale Größe: {{size}} MB.",
+      "uploadFailed": "Bild konnte nicht hochgeladen werden. Bitte erneut versuchen.",
+      "removeFailed": "Bild konnte nicht entfernt werden. Bitte erneut versuchen.",
+      "save": "Speichern",
+      "saving": "Speichern...",
+      "cancel": "Abbrechen",
+      "saved": "Erfolgreich gespeichert",
+      "saveFailed": "Speichern fehlgeschlagen. Bitte erneut versuchen.",
+      "deleted": "Gericht gelöscht",
+      "deleteFailed": "Löschen fehlgeschlagen. Bitte erneut versuchen.",
+      "categories": "Kategorien",
+      "addCategory": "Kategorie hinzufügen",
+      "editCategory": "Kategorie bearbeiten",
+      "deleteCategory": "Kategorie löschen",
+      "categoryName": "Name",
+      "categorySlug": "Slug",
+      "categorySortOrder": "Sortierreihenfolge",
+      "invalidSlug": "Ungültiger Slug. Nur Kleinbuchstaben, Zahlen und Bindestriche.",
+      "categoryHasItems": "Löschen nicht möglich: Diese Kategorie enthält {{count}} Gericht(e).",
+      "categoryDeleteConfirm": "Kategorie „{{name}}“ löschen?",
+      "categoryCreateFailed": "Kategorie konnte nicht erstellt werden.",
+      "categoryUpdateFailed": "Kategorie konnte nicht aktualisiert werden.",
+      "categoryDeleteFailed": "Kategorie konnte nicht gelöscht werden.",
+      "loadFailed": "Speisekartendaten konnten nicht geladen werden.",
+      "empty": "Keine Gerichte vorhanden.",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    }
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Ein Fehler ist aufgetreten",
+    "defaultError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "close": "Schließen",
+    "guest": "Gast",
+    "guests": "Gäste",
+    "errorBoundaryMessage": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "errorBoundaryReload": "Seite neu laden"
+  },
+  "allergenLabels": {
+    "gluten": "Gluten",
+    "crustaceans": "Krebstiere",
+    "eggs": "Eier",
+    "fish": "Fisch",
+    "peanuts": "Erdnüsse",
+    "soybeans": "Soja",
+    "milk": "Milch",
+    "tree_nuts": "Schalenfrüchte",
+    "celery": "Sellerie",
+    "mustard": "Senf",
+    "sesame": "Sesam",
+    "sulphites": "Sulfite",
+    "lupin": "Lupinen",
+    "molluscs": "Weichtiere"
+  }
+}

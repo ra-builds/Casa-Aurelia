@@ -1,0 +1,428 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "menu": "Menu",
+    "about": "À Propos",
+    "gallery": "Galerie",
+    "reservations": "Réservations",
+    "contact": "Contact",
+    "reserveTable": "Réserver une Table",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "home": {
+    "welcome": "Bienvenue à Casa Aurelia",
+    "subtitle": "Cuisine Italienne Authentique au Cœur de Novare",
+    "viewMenu": "Voir le Menu",
+    "bookTable": "Réserver une Table",
+    "featuredDishes": "Plats Vedettes",
+    "openHours": "Horaires d'Ouverture",
+    "monday": "Lundi",
+    "tuesday": "Mardi",
+    "wednesday": "Mercredi",
+    "thursday": "Jeudi",
+    "friday": "Vendredi",
+    "saturday": "Samedi",
+    "sunday": "Dimanche",
+    "hero": {
+      "ariaLabel": "Intérieur élégant du restaurant avec un éclairage chaleureux"
+    },
+    "intro": {
+      "title": "Un Goût de l'Italie Moderne",
+      "subtitle": "Bienvenue",
+      "paragraph1": "Nichée dans le centre historique de Novare, Casa Aurelia propose une interprétation raffinée de la cuisine italienne. Notre cuisine célèbre des ingrédients saisonniers provenant de producteurs locaux et des meilleures régions d'Italie.",
+      "paragraph2": "Chaque plat raconte une histoire — celle d'une tradition réinventée, de saveurs qui persistent, et de soirées rendues mémorables par une hospitalité chaleureuse et une atmosphère d'élégance sobre.",
+      "ourStory": "Notre Histoire →",
+      "imageAlt": "Salle du restaurant chaleureuse et accueillante"
+    },
+    "signatureDishes": {
+      "title": "Plats Signature",
+      "subtitle": "De Notre Cuisine",
+      "exploreMenu": "Explorer le Menu Complet"
+    },
+    "philosophy": {
+      "title": "Notre Philosophie",
+      "subtitle": "Savoir-Faire et Soin",
+      "paragraph1": "Nous croyons que la grande cuisine commence par le respect — des ingrédients, de la tradition et des personnes qui se réunissent à notre table. Notre approche est simple : sélectionner les meilleurs produits, honorer les techniques classiques et ajouter une touche contemporaine qui surprend et ravit.",
+      "paragraph2": "De la pâtes faites main aux fruits de mer parfaitement saisis, chaque plat chez Casa Aurelia reflète notre engagement envers l'authenticité sans compromis.",
+      "imageAlt": "Chef composant méticuleusement un plat"
+    },
+    "experience": {
+      "title": "L'Expérience Casa Aurelia",
+      "subtitle": "Dînez Avec Nous",
+      "paragraph": "Une lumière tamisée de bougies, des vins soigneusement sélectionnés et un service attentionné créent une atmosphère parfaite pour des dîners intimes, des célébrations et des moments de découverte culinaire.",
+      "viewGallery": "Voir la Galerie"
+    },
+    "testimonials": {
+      "title": "Ce Que Disent Nos Clients",
+      "subtitle": "Témoignages",
+      "rating": "{{rating}} étoiles sur 5",
+      "items": {
+        "elena": {
+          "name": "Elena M.",
+          "text": "Une soirée inoubliable. Les tagliatelles à la truffe étaient une perfection, et le service était chaleureux sans être envahissant.",
+          "rating": 5
+        },
+        "marco": {
+          "name": "Marco R.",
+          "text": "Casa Aurelia capture tout ce que nous aimons dans la gastronomie italienne — des ingrédients de qualité, une présentation élégante et une atmosphère romantique.",
+          "rating": 5
+        },
+        "sophie": {
+          "name": "Sophie L.",
+          "text": "Nous avons célébré notre anniversaire de mariage ici et tout a dépassé nos attentes. Le branzino et le tiramisù ont été les temps forts de notre voyage en Italie.",
+          "rating": 5
+        }
+      }
+    },
+    "hours": {
+      "title": "Horaires d'Ouverture",
+      "lunch": "Déjeuner",
+      "dinner": "Dîner",
+      "closed": "Fermé"
+    },
+    "location": {
+      "title": "Nous Trouver",
+      "mapLabel": "Carte — Novare, Italie"
+    },
+    "cta": {
+      "title": "Réservez Votre Table",
+      "description": "Rejoignez-nous pour une soirée de cuisine italienne exceptionnelle. Nous avons hâte de vous accueillir.",
+      "button": "Réserver Maintenant"
+    }
+  },
+  "menu": {
+    "title": "Notre Menu",
+    "subtitle": "Découvrez nos plats soigneusement élaborés",
+    "appetizers": "Entrées",
+    "mainCourses": "Plats Principaux",
+    "desserts": "Desserts",
+    "beverages": "Boissons",
+    "description": "Des ingrédients de saison, des recettes transmises de génération en génération et une touche contemporaine.",
+    "all": "Tous",
+    "empty": "Aucun plat dans cette catégorie.",
+    "signature": "Signature",
+    "unavailable": "Indisponible pour le moment",
+    "loadError": "Impossible de charger le menu. Veuillez réessayer plus tard."
+  },
+  "about": {
+    "title": "À Propos de Nous",
+    "subtitle": "Notre histoire et notre passion pour la cuisine italienne authentique",
+    "heroTitle": "Notre Histoire",
+    "heroSubtitle": "À Propos",
+    "story": {
+      "p1": "Casa Aurelia est née d’une vision simple : créer un restaurant où l’âme de la cuisine italienne rencontre l’élégance de la restauration moderne. Fondée en 2018 au cœur de Novare, notre restaurant est devenu une destination pour ceux qui apprécient des plats préparés avec intention et servis avec chaleur.",
+      "p2": "Le nom «\\xA0Aurelia\\xA0» évoque une lumière dorée — celle qui inonde notre salle à la tombée du jour, projetant une lueur chaleureuse sur les plats partagés et les conversations intimes. C’est cette atmosphère que nous nous efforçons de créer chaque soir\\xA0: intime, raffinée et sincèrement accueillante."
+    },
+    "chef": {
+      "title": "Chef Marco Bellini",
+      "subtitle": "Notre Chef",
+      "p1": "Formé dans les cuisines de Milan et de Bologne, le Chef Marco apporte plus de quinze ans d’expérience à Casa Aurelia. Sa philosophie est enracinée dans la conviction que la simplicité, exécutée avec précision, crée les plats les plus mémorables.",
+      "p2": "«\\xA0La cuisine italienne ne traite pas de complexité — elle traite du respect de l’ingrédient. Mon rôle est de laisser chaque élément parler par lui-même, sublimé par la technique et une touche de créativité.\\xA0»",
+      "attribution": "— Marco Bellini, Chef Principal",
+      "imageAlt": "Chef Marco Bellini dans la cuisine"
+    },
+    "approach": {
+      "title": "Ingrédients et Tradition",
+      "subtitle": "Notre Approche",
+      "p1": "Nous collaborons avec des agriculteurs locaux en Piémont pour les légumes de saison, sourced la burrata et l’huile d’olive directement de Pouilles, et sélectionnons nos vins auprès de petits producteurs italiens qui partagent nos valeurs de qualité et d’authenticité.",
+      "p2": "Notre pâte est préparée chaque jour. Notre pain est cuit en toute.\\xA0Nos sauces mijotent pendant des heures. Ce ne sont pas des revendications marketing — ce sont les fondations de chaque plat qui sort de notre cuisine.",
+      "imageAlt": "Ingrédients saisonniers frais préparés pour la cuisson"
+    },
+    "cta": {
+      "title": "Tradition Italienne, Esprit Moderne",
+      "description": "Chez {{name}}, nous honorons les recettes transmises de génération en génération tout en embrassant la créativité qui maintient la cuisine italienne vivante et en évolution. Chaque visite est une invitation à découvrir le meilleur des deux mondes."
+    }
+  },
+  "gallery": {
+    "title": "Galerie",
+    "subtitle": "Voyage Visuel",
+    "categories": {
+      "all": "Tout",
+      "food": "Cuisine",
+      "interior": "Intérieur",
+      "chef": "Chef",
+      "events": "Événements"
+    },
+    "viewImage": "Voir {{alt}}",
+    "lightbox": {
+      "ariaLabel": "Visionneuse d'image",
+      "closeLabel": "Fermer la visionneuse"
+    }
+  },
+  "reservation": {
+    "title": "Réservations",
+    "subtitle": "Réservez votre table chez Casa Aurelia",
+    "heroTitle": "Réserver une Table",
+    "heroSubtitle": "Réserver en Ligne",
+    "intro": "Nous avons hâte de vous accueillir. Veuillez remplir le formulaire ci-dessous.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "date": "Date",
+    "time": "Heure",
+    "guests": "Nombre d'Invités",
+    "selectTime": "Choisir l'heure",
+    "specialRequests": "Demandes Spéciales",
+    "specialRequestsOptional": "Demandes Spéciales (optionnel)",
+    "specialRequestsPlaceholder": "Allergies, célébrations, préférences de placement...",
+    "checkingAvailability": "Vérification de la disponibilité...",
+    "timeUnavailable": "Ce créneau n'est pas disponible. Veuillez choisir un autre horaire.",
+    "submitting": "Envoi en cours...",
+    "confirmButton": "Confirmer la Réservation",
+    "submit": "Réserver une Table",
+    "createFailed": "Échec de la création de la réservation",
+    "lunchLabel": "Déjeuner",
+    "dinnerLabel": "Dîner",
+    "closedLabel": "Fermé",
+    "closedDayNote": "Note : Le restaurant est fermé le {{day}}.",
+    "lookup": {
+      "title": "Gérer la Réservation",
+      "subtitle": "Trouvez Votre Réservation",
+      "intro": "Entrez votre code de référence et votre adresse e-mail pour afficher ou annuler votre réservation.",
+      "referenceCode": "Code de Référence",
+      "searching": "Recherche...",
+      "findButton": "Trouver la Réservation",
+      "notFound": "Réservation introuvable. Veuillez vérifier votre code de référence et votre adresse e-mail.",
+      "cancelButton": "Annuler la Réservation",
+      "cancelConfirmMessage": "Êtes-vous sûr de vouloir annuler cette réservation ? Cette action est irréversible.",
+      "keepButton": "Conserver la Réservation",
+      "confirmCancelButton": "Oui, Annuler",
+      "cancelling": "Annulation en cours...",
+      "cancelSuccess": "Votre réservation a été annulée avec succès.",
+      "cancelFailed": "Échec de l'annulation de la réservation. Veuillez réessayer.",
+      "alreadyCancelled": "Cette réservation a déjà été annulée.",
+      "lookupAnother": "Rechercher une Autre Réservation",
+      "validation": {
+        "referenceRequired": "Le code de référence est requis",
+        "emailRequired": "L'adresse e-mail est requise",
+        "emailInvalid": "Veuillez saisir une adresse e-mail valide"
+      }
+    },
+    "validation": {
+      "firstNameRequired": "Le prénom est requis",
+      "lastNameRequired": "Le nom est requis",
+      "emailRequired": "L'e-mail est requis",
+      "emailInvalid": "Adresse e-mail invalide",
+      "phoneRequired": "Le téléphone est requis",
+      "phoneInvalid": "Numéro de téléphone invalide",
+      "dateRequired": "La date est requise",
+      "timeRequired": "L'heure est requise",
+      "guestsRange": "Le nombre d'invités doit être compris entre 1 et 12"
+    }
+  },
+  "contact": {
+    "title": "Contactez-Nous",
+    "subtitle": "Entrer en contact avec nous",
+    "visitUs": "Nous Rendre Visite",
+    "addressLabel": "Adresse",
+    "phoneLabel": "Téléphone",
+    "emailLabel": "E-mail",
+    "hoursLabel": "Horaires",
+    "lunchLabel": "Déjeuner",
+    "dinnerLabel": "Dîner",
+    "closedLabel": "Fermé",
+    "mapPlaceholder": "Carte — Novare, Italie",
+    "sendMessage": "Envoyer un Message",
+    "successMessage": "Merci ! Votre message a été envoyé. Nous vous répondrons sous peu.",
+    "sending": "Envoi en cours...",
+    "name": "Nom",
+    "email": "Email",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer le Message",
+    "validation": {
+      "nameRequired": "Le nom est requis",
+      "emailRequired": "L'e-mail est requis",
+      "emailInvalid": "Adresse e-mail invalide",
+      "subjectRequired": "Le sujet est requis",
+      "messageRequired": "Le message est requis",
+      "messageMinLength": "Le message doit contenir au moins 10 caractères"
+    }
+  },
+  "confirmation": {
+    "title": "Réservation Confirmée",
+    "message": "Une confirmation a été envoyée à votre adresse e-mail.",
+    "reference": "Référence",
+    "guest": "Client",
+    "guests": "Invités",
+    "date": "Date",
+    "time": "Heure",
+    "addToCalendar": "Ajouter au Calendrier",
+    "calendarTitle": "Dîner chez {{name}}",
+    "calendarDescription": "Réservation {{code}} pour {{guests}} invités",
+    "returnHome": "Retour à l'Accueil",
+    "viewMenu": "Voir le Menu",
+    "backToHome": "Retour à l'Accueil",
+    "manageReservation": "Gérer la Réservation"
+  },
+  "notFound": {
+    "title": "Page Non Trouvée",
+    "message": "La page que vous recherchez n'existe pas.",
+    "backToHome": "Retour à l'Accueil"
+  },
+  "footer": {
+    "description": "Cuisine italienne moderne au cœur de Novare. Une expérience gastronomique élégante où la tradition rencontre le contemporain.",
+    "navigate": "Navigation",
+    "contact": "Contact",
+    "hours": "Horaires",
+    "lunch": "Déjeuner",
+    "dinner": "Dîner",
+    "closed": "Fermé",
+    "staffLogin": "Connexion Staff",
+    "allRightsReserved": "Tous droits réservés."
+  },
+  "pageTitles": {
+    "home": "Casa Aurelia | Restaurant Italien Moderne à Novare",
+    "menu": "Menu | Casa Aurelia",
+    "about": "À Propos | Casa Aurelia",
+    "gallery": "Galerie | Casa Aurelia",
+    "reservations": "Réservations | Casa Aurelia",
+    "contact": "Contact | Casa Aurelia",
+    "confirmation": "Réservation Confirmée | Casa Aurelia",
+    "reservationLookup": "Gérer la Réservation | Casa Aurelia",
+    "notFound": "Page Non Trouvée | Casa Aurelia",
+    "admin": "Admin | Casa Aurelia"
+  },
+  "meta": {
+    "home": "Casa Aurelia — Restaurant italien moderne à Novare. Réservez votre table pour une expérience culinaire inoubliable.",
+    "menu": "Découvrez le menu de Casa Aurelia — antipasti, primi, secondi, dolci et boissons.",
+    "about": "Découvrez l'histoire de Casa Aurelia — cuisine italienne moderne ancrée dans la tradition, située à Novare, en Italie.",
+    "gallery": "Parcourez les photos de Casa Aurelia — nos plats, notre intérieur, notre chef et nos événements spéciaux.",
+    "reservations": "Réservez une table chez Casa Aurelia à Novare. Réservez en ligne pour le déjeuner ou le dîner.",
+    "reservationLookup": "Recherchez ou annulez votre réservation chez Casa Aurelia. Entrez votre code de référence et votre adresse e-mail.",
+    "contact": "Contactez Casa Aurelia à Novare — adresse, téléphone, email et horaires d'ouverture."
+  },
+  "admin": {
+    "loginTitle": "Connexion Staff",
+    "loginSubtitle": "Tableau de Bord Admin Casa Aurelia",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "signingIn": "Connexion en cours...",
+    "loginFailed": "Échec de la connexion",
+    "dashboardTitle": "Tableau de Bord Admin",
+    "logout": "Déconnexion",
+    "tab": {
+      "reservations": "Réservations",
+      "menu": "Menu",
+      "items": "Plats"
+    },
+    "searchPlaceholder": "Rechercher par nom, e-référence...",
+    "empty": "Aucune réservation trouvée.",
+    "deleteConfirm": "Supprimer cette réservation définitivement ?",
+    "loadDataFailed": "Échec du chargement des données",
+    "actionFailed": "Échec de l'action",
+    "deleteFailed": "Échec de la suppression",
+    "stats": {
+      "totalReservations": "Total des Réservations",
+      "today": "Aujourd'hui",
+      "guestsToday": "Invités Aujourd'hui",
+      "upcoming": "À Venir"
+    },
+    "status": {
+      "pending": "En Attente",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée",
+      "allStatuses": "Tous les Statuts"
+    },
+    "table": {
+      "customer": "Client",
+      "date": "Date",
+      "time": "Heure",
+      "guests": "Invités",
+      "phone": "Téléphone",
+      "status": "Statut",
+      "requests": "Demandes",
+      "actions": "Actions"
+    },
+    "action": {
+      "confirm": "Confirmer",
+      "cancel": "Annuler",
+      "delete": "Supprimer"
+    },
+    "pagination": {
+      "previous": "Page précédente",
+      "previousShort": "Précédent",
+      "next": "Page suivante",
+      "nextShort": "Suivant",
+      "pageOf": "Page {{page}} sur {{totalPages}}",
+      "showing": "{{from}}–{{to}} sur {{total}}",
+      "label": "Pagination de la liste des réservations"
+    },
+    "menu": {
+      "title": "Gestion du Menu",
+      "addItem": "Ajouter un Plat",
+      "editItem": "Modifier le Plat",
+      "name": "Nom",
+      "description": "Description",
+      "price": "Prix",
+      "category": "Catégorie",
+      "categoryRequired": "Veuillez choisir une catégorie.",
+      "dietaryInfo": "Informations Alimentaires",
+      "allergens": "Allergènes",
+      "available": "Disponible",
+      "featured": "À la une",
+      "sortOrder": "Ordre d'affichage",
+      "image": "Image",
+      "uploadImage": "Télécharger une image",
+      "replaceImage": "Remplacer l'image",
+      "removeImage": "Supprimer l'image",
+      "invalidType": "Format d'image non pris en charge. Utilisez JPEG, PNG ou WebP.",
+      "tooLarge": "L'image est trop grande. Taille maximale : {{size}} Mo.",
+      "uploadFailed": "Échec du téléchargement de l'image. Veuillez réessayer.",
+      "removeFailed": "Échec de la suppression de l'image. Veuillez réessayer.",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "cancel": "Annuler",
+      "saved": "Enregistré avec succès",
+      "saveFailed": "Échec de l'enregistrement. Veuillez réessayer.",
+      "deleted": "Plat supprimé",
+      "deleteFailed": "Échec de la suppression. Veuillez réessayer.",
+      "categories": "Catégories",
+      "addCategory": "Ajouter une Catégorie",
+      "editCategory": "Modifier la Catégorie",
+      "deleteCategory": "Supprimer la Catégorie",
+      "categoryName": "Nom",
+      "categorySlug": "Slug",
+      "categorySortOrder": "Ordre d'affichage",
+      "invalidSlug": "Slug invalide. Utilisez lettres minuscules, chiffres et tirets.",
+      "categoryHasItems": "Suppression impossible : cette catégorie contient {{count}} plat(s).",
+      "categoryDeleteConfirm": "Supprimer la catégorie « {{name}} » ?",
+      "categoryCreateFailed": "Échec de la création de la catégorie.",
+      "categoryUpdateFailed": "Échec de la mise à jour de la catégorie.",
+      "categoryDeleteFailed": "Échec de la suppression de la catégorie.",
+      "loadFailed": "Impossible de charger les données du menu.",
+      "empty": "Aucun plat pour le moment.",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "defaultError": "Une erreur s'est produite. Veuillez réessayer.",
+    "close": "Fermer",
+    "guest": "Invité",
+    "guests": "Invités",
+    "errorBoundaryMessage": "Une erreur s'est produite. Veuillez réessayer.",
+    "errorBoundaryReload": "Recharger la page"
+  },
+  "allergenLabels": {
+    "gluten": "Gluten",
+    "crustaceans": "Crustacés",
+    "eggs": "Œufs",
+    "fish": "Poisson",
+    "peanuts": "Arachides",
+    "soybeans": "Soja",
+    "milk": "Lait",
+    "tree_nuts": "Fruits à coque",
+    "celery": "Céleri",
+    "mustard": "Moutarde",
+    "sesame": "Sésame",
+    "sulphites": "Sulfites",
+    "lupin": "Lupin",
+    "molluscs": "Mollusques"
+  }
+}
