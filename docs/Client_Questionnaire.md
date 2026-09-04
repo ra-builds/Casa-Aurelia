@@ -2,9 +2,10 @@
 
 Original Phase 21 deliverable. Use this to collect everything needed to scope,
 price, and build a restaurant's website. It maps directly onto the data model and
-customization boundary already built into the Casa Aurelia template (see
-`Phase17_Report.md` and `Phase18_Report.md`), so collecting these answers is
-enough to start configuration.
+customization boundary already built into the Casa Aurelia template (see the
+"Customization boundary" notes in `frontend/src/config/site.ts` and
+`docs/Sales_Materials.md`), so collecting these answers is enough to start
+configuration.
 
 Fill it out with the client (in person or by email). Leave sections blank where the
 client is unsure — you can follow up.

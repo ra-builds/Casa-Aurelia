@@ -65,7 +65,11 @@ def test_create_list_and_delete(client):
     assert client.get("/api/closures").json() == []
 
 
-def test_duplicate_date_conflict(client):
+def test_duplicate_date_conflict(client, db_session):
+    # Clear any closures committed by earlier tests in the shared session so this
+    # test starts from a clean closure table (closure_date is UNIQUE).
+    db_session.query(Closure).delete()
+    db_session.commit()
     token = _admin_token(client)
     auth = {"Authorization": f"Bearer {token}"}
     closure_date = _future_non_monday(offset=2)
@@ -115,6 +119,10 @@ def test_admin_endpoints_forbid_non_admin(client):
 
 def test_availability_reports_closed_on_closure_date(client, db_session):
     db_session.rollback()  # clear any pending state from earlier tests in the run
+    # Clear any closure already committed for this date in the shared session so
+    # the unique constraint cannot collide with an earlier test's closure.
+    db_session.query(Closure).delete()
+    db_session.commit()
     closure_date = _future_non_monday(offset=3)
     db_session.add(Closure(closure_date=closure_date, reason="Event"))
     db_session.commit()
@@ -130,6 +138,10 @@ def test_availability_reports_closed_on_closure_date(client, db_session):
 
 def test_create_reservation_rejected_on_closure_date(client, db_session):
     db_session.rollback()  # clear any pending state from earlier tests in the run
+    # Clear any closure already committed for this date in the shared session so
+    # the unique constraint cannot collide with an earlier test's closure.
+    db_session.query(Closure).delete()
+    db_session.commit()
     closure_date = _future_non_monday(offset=4)
     db_session.add(Closure(closure_date=closure_date, reason="Vacation"))
     db_session.commit()
