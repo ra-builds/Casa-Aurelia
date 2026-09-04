@@ -2,13 +2,16 @@
   "nav": {
     "home": "Inicio",
     "menu": "Menú",
-    "about": "Sobre Nosotros",
+    "about": "Nuestra Historia",
     "gallery": "Galería",
+    "signatures": "Platos Insignia",
+    "visit": "Visita",
     "reservations": "Reservaciones",
     "contact": "Contacto",
     "reserveTable": "Reservar una Mesa",
     "openMenu": "Abrir menú",
-    "closeMenu": "Cerrar menú"
+    "closeMenu": "Cerrar menú",
+    "mainNavigation": "Navegación principal"
   },
   "home": {
     "welcome": "Bienvenidos a Casa Aurelia",
@@ -25,14 +28,18 @@
     "saturday": "Sábado",
     "sunday": "Domingo",
     "hero": {
-      "ariaLabel": "Elegante interior del restaurante con iluminación cálida"
+      "ariaLabel": "Elegante interior del restaurante con iluminación cálida",
+      "label": "Ristorante — {{city}}, {{country}}",
+      "headline1": "Una mesa puesta",
+      "headline2": "para la larga velada",
+      "scroll": "Desplázate para explorar"
     },
     "intro": {
       "title": "Un Sabor de la Italia Moderna",
       "subtitle": "Bienvenidos",
       "paragraph1": "Enclavado en el centro histórico de Novara, Casa Aurelia ofrece una interpretación refinada de la cocina italiana. Nuestra cocina celebra ingredientes de temporada provenientes de productores locales y las mejores regiones de Italia.",
       "paragraph2": "Cada plato cuenta una historia — de tradición reinventada, de sabores que perduran, y de veladas inolvidables con una cálida hospitalidad y un ambiente de elegancia sobria.",
-      "ourStory": "Nuestra Historia →",
+      "ourStory": "Lee nuestra historia",
       "imageAlt": "Sala del restaurante acogedora y cálida"
     },
     "signatureDishes": {
@@ -91,9 +98,35 @@
       "button": "Reservar Ahora"
     }
   },
+  "signatures": {
+    "kick": "Los Clásicos",
+    "heroKicker": "Nuestras firmas",
+    "heroTitle1": "Platos que",
+    "heroTitle2": "quedan en la memoria.",
+    "heroCopy": "Una lista breve y pensada — los platos que serviríamos si solo pudiéramos conservar un puñado, para siempre.",
+    "title": "Platos Insignia",
+    "intro": "Un pequeño grupo de platos que nunca abandonan el menú. Cada uno responde a la pregunta que nos hicimos al principio: ¿qué serviríamos si solo pudiéramos servir unos pocos platos para siempre?",
+    "empty": "El menú se está actualizando. Vuelve pronto.",
+    "viewMenu": "Ver menú completo",
+    "reserve": "Reservar una mesa",
+    "manifestoLabel": "El Diario",
+    "manifestoTitle": "Solo un puñado de platos merece la mesa.",
+    "manifestoBody": "Nada aquí es casual. Cada firma ha atravesado las estaciones del mercado, el ánimo de la sala y los ensayos interminables del pase — hasta volverse menos una receta y más una promesa.",
+    "statementLabel": "El estándar de la casa",
+    "statementText": "Una firma no es fama. Es confianza — un plato repetido hasta convertirse en una promesa, y una promesa cumplida en cada plato, cada noche.",
+    "statementSupport": "Un plato, muchas veladas.",
+    "reserveTitle": "Ven a la mesa.",
+    "reserveBody": "La velada se escribe cada día en nuestra mesa, y siempre hay un lugar para ti.",
+    "loadError": "Hoy no hemos podido abrir el diario. Inténtalo de nuevo en unos momentos."
+  },
   "menu": {
     "title": "Nuestro Menú",
     "subtitle": "Descubre nuestros platos cuidadosamente elaborados",
+    "label": "El Menú",
+    "writtenDaily": "Escrito cada mañana.",
+    "writtenDailyTag": "Escrito Cada Día",
+    "heroCopy": "Cuatro servicios, cambian según el mercado y la temporada.",
+    "ctaTitle": "Una Mesa Les Espera",
     "appetizers": "Aperitivos",
     "mainCourses": "Platos Principales",
     "desserts": "Postres",
@@ -110,7 +143,10 @@
     "subtitle": "Nuestra historia y pasión por la cocina italiana auténtica",
     "heroTitle": "Nuestra Historia",
     "heroSubtitle": "Sobre Nosotros",
+    "scroll": "Desplazarse",
     "story": {
+      "kicker": "Fundado en 2018, en el corazón de Novara",
+      "pull": "íntima, refinada y genuinamente acogedora.",
       "p1": "Casa Aurelia nació de una visión simple: crear un restaurante donde el alma de la cocina italiana se encuentre con la elegancia de la gastronomía moderna. Fundado en 2018 en el corazón de Novara, nuestro restaurante se ha convertido en un destino para quienes aprecian la comida preparada con intención y servida con calidez.",
       "p2": "El nombre “Aurelia” evoca luz dorada — la que llena nuestro comedor al atardecer, proyectando un cálido resplandor sobre los platos compartidos y las conversaciones tranquilas. Es esta atmosfera la que nos esforzamos por crear cada noche: íntima, refinada y genuinamente acogedora."
     },
@@ -127,7 +163,16 @@
       "subtitle": "Nuestro Enfoque",
       "p1": "Trabajamos con agricultores locales en Piamonte para verduras de temporada, obtenemos burrata y aceite de oliva directamente de Puglia, y seleccionamos nuestros vinos de pequeños productores italianos que comparten nuestros valores de calidad y autenticidad.",
       "p2": "Nuestra pasta se elabora fresca cada día. Nuestro pan se hornea en casa. Nuestras salsas cocinan a fuego lento durante horas. Estas no son afirmaciones de marketing — son los cimientos de cada plato que sale de nuestra cocina.",
-      "imageAlt": "Ingredientes de temporada frescos preparados para la cocción"
+      "imageAlt": "Ingredientes de temporada frescos preparados para la cocción",
+      "imageAlt2": "Tagliatelle cortadas a mano con trufa negra"
+    },
+    "philosophy": {
+      "kicker": "La Filosofía"
+    },
+    "experience": {
+      "kicker": "La Velada",
+      "captionOne": "Comida preparada con intención, servida con calidez.",
+      "captionTwo": "El nombre “Aurelia” evoca luz dorada."
     },
     "cta": {
       "title": "Tradición Italiana, Espíritu Moderno",
@@ -137,6 +182,12 @@
   "gallery": {
     "title": "Galería",
     "subtitle": "Viaje Visual",
+    "heroLabel": "La Galería",
+    "heroTitle": "Una mirada a la velada.",
+    "heroIntro": "Luz, porcelana y el teatro silencioso de la cocina: instantes guardados tal como ocurrieron.",
+    "filterLabel": "Explora la galería por categoría",
+    "closingTitle": "Ven a compartir la velada.",
+    "closingIntro": "La puerta está abierta y la mesa está puesta: reserva tu velada en Casa Aurelia.",
     "categories": {
       "all": "Todos",
       "food": "Comida",
@@ -145,9 +196,32 @@
       "events": "Eventos"
     },
     "viewImage": "Ver {{alt}}",
+    "captions": {
+      "g01": "La sala, preparada antes de que llegue el primer invitado.",
+      "g02": "Crema, tomate y aceite de albahaca de Apulia.",
+      "g03": "Latón y luz de vela en la barra.",
+      "g04": "Media hora antes del servicio.",
+      "g05": "Cortada a mano, salteada y emplatada.",
+      "g06": "La velada, a su propio ritmo.",
+      "g07": "Velas frente a la última luz.",
+      "g08": "Mar, ajo y vino blanco.",
+      "g09": "El emplatado, en clave de silencio.",
+      "g10": "Botellas esperando la noche larga.",
+      "g11": "Removido despacio, terminado en silencio.",
+      "g12": "Copas alzadas en la mesa larga.",
+      "g13": "Fuego, concentración y el pass.",
+      "g14": "Vino blanco, limón y mar.",
+      "g15": "Vertido despacio, compartido con generosidad.",
+      "g16": "Una mesa, aún despierta al cierre.",
+      "gclosing": "La sala a la luz de las velas, cuando comienza la cena."
+    },
     "lightbox": {
       "ariaLabel": "Caja de luz de imagen",
-      "closeLabel": "Cerrar caja de luz"
+      "closeLabel": "Cerrar caja de luz",
+      "previous": "Imagen anterior",
+      "next": "Imagen siguiente",
+      "counter": "{{current}} de {{total}}",
+      "liveStatus": "{{current}} de {{total}}. {{caption}}"
     }
   },
   "reservation": {
@@ -160,6 +234,7 @@
     "lastName": "Apellido",
     "email": "Correo Electrónico",
     "phone": "Teléfono",
+    "phonePlaceholder": "p. ej. +34 912 345 678",
     "date": "Fecha",
     "time": "Hora",
     "guests": "Número de Invitados",
@@ -177,6 +252,32 @@
     "dinnerLabel": "Cena",
     "closedLabel": "Cerrado",
     "closedDayNote": "Nota: El restaurante está cerrado los {{day}}.",
+    "journeyLabel": "La Reserva",
+    "journeyTitle": "Una velada, preparada a mano.",
+    "journeyBody": "Elija su velada como la prepararíamos nosotros: primero la fecha, luego su mesa, luego la hora — y los pequeños detalles que hacen suya la cena.",
+    "atlasLabel": "La Sala y Sus Horarios",
+    "diningNote": "La primera sesión de la noche es la más silenciosa; la última, la más larga. Cada noche la sala acoge únicamente lo que puede acoger — y si la hora deseada está ocupada, a menudo queda otra.",
+    "capacityNote": "El comedor dispone de {{count}} asientos.",
+    "closingLabel": "Hasta pronto",
+    "closingTitle": "La mesa estará puesta para usted.",
+    "step": {
+      "label": "Paso {{current}} de {{total}}",
+      "date": "Elige una fecha",
+      "guests": "Tu grupo",
+      "time": "Elige una hora",
+      "details": "Tus datos",
+      "review": "Confirmar",
+      "dateIntro": "Servimos almuerzo y cena, de martes a domingo. En verano, la terraza abre al atardecer.",
+      "guestsIntro": "¿Cuántos serán? De uno, hasta doce.",
+      "timeIntro": "Cada noche tiene un número limitado de mesas: cuanto antes elijas, más tranquila la sala.",
+      "detailsIntro": "¿Dónde podemos contactarte? Confirmamos cada reserva por correo.",
+      "reviewIntro": "Una mirada tranquila, antes de sellar la velada.",
+      "next": "Siguiente",
+      "back": "Atrás",
+      "checkingTimes": "Comprobando las mesas...",
+      "unavailable": "Completo",
+      "confirmAction": "Confirmar reserva"
+    },
     "lookup": {
       "title": "Gestionar Reservación",
       "subtitle": "Encuentra Tu Reserva",
@@ -198,7 +299,15 @@
         "referenceRequired": "El código de referencia es obligatorio",
         "emailRequired": "El correo electrónico es obligatorio",
         "emailInvalid": "Por favor, ingresa un correo electrónico válido"
-      }
+      },
+      "bookAgain": "Reservar una Nueva Mesa",
+      "editorialKicker": "Su Mesa, Guardada en Silencio",
+      "editorialTitle": "Un rincón tranquilo del diario.",
+      "editorialBody": "Aquí puede repasar los detalles de su velada — la fecha, la hora, la mesa — y, si la velada cambia, liberar la mesa.",
+      "indexTitle": "El Registro",
+      "indexStep1": "Introduzca su código de referencia",
+      "indexStep2": "Repase los detalles de su velada",
+      "indexStep3": "Gestione o libere su mesa"
     },
     "validation": {
       "firstNameRequired": "El nombre es obligatorio",
@@ -209,13 +318,23 @@
       "phoneInvalid": "Número de teléfono no válido",
       "dateRequired": "La fecha es obligatoria",
       "timeRequired": "La hora es obligatoria",
-      "guestsRange": "El número de invitados debe estar entre 1 y 12"
+      "guestsRange": "El número de invitados debe estar entre 1 y 12",
+      "datePast": "Elija una fecha futura.",
+      "dateClosed": "El restaurante está cerrado los {{day}}. Elija otra fecha."
     }
   },
   "contact": {
     "title": "Contáctanos",
     "subtitle": "Ponte en contacto con nosotros",
     "visitUs": "Visítanos",
+    "kicker": "Encuéntranos",
+    "heroLabel": "Visita Novara",
+    "headline1": "Un letrero de latón,",
+    "headline2": "una puerta de madera.",
+    "directions": "Casa Aurelia se encuentra en el centro histórico de Novara, a pocos pasos de la Piazza Cavour. Ven con apetito; deja las prisas en la puerta.",
+    "arrivalLabel": "La Llegada",
+    "arrivalTitle": "La velada comienza aquí.",
+    "arrivalBody": "La plaza se apacigua, se encienden las lámparas y, tras la puerta de madera, la sala se prepara — mesas puestas, copas pulidas y el fogón ya caliente. Solo faltas tú.",
     "addressLabel": "Dirección",
     "phoneLabel": "Teléfono",
     "emailLabel": "Correo Electrónico",
@@ -224,9 +343,16 @@
     "dinnerLabel": "Cena",
     "closedLabel": "Cerrado",
     "mapPlaceholder": "Mapa — Novara, Italia",
+    "informationTitle": "Información",
+    "directionsTitle": "Cómo Llegar",
+    "directionsBody": "En el casco antiguo de Novara, donde la noche se toma su tiempo.",
+    "getDirections": "Cómo llegar",
+    "reserveTitle": "Convierte la noche en una ocasión.",
+    "reserveBody": "La mesa está puesta y la velada te espera — estaremos encantados de guardarla para ti.",
     "sendMessage": "Enviar un Mensaje",
     "successMessage": "¡Gracias! Tu mensaje ha sido enviado. Responderemos pronto.",
     "sending": "Enviando...",
+    "submitFailed": "Lo sentimos, no hemos podido enviar tu mensaje en este momento. Inténtalo de nuevo en breve.",
     "name": "Nombre",
     "email": "Correo Electrónico",
     "subject": "Asunto",
@@ -244,6 +370,9 @@
   "confirmation": {
     "title": "Reservación Confirmada",
     "message": "Se ha enviado una confirmación a tu correo electrónico.",
+    "messageEmailSent": "Se ha enviado una confirmación a tu correo electrónico. Conserva tu código de referencia.",
+    "messageNoEmail": "Tu mesa está reservada — no hemos podido enviar el correo de confirmación. Conserva tu código de referencia.",
+    "headline": "Tu mesa está reservada.",
     "reference": "Referencia",
     "guest": "Invitado",
     "guests": "Invitados",
@@ -260,10 +389,13 @@
   "notFound": {
     "title": "Página No Encontrada",
     "message": "La página que buscas no existe.",
-    "backToHome": "Volver al Inicio"
+    "backToHome": "Volver al Inicio",
+    "viewMenu": "Ver el Menú"
   },
   "footer": {
     "description": "Cocina italiana moderna en el corazón de Novara. Una elegante experiencia gastronómica donde la tradición se encuentra con lo contemporáneo.",
+    "cta1": "Ven por la noche.",
+    "cta2": "Quédate para la segunda botella.",
     "navigate": "Navegación",
     "contact": "Contacto",
     "hours": "Horario",
@@ -276,6 +408,7 @@
   "pageTitles": {
     "home": "Casa Aurelia | Restaurante Italiano Moderno en Novara",
     "menu": "Menú | Casa Aurelia",
+    "signatures": "Platos Insignia | Casa Aurelia",
     "about": "Sobre Nosotros | Casa Aurelia",
     "gallery": "Galería | Casa Aurelia",
     "reservations": "Reservaciones | Casa Aurelia",
@@ -288,6 +421,7 @@
   "meta": {
     "home": "Casa Aurelia — Restaurante italiano moderno en Novara. Reserva tu mesa para una experiencia gastronómica inolvidable.",
     "menu": "Descubre el menú de Casa Aurelia — antipasti, primi, secondi, dolci y bebidas.",
+    "signatures": "Los platos insignia de Casa Aurelia — una breve e inmutable lista de platos que definen nuestra mesa en el centro histórico de Novara.",
     "about": "Descubre la historia de Casa Aurelia — cocina italiana moderna arraigada en la tradición, ubicada en Novara, Italia.",
     "gallery": "Explora las fotos de Casa Aurelia — nuestros platos, el interior, el chef y los eventos especiales.",
     "reservations": "Reserva una mesa en Casa Aurelia en Novara. Reserva en línea para almuerzo o cena.",
@@ -295,6 +429,7 @@
     "contact": "Contacta a Casa Aurelia en Novara — dirección, teléfono, correo electrónico y horario de atención."
   },
   "admin": {
+    "kicker": "Casa Aurelia · Oficina privada",
     "loginTitle": "Acceso Personal",
     "loginSubtitle": "Panel de Admin Casa Aurelia",
     "email": "Correo Electrónico",
@@ -307,6 +442,7 @@
     "tab": {
       "reservations": "Reservas",
       "menu": "Menú",
+      "closures": "Cierres",
       "items": "Platos"
     },
     "searchPlaceholder": "Buscar por nombre, correo o referencia...",
@@ -350,6 +486,27 @@
       "pageOf": "Página {{page}} de {{totalPages}}",
       "showing": "{{from}}–{{to}} de {{total}}",
       "label": "Paginación de la lista de reservaciones"
+    },
+    "closures": {
+      "kicker": "Casa Aurelia · Cierres",
+      "title": "Cierres por festivos y excepciones",
+      "subtitle": "Fechas en las que el restaurante está completamente cerrado y no acepta reservas.",
+      "add": "Añadir cierre",
+      "addTitle": "Añadir una fecha de cierre",
+      "date": "Fecha",
+      "reason": "Motivo (opcional)",
+      "reasonPlaceholder": "p. ej. festivo, evento privado",
+      "saving": "Guardando...",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "empty": "No hay cierres configurados.",
+      "loadFailed": "No se pudieron cargar los cierres.",
+      "createFailed": "No se pudo añadir el cierre.",
+      "deleteFailed": "No se pudo eliminar el cierre.",
+      "saved": "Cierre guardado.",
+      "delete": "Eliminar",
+      "deleteConfirm": "¿Eliminar el cierre del {{date}}? En esta fecha se volverán a aceptar reservas.",
+      "deleteFor": "Eliminar cierre del {{date}}"
     },
     "menu": {
       "title": "Gestión del Menú",
@@ -396,7 +553,21 @@
       "loadFailed": "No se pudieron cargar los datos del menú.",
       "empty": "Aún no hay platos.",
       "edit": "Editar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "makeAvailable": "Hacer disponible {{name}}",
+      "makeUnavailable": "Hacer no disponible {{name}}",
+      "toggleFeatured": "Alternar destacado para {{name}}",
+      "dietaryPlaceholder": "p. ej. Vegetariano, Vegano, Sin gluten",
+      "editItemFor": "Editar {{name}}",
+      "deleteItemFor": "Eliminar {{name}}",
+      "editCategoryFor": "Editar categoría {{name}}",
+      "deleteCategoryFor": "Eliminar categoría {{name}}"
+    },
+    "retry": "Reintentar",
+    "filter": {
+      "status": "Filtrar por estado",
+      "date": "Filtrar por fecha",
+      "today": "Hoy"
     }
   },
   "common": {
@@ -424,5 +595,9 @@
     "sulphites": "Sulfitos",
     "lupin": "Altramuz",
     "molluscs": "Moluscos"
+  },
+  "language": {
+    "selectLabel": "Seleccionar idioma",
+    "availableLabel": "Idiomas disponibles"
   }
 }

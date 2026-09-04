@@ -50,6 +50,6 @@ def init_db():
     - It doesn't alter schema of existing tables
     - It provides a convenient fallback for local development
     """
-    from app.models import category, menu_item, reservation, restaurant, restaurant_setting, user  # noqa: F401
+    from app.models import category, closure, menu_item, message, reservation, restaurant, restaurant_setting, user  # noqa: F401
 
     Base.metadata.create_all(bind=engine)

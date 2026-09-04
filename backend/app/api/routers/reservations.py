@@ -10,6 +10,7 @@ from app.db.database import get_db
 from app.models.reservation import Reservation
 from app.models.user import User
 from app.schemas.reservation import (
+    VALID_TIME_SLOTS,
     AvailabilityResponse,
     PaginatedReservationResponse,
     ReservationCreate,
@@ -19,6 +20,7 @@ from app.schemas.reservation import (
     ReservationUpdate,
 )
 from app.services import reservation_service
+from app.services.reservation_service import AlreadyCancelledError
 
 router = APIRouter(prefix="/api/reservations", tags=["reservations"])
 limiter = Limiter(key_func=get_remote_address)
@@ -33,6 +35,17 @@ def check_availability(
     guests: int = Query(..., ge=1, le=12),
     db: Session = Depends(get_db),
 ):
+    # The create contract (ReservationCreate.validate_time_slot) only accepts the
+    # defined VALID_TIME_SLOTS and rejects everything else with 422. The
+    # availability endpoint must mirror that so it never reports a time slot as
+    # bookable that can actually never be reserved (and never turns a malformed
+    # slot, e.g. "25:99", into an unhandled 500).
+    if time not in VALID_TIME_SLOTS:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Time must be one of: {', '.join(VALID_TIME_SLOTS)}",
+        )
+
     result = reservation_service.check_availability(db, date, time, guests)
     return AvailabilityResponse(**result)
 
@@ -88,6 +101,10 @@ def lookup_reservation(request: Request, data: ReservationLookup, db: Session = 
 def customer_cancel_reservation(request: Request, data: ReservationLookup, db: Session = Depends(get_db)):
     try:
         reservation = reservation_service.customer_cancel_reservation(db, data.reference_code, data.email)
+    except AlreadyCancelledError as e:
+        # The reservation exists but is already cancelled -> a state conflict
+        # (409), not a missing resource (404).
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     return reservation_service.reservation_to_response(reservation)
@@ -122,7 +139,11 @@ def update_reservation(
     if not reservation:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Reservation not found")
 
-    updated = reservation_service.update_reservation(db, reservation, data)
+    try:
+        updated = reservation_service.update_reservation(db, reservation, data)
+    except ValueError as e:
+        # e.g. reactivating a cancelled reservation that would exceed capacity.
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(e))
     return reservation_service.reservation_to_response(updated)
 
 

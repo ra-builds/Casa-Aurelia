@@ -12,7 +12,7 @@ from app.db.database import Base
 from app.core.config import get_settings
 
 # Import all models so they register with Base.metadata
-from app.models import user, category, menu_item, reservation, restaurant, restaurant_setting  # noqa: F401
+from app.models import user, category, menu_item, reservation, restaurant, restaurant_setting, closure, message  # noqa: F401
 
 # this is the Alembic Config object
 config = context.config

@@ -1,31 +1,39 @@
 import { useTranslation } from 'react-i18next'
-import SectionHeading from '../ui/SectionHeading'
+import Container from '../ui/Container'
+import Reveal from '../ui/Reveal'
+import ImageReveal from '../ui/ImageReveal'
 import { IMAGES } from '../../utils/constants'
 
 export default function PhilosophySection() {
   const { t } = useTranslation()
 
   return (
-    <section className="py-20 md:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <img
-            src={IMAGES.philosophy}
-            alt={t('home.philosophy.imageAlt')}
-            className="w-full h-[450px] object-cover order-2 lg:order-1"
-            loading="lazy"
-          />
-          <div className="order-1 lg:order-2">
-            <SectionHeading title={t('home.philosophy.title')} subtitle={t('home.philosophy.subtitle')} centered={false} />
-            <p className="mt-6 text-stone leading-relaxed">
-              {t('home.philosophy.paragraph1')}
-            </p>
-            <p className="mt-4 text-stone leading-relaxed">
-              {t('home.philosophy.paragraph2')}
-            </p>
+    <section className="bg-cream-dark py-24 md:py-36">
+      <Container>
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
+          <div>
+            <Reveal>
+              <p className="label-micro">{t('home.philosophy.subtitle')}</p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="headline-section mt-4">{t('home.philosophy.title')}</h2>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="lead mt-7">{t('home.philosophy.paragraph1')}</p>
+            </Reveal>
+            <Reveal delay={0.22}>
+              <p className="lead mt-5">{t('home.philosophy.paragraph2')}</p>
+            </Reveal>
           </div>
+          <Reveal delay={0.1} className="lg:ml-auto">
+            <ImageReveal
+              src={IMAGES.philosophy}
+              alt={t('home.philosophy.imageAlt')}
+              aspect="aspect-[4/5] lg:w-[70vw] lg:max-w-[34rem]"
+            />
+          </Reveal>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

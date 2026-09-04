@@ -2,13 +2,16 @@
   "nav": {
     "home": "Startseite",
     "menu": "Speisekarte",
-    "about": "Über Uns",
+    "about": "Unsere Geschichte",
     "gallery": "Galerie",
+    "signatures": "Signature-Gerichte",
+    "visit": "Besuch",
     "reservations": "Reservierungen",
     "contact": "Kontakt",
     "reserveTable": "Tisch Reservieren",
     "openMenu": "Menü öffnen",
-    "closeMenu": "Menü schließen"
+    "closeMenu": "Menü schließen",
+    "mainNavigation": "Hauptnavigation"
   },
   "home": {
     "welcome": "Willkommen bei Casa Aurelia",
@@ -25,14 +28,18 @@
     "saturday": "Samstag",
     "sunday": "Sonntag",
     "hero": {
-      "ariaLabel": "Elegantes Restaurantinterieur mit warmem Licht"
+      "ariaLabel": "Elegantes Restaurantinterieur mit warmem Licht",
+      "label": "Ristorante — {{city}}, {{country}}",
+      "headline1": "Ein gedeckter Tisch",
+      "headline2": "für den langen Abend",
+      "scroll": "Zum Entdecken scrollen"
     },
     "intro": {
       "title": "Ein Geschmack des modernen Italiens",
       "subtitle": "Willkommen",
       "paragraph1": "Im Herzen des historischen Zentrums von Novara bietet Casa Aurelia eine raffinierte Interpretation der italienischen Küche. Unsere Küche feiert saisonale Zutaten von lokalen Erzeugern und den besten Regionen Italiens.",
       "paragraph2": "Jedes Gericht erzählt eine Geschichte — von Tradition neu interpretiert, von Aromen, die nachhallen, und von Abenden, die durch herzliche Gastfreundschaft und eine Atmosphäre zurückhaltender Eleganz unvergesslich werden.",
-      "ourStory": "Unsere Geschichte →",
+      "ourStory": "Die Geschichte lesen",
       "imageAlt": "Warmes und einladendes Restaurantambiente"
     },
     "signatureDishes": {
@@ -91,9 +98,35 @@
       "button": "Jetzt Buchen"
     }
   },
+  "signatures": {
+    "kick": "Die Klassiker",
+    "heroKicker": "Unsere Signaturen",
+    "heroTitle1": "Gerichte, die",
+    "heroTitle2": "in Erinnerung bleiben.",
+    "heroCopy": "Eine kurze, bedachte Liste — die Gerichte, die wir servieren würden, wenn wir nur eine Handvoll behalten dürften, für immer.",
+    "title": "Signature-Gerichte",
+    "intro": "Eine kleine Auswahl an Gerichten, die nie von der Karte verschwinden. Jedes beantwortet die Frage, die wir uns am Anfang gestellt haben: was würden wir servieren, wenn wir für immer nur eine Handvoll Gerichte servieren könnten?",
+    "empty": "Die Karte wird aktualisiert. Kommen Sie bald wieder.",
+    "viewMenu": "Vollständige Karte ansehen",
+    "reserve": "Einen Tisch reservieren",
+    "manifestoLabel": "Das Journal",
+    "manifestoTitle": "Nur eine Handvoll Gerichte verdient den Tisch.",
+    "manifestoBody": "Nichts hier ist Zufall. Jede Signatur hat die Jahreszeiten des Markts, die Stimmung des Raums und die endlosen Proben der Passe überstanden — bis sie weniger ein Rezept und mehr ein Versprechen wurde.",
+    "statementLabel": "Der Hausstandard",
+    "statementText": "Eine Signatur ist kein Ruhm. Sie ist Vertrauen — ein Gericht, das wiederholt wird, bis es ein Versprechen wird, und ein Versprechen, das auf jedem Teller gehalten wird, jeden Abend.",
+    "statementSupport": "Ein Gericht, viele Abende.",
+    "reserveTitle": "Kommen Sie zu Tisch.",
+    "reserveBody": "Der Abend wird jeden Tag an unserem Tisch geschrieben, und für Sie gibt es immer einen Platz.",
+    "loadError": "Das Journal konnte heute nicht geöffnet werden. Bitte versuchen Sie es gleich noch einmal."
+  },
   "menu": {
     "title": "Unsere Speisekarte",
     "subtitle": "Entdecken Sie unsere sorgfältig zubereiteten Gerichte",
+    "label": "Die Karte",
+    "writtenDaily": "Täglich frisch geschrieben.",
+    "writtenDailyTag": "Täglich Geschrieben",
+    "heroCopy": "Vier Gänge, je nach Markt und Jahreszeit.",
+    "ctaTitle": "Ein Tisch Erwartet Sie",
     "appetizers": "Vorspeisen",
     "mainCourses": "Hauptgerichte",
     "desserts": "Nachspeisen",
@@ -110,7 +143,10 @@
     "subtitle": "Unsere Geschichte und Leidenschaft für authentische italienische Küche",
     "heroTitle": "Unsere Geschichte",
     "heroSubtitle": "Über Uns",
+    "scroll": "Scrollen",
     "story": {
+      "kicker": "Gegründet 2018, im Herzen von Novara",
+      "pull": "intim, elegant und herzlich einladend.",
       "p1": "Casa Aurelia entstand aus einer einfachen Vision: ein Restaurant zu schaffen, in dem die Seele der italienischen Küche auf die Eleganz des modernen Essens trifft. Gegründet 2018 im Herzen von Novara, ist unser Restaurant für Liebhaber zu einem Zielort geworden, die Essen schätzen, das mit Hingabe zubereitet und mit Wärme serviert wird.",
       "p2": "Der Name „Aurelia“ ruft goldenes Licht hervor — die Art, die unseren Speisesaal in der Dämmerung füllt und einen warmen Schein über gemeinsame Teller und leise Gespräche wirft. Genau diese Atmosphäre streben wir jeden Abend an: intim, elegant und herzlich einladend."
     },
@@ -127,7 +163,16 @@
       "subtitle": "Unser Ansatz",
       "p1": "Wir arbeiten mit lokalen Landwirten im Piemont für saisonales Gemüse zusammen, beziehen Burrata und Olivenöl direkt aus Apulien und wählen unsere Weine von kleinen italienischen Produzenten, die unsere Werte von Qualität und Authentizität teilen.",
       "p2": "Unsere Pasta wird jeden Tag frisch hergestellt. Unser Brot wird im eigenen Ofen gebacken. Unsere Saucen kochen stundenlang. Das sind keine Marketingversprechen — sie sind das Fundament jedes Gerichts, das unsere Küche verlässt.",
-      "imageAlt": "Frische saisonale Zutaten, die für das Kochen vorbereitet wurden"
+      "imageAlt": "Frische saisonale Zutaten, die für das Kochen vorbereitet wurden",
+      "imageAlt2": "Handgeschnittene Tagliatelle mit schwarzem Trüffel"
+    },
+    "philosophy": {
+      "kicker": "Die Philosophie"
+    },
+    "experience": {
+      "kicker": "Der Abend",
+      "captionOne": "Gerichte mit Hingabe zubereitet, mit Wärme serviert.",
+      "captionTwo": "Der Name „Aurelia“ ruft goldenes Licht hervor."
     },
     "cta": {
       "title": "Italienische Tradition, Moderner Geist",
@@ -137,6 +182,12 @@
   "gallery": {
     "title": "Galerie",
     "subtitle": "Visuelle Reise",
+    "heroLabel": "Die Galerie",
+    "heroTitle": "Ein Blick auf den Abend.",
+    "heroIntro": "Licht, Porzellan und das stille Theater der Küche — Augenblicke, bewahrt wie sie geschahen.",
+    "filterLabel": "Galerie nach Kategorie durchstöbern",
+    "closingTitle": "Kommen Sie und teilen Sie den Abend.",
+    "closingIntro": "Die Tür ist offen und der Tisch ist gedeckt — reservieren Sie Ihren Abend bei Casa Aurelia.",
     "categories": {
       "all": "Alle",
       "food": "Essen",
@@ -145,9 +196,32 @@
       "events": "Veranstaltungen"
     },
     "viewImage": "{{alt}} ansehen",
+    "captions": {
+      "g01": "Der Raum, gedeckt vor dem ersten Gast.",
+      "g02": "Creme, Tomate und Basilikumöl aus Apulien.",
+      "g03": "Messing und Kerzenlicht an der Bar.",
+      "g04": "Eine halbe Stunde vor dem Service.",
+      "g05": "Von Hand geschnitten, geschwenkt und angerichtet.",
+      "g06": "Der Abend, in seinem eigenen Tempo.",
+      "g07": "Kerzen gegen das letzte Licht.",
+      "g08": "Meer, Knoblauch und Weißwein.",
+      "g09": "Anrichten, im Ton der Stille.",
+      "g10": "Flaschen, die auf die lange Nacht warten.",
+      "g11": "Langsam gerührt, ruhig beendet.",
+      "g12": "Gläser erhoben am langen Tisch.",
+      "g13": "Feuer, Fokus und die Pass.",
+      "g14": "Weißwein, Zitrone und das Meer.",
+      "g15": "Langsam eingeschenkt, großzügig geteilt.",
+      "g16": "Ein Tisch, bei Schluss noch wach.",
+      "gclosing": "Der Raum im Kerzenlicht, wenn das Abendessen beginnt."
+    },
     "lightbox": {
       "ariaLabel": "Bild-Lichtbox",
-      "closeLabel": "Lichtbox schließen"
+      "closeLabel": "Lichtbox schließen",
+      "previous": "Vorheriges Bild",
+      "next": "Nächstes Bild",
+      "counter": "{{current}} von {{total}}",
+      "liveStatus": "{{current}} von {{total}}. {{caption}}"
     }
   },
   "reservation": {
@@ -160,6 +234,7 @@
     "lastName": "Nachname",
     "email": "E-Mail",
     "phone": "Telefon",
+    "phonePlaceholder": "z. B. +49 30 123456",
     "date": "Datum",
     "time": "Uhrzeit",
     "guests": "Anzahl der Gäste",
@@ -177,6 +252,32 @@
     "dinnerLabel": "Abendessen",
     "closedLabel": "Geschlossen",
     "closedDayNote": "Hinweis: Das Restaurant ist am {{day}} geschlossen.",
+    "journeyLabel": "Die Reservierung",
+    "journeyTitle": "Ein Abend, von Hand bereitet.",
+    "journeyBody": "Wählen Sie Ihren Abend, wie wir ihn bereiten würden: zuerst das Datum, dann Ihr Tisch, dann die Stunde – und die kleinen Einzelheiten, die das Essen zu Ihrem machen.",
+    "atlasLabel": "Der Raum und seine Zeiten",
+    "diningNote": "Die erste Platzierung des Abends ist die ruhigste, die letzte die längste. Jeden Abend nimmt der Raum nur so viel auf, wie er fassen kann – und ist die gewünschte Stunde vergeben, bleibt oft eine andere.",
+    "capacityNote": "Der Speisesaal bietet {{count}} Plätze.",
+    "closingLabel": "Bis bald",
+    "closingTitle": "Ihr Tisch wird für Sie gedeckt sein.",
+    "step": {
+      "label": "Schritt {{current}} von {{total}}",
+      "date": "Wählen Sie ein Datum",
+      "guests": "Ihre Gesellschaft",
+      "time": "Wählen Sie eine Uhrzeit",
+      "details": "Ihre Daten",
+      "review": "Bestätigen",
+      "dateIntro": "Wir servieren Mittag- und Abendessen, von Dienstag bis Sonntag. Im Sommer öffnet die Terrasse in der Dämmerung.",
+      "guestsIntro": "Wie viele werden kommen? Von einer bis zwölf Personen.",
+      "timeIntro": "Jeder Abend hält eine bestimmte Anzahl an Tischen bereit — je früher Sie wählen, desto ruhiger der Raum.",
+      "detailsIntro": "Wie können wir Sie erreichen? Wir bestätigen jede Reservierung per E-Mail.",
+      "reviewIntro": "Ein kurzer Blick, bevor wir den Abend besiegeln.",
+      "next": "Weiter",
+      "back": "Zurück",
+      "checkingTimes": "Tische werden geprüft...",
+      "unavailable": "Ausgebucht",
+      "confirmAction": "Reservierung bestätigen"
+    },
     "lookup": {
       "title": "Reservierung Verwalten",
       "subtitle": "Finden Sie Ihre Buchung",
@@ -198,7 +299,15 @@
         "referenceRequired": "Referenzcode ist erforderlich",
         "emailRequired": "E-Mail-Adresse ist erforderlich",
         "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
-      }
+      },
+      "bookAgain": "Neuen Tisch Buchen",
+      "editorialKicker": "Ihr Tisch, still gehalten",
+      "editorialTitle": "Eine ruhige Ecke des Journals.",
+      "editorialBody": "Hier können Sie die Einzelheiten Ihres Abends nachsehen — Datum, Stunde, Tisch — und, wenn sich der Abend ändert, den Tisch freigeben.",
+      "indexTitle": "Das Register",
+      "indexStep1": "Geben Sie Ihren Referenzcode ein",
+      "indexStep2": "Sehen Sie sich die Einzelheiten Ihres Abends an",
+      "indexStep3": "Verwalten oder geben Sie Ihren Tisch frei"
     },
     "validation": {
       "firstNameRequired": "Vorname ist erforderlich",
@@ -209,13 +318,23 @@
       "phoneInvalid": "Ungültige Telefonnummer",
       "dateRequired": "Datum ist erforderlich",
       "timeRequired": "Uhrzeit ist erforderlich",
-      "guestsRange": "Die Anzahl der Gäste muss zwischen 1 und 12 liegen"
+      "guestsRange": "Die Anzahl der Gäste muss zwischen 1 und 12 liegen",
+      "datePast": "Bitte wählen Sie ein zukünftiges Datum.",
+      "dateClosed": "Das Restaurant ist am {{day}} geschlossen. Wählen Sie ein anderes Datum."
     }
   },
   "contact": {
     "title": "Kontaktieren Sie Uns",
     "subtitle": "Nehmen Sie Kontakt mit uns auf",
     "visitUs": "Besuchen Sie Uns",
+    "kicker": "Uns finden",
+    "heroLabel": "Besuch in Novara",
+    "headline1": "Ein Messingschild,",
+    "headline2": "eine Holztür.",
+    "directions": "Casa Aurelia liegt in der Altstadt von Novara, wenige Schritte von der Piazza Cavour entfernt. Kommen Sie hungrig; lassen Sie die Eile an der Tür.",
+    "arrivalLabel": "Die Ankunft",
+    "arrivalTitle": "Der Abend beginnt hier.",
+    "arrivalBody": "Der Platz wird still, die Lampen flammen auf, und hinter der Holztür wird der Saal vorbereitet — gedeckte Tische, polierte Gläser und ein schon warmer Herd. Nur Sie fehlen noch.",
     "addressLabel": "Adresse",
     "phoneLabel": "Telefon",
     "emailLabel": "E-Mail",
@@ -224,9 +343,16 @@
     "dinnerLabel": "Abendessen",
     "closedLabel": "Geschlossen",
     "mapPlaceholder": "Karte — Novara, Italien",
+    "informationTitle": "Informationen",
+    "directionsTitle": "Anfahrt",
+    "directionsBody": "In der Altstadt von Novara, wo der Abend sich Zeit nimmt.",
+    "getDirections": "Wegbeschreibung",
+    "reserveTitle": "Machen Sie einen Abend daraus.",
+    "reserveBody": "Der Tisch ist gedeckt und der Abend wartet — wir heben ihn gern für Sie auf.",
     "sendMessage": "Nachricht Senden",
     "successMessage": "Vielen Dank! Ihre Nachricht wurde gesendet. Wir werden Ihnen in Kürze antworten.",
     "sending": "Wird gesendet...",
+    "submitFailed": "Leider konnte Ihre Nachricht derzeit nicht gesendet werden. Bitte versuchen Sie es in Kürze erneut.",
     "name": "Name",
     "email": "E-Mail",
     "subject": "Betreff",
@@ -244,6 +370,9 @@
   "confirmation": {
     "title": "Reservierung Bestätigt",
     "message": "Eine Bestätigung wurde an Ihre E-Mail-Adresse gesendet.",
+    "messageEmailSent": "Eine Bestätigung wurde an Ihre E-Mail-Adresse gesendet. Bitte bewahren Sie Ihren Referenzcode auf.",
+    "messageNoEmail": "Ihr Tisch ist reserviert — wir konnten keine Bestätigungs-E-Mail senden. Bitte bewahren Sie Ihren Referenzcode auf.",
+    "headline": "Ihr Tisch ist reserviert.",
     "reference": "Referenz",
     "guest": "Gast",
     "guests": "Gäste",
@@ -260,10 +389,13 @@
   "notFound": {
     "title": "Seite Nicht Gefunden",
     "message": "Die Seite, die Sie suchen, existiert nicht.",
-    "backToHome": "Zurück zur Startseite"
+    "backToHome": "Zurück zur Startseite",
+    "viewMenu": "Zum Menü"
   },
   "footer": {
     "description": "Moderne italienische Küche im Herzen von Novara. Ein elegantes kulinarisches Erlebnis, in dem Tradition auf Zeitgenössisches trifft.",
+    "cta1": "Kommen Sie für den Abend.",
+    "cta2": "Bleiben Sie für die zweite Flasche.",
     "navigate": "Navigation",
     "contact": "Kontakt",
     "hours": "Öffnungszeiten",
@@ -276,6 +408,7 @@
   "pageTitles": {
     "home": "Casa Aurelia | Modernes italienisches Restaurant in Novara",
     "menu": "Speisekarte | Casa Aurelia",
+    "signatures": "Signature-Gerichte | Casa Aurelia",
     "about": "Über Uns | Casa Aurelia",
     "gallery": "Galerie | Casa Aurelia",
     "reservations": "Reservierungen | Casa Aurelia",
@@ -288,6 +421,7 @@
   "meta": {
     "home": "Casa Aurelia — Modernes italienisches Restaurant in Novara. Reservieren Sie Ihren Tisch für ein unvergessliches kulinarisches Erlebnis.",
     "menu": "Entdecken Sie die Speisekarte von Casa Aurelia — Antipasti, Primi, Secondi, Dolci und Getränke.",
+    "signatures": "Die Signature-Gerichte von Casa Aurelia — eine kurze, unveränderte Liste von Gerichten, die unseren Tisch in der Altstadt von Novara prägen.",
     "about": "Entdecken Sie die Geschichte von Casa Aurelia — moderne italienische Küche, verwurzelt in der Tradition, in Novara, Italien.",
     "gallery": "Durchstöbern Sie Fotos von Casa Aurelia — unsere Gerichte, unser Interieur, unser Koch und unsere Veranstaltungen.",
     "reservations": "Reservieren Sie einen Tisch bei Casa Aurelia in Novara. Online buchen für Mittag- oder Abendessen.",
@@ -295,6 +429,7 @@
     "contact": "Kontaktieren Sie Casa Aurelia in Novara — Adresse, Telefon, E-Mail und Öffnungszeiten."
   },
   "admin": {
+    "kicker": "Casa Aurelia · Privates Büro",
     "loginTitle": "Mitarbeiter Login",
     "loginSubtitle": "Casa Aurelia Admin Dashboard",
     "email": "E-Mail",
@@ -307,6 +442,7 @@
     "tab": {
       "reservations": "Reservierungen",
       "menu": "Speisekarte",
+      "closures": "Schließungen",
       "items": "Gerichte"
     },
     "searchPlaceholder": "Suche nach Name, E-Mail oder Referenz...",
@@ -350,6 +486,27 @@
       "pageOf": "Seite {{page}} von {{totalPages}}",
       "showing": "{{from}}–{{to}} von {{total}}",
       "label": "Seitennavigation der Reservierungsliste"
+    },
+    "closures": {
+      "kicker": "Casa Aurelia · Schließungen",
+      "title": "Sperr- und Feiertagsschließungen",
+      "subtitle": "Daten, an denen das Restaurant vollständig geschlossen ist und keine Reservierungen annimmt.",
+      "add": "Schließung hinzufügen",
+      "addTitle": "Schließungsdatum hinzufügen",
+      "date": "Datum",
+      "reason": "Grund (optional)",
+      "reasonPlaceholder": "z. B. Feiertag, private Veranstaltung",
+      "saving": "Wird gespeichert...",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "empty": "Keine Schließungen konfiguriert.",
+      "loadFailed": "Schließungen konnten nicht geladen werden.",
+      "createFailed": "Schließung konnte nicht hinzugefügt werden.",
+      "deleteFailed": "Schließung konnte nicht gelöscht werden.",
+      "saved": "Schließung gespeichert.",
+      "delete": "Löschen",
+      "deleteConfirm": "Schließung für {{date}} entfernen? An diesem Datum werden wieder Reservierungen angenommen.",
+      "deleteFor": "Schließung für {{date}} entfernen"
     },
     "menu": {
       "title": "Speisekartenverwaltung",
@@ -396,7 +553,21 @@
       "loadFailed": "Speisekartendaten konnten nicht geladen werden.",
       "empty": "Keine Gerichte vorhanden.",
       "edit": "Bearbeiten",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "makeAvailable": "{{name}} verfügbar machen",
+      "makeUnavailable": "{{name}} nicht verfügbar machen",
+      "toggleFeatured": "Hervorgehoben für {{name}} umschalten",
+      "dietaryPlaceholder": "z. B. Vegetarisch, Vegan, Glutenfrei",
+      "editItemFor": "{{name}} bearbeiten",
+      "deleteItemFor": "{{name}} löschen",
+      "editCategoryFor": "Kategorie {{name}} bearbeiten",
+      "deleteCategoryFor": "Kategorie {{name}} löschen"
+    },
+    "retry": "Erneut versuchen",
+    "filter": {
+      "status": "Nach Status filtern",
+      "date": "Nach Datum filtern",
+      "today": "Heute"
     }
   },
   "common": {
@@ -424,5 +595,9 @@
     "sulphites": "Sulfite",
     "lupin": "Lupinen",
     "molluscs": "Weichtiere"
+  },
+  "language": {
+    "selectLabel": "Sprache auswählen",
+    "availableLabel": "Verfügbare Sprachen"
   }
 }

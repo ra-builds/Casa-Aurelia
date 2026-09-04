@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node scripts/generate-seo.mjs && vite",
+    "build": "node scripts/generate-seo.mjs && tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "node scripts/generate-seo.mjs && vite preview",
+    "test": "node spec/getMinDate.test.mjs && node spec/slotGroups.test.mjs && node spec/responsiveLayout.test.mjs && node spec/formatting.test.mjs && node spec/seo.test.mjs && node spec/performance.test.mjs && node spec/production.test.mjs && node spec/customization.test.mjs && node spec/template.test.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",

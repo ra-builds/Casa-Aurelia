@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import SectionHeading from '../ui/SectionHeading'
+import Container from '../ui/Container'
+import Reveal from '../ui/Reveal'
 import { Star } from 'lucide-react'
 
 const TESTIMONIAL_KEYS = ['elena', 'marco', 'sophie'] as const
@@ -8,29 +9,42 @@ export default function TestimonialsSection() {
   const { t } = useTranslation()
 
   return (
-    <section className="py-20 md:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading title={t('home.testimonials.title')} subtitle={t('home.testimonials.subtitle')} />
-        <div className="mt-14 grid md:grid-cols-3 gap-8">
-          {TESTIMONIAL_KEYS.map((key) => {
+    <section className="py-24 md:py-36">
+      <Container>
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <p className="label-micro">{t('home.testimonials.subtitle')}</p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="headline-section mt-4">{t('home.testimonials.title')}</h2>
+          </Reveal>
+        </div>
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
+          {TESTIMONIAL_KEYS.map((key, i) => {
             const rating = Number(t(`home.testimonials.items.${key}.rating`))
             return (
-              <blockquote key={key} className="card p-8">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: rating }).map((_, i) => (
-                    <Star key={i} size={16} className="fill-gold text-gold" aria-hidden="true" />
-                  ))}
+              <Reveal key={key} delay={i * 0.12}>
+                <figure className="card flex h-full flex-col p-9">
+                  <div className="flex gap-1" aria-hidden="true">
+                    {Array.from({ length: rating }).map((_, s) => (
+                      <Star key={s} size={15} className="fill-gold text-gold" />
+                    ))}
+                  </div>
                   <span className="sr-only">{t('home.testimonials.rating', { rating })}</span>
-                </div>
-                <p className="text-stone italic leading-relaxed">&ldquo;{t(`home.testimonials.items.${key}.text`)}&rdquo;</p>
-                <footer className="mt-6 text-sm font-medium text-charcoal-light">
-                  — {t(`home.testimonials.items.${key}.name`)}
-                </footer>
-              </blockquote>
+                  <blockquote className="mt-6 flex-1">
+                    <p className="font-display text-lg italic leading-relaxed text-stone">
+                      &ldquo;{t(`home.testimonials.items.${key}.text`)}&rdquo;
+                    </p>
+                  </blockquote>
+                  <figcaption className="mt-7 border-t border-charcoal/10 pt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-stone-light">
+                    {t(`home.testimonials.items.${key}.name`)}
+                  </figcaption>
+                </figure>
+              </Reveal>
             )
           })}
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

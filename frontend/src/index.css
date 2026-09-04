@@ -1,19 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-wine: #8B2635;
-  --color-wine-dark: #6B1D28;
-  --color-wine-light: #A83244;
-  --color-gold: #C9A962;
-  --color-gold-light: #D4BC7E;
-  --color-cream: #FAF7F2;
-  --color-cream-dark: #F0EBE3;
-  --color-charcoal: #1A1612;
-  --color-charcoal-light: #2C2419;
-  --color-stone: #6B635A;
-  --color-stone-light: #9A9289;
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Inter", system-ui, sans-serif;
+  /* ----------------------------------------------------------------
+     CASA AURELIA — luxury editorial tokens
+     Deep burgundy, antique brass, warm ivory, aged charcoal.
+     ----------------------------------------------------------------- */
+  --color-wine: #7c2229;
+  --color-wine-deep: #5c191f;
+  --color-wine-dark: #5c191f;
+  --color-wine-light: #a03a45;
+  --color-gold: #b2915a;
+  --color-gold-light: #c8a878;
+  --color-gold-deep: #8f7242;
+  --color-cream: #faf6ee;
+  --color-ivory: #f5efe3;
+  --color-parchment: #efe6d5;
+  --color-cream-dark: #e8ddc9;
+  --color-charcoal: #1a1512;
+  --color-charcoal-light: #2b241d;
+  --color-stone: #6f6458;
+  --color-stone-light: #a3968a;
+
+  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  --shadow-card: 0 1px 2px rgb(26 21 18 / 0.05), 0 12px 32px -20px rgb(26 21 18 / 0.16);
+  --shadow-photo: 0 30px 70px -35px rgb(26 21 18 / 0.5);
+  --shadow-lift: 0 2px 8px rgb(26 21 18 / 0.08), 0 24px 50px -26px rgb(26 21 18 / 0.26);
 }
 
 @layer base {
@@ -23,47 +36,182 @@
 
   body {
     @apply bg-cream text-charcoal-light font-body antialiased;
+    font-feature-settings: "kern", "liga";
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-wine);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 @layer components {
+  /* Layout --------------------------------------------------------------- */
+  .container-site {
+    @apply mx-auto w-full max-w-[86rem] px-5 sm:px-8 lg:px-14;
+  }
+  .container-narrow {
+    @apply mx-auto w-full max-w-3xl px-5 sm:px-8;
+  }
+
+  /* Editorial labels + rules --------------------------------------------- */
+  .label-micro {
+    @apply inline-block font-body text-[11px] font-medium uppercase tracking-[0.28em] text-gold-deep;
+  }
+  .label-micro-light {
+    @apply inline-block font-body text-[11px] font-medium uppercase tracking-[0.28em] text-gold-light;
+  }
+  .label-micro-muted {
+    @apply inline-block font-body text-[11px] font-medium uppercase tracking-[0.28em] text-stone-light;
+  }
+
+  .hairline {
+    @apply h-px w-full bg-charcoal/15;
+  }
+  .hairline-light {
+    @apply h-px w-full bg-cream/15;
+  }
+  .hairline-gold {
+    @apply h-px w-full bg-gold/40;
+  }
+
+  /* Display typography ---------------------------------------------------- */
+  .headline-hero {
+    @apply font-display font-medium leading-[0.98] tracking-[-0.02em]
+      text-[clamp(2.75rem,7vw,6rem)];
+  }
+  .headline-section {
+    @apply font-display font-medium leading-[1.06] tracking-[-0.015em]
+      text-[clamp(1.9rem,3.6vw,3.1rem)] text-charcoal-light;
+  }
+  .headline-page {
+    @apply font-display font-medium leading-[1.02] tracking-[-0.015em]
+      text-[clamp(2.4rem,5vw,4.2rem)] text-cream;
+  }
+  .lead {
+    @apply text-[1.0625rem] leading-[1.8] text-stone;
+  }
+  .lead-light {
+    @apply text-[1.0625rem] leading-[1.8] text-cream/80;
+  }
+
+  /* Buttons ----------------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 px-7 py-3.5 font-body text-[11px] font-medium
+      uppercase tracking-[0.24em] transition-all duration-300
+      active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed;
+  }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-wine text-cream font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-wine-dark focus:outline-none focus:ring-2 focus:ring-wine focus:ring-offset-2 focus:ring-offset-cream disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2.5 px-7 py-3.5 font-body text-[11px] font-medium
+      uppercase tracking-[0.24em] transition-all duration-300
+      active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed
+      bg-wine text-cream hover:bg-wine-deep;
   }
-
+  .btn-primary:focus-visible {
+    @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-cream;
+  }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-charcoal-light text-charcoal-light font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-charcoal-light hover:text-cream focus:outline-none focus:ring-2 focus:ring-charcoal-light focus:ring-offset-2 focus:ring-offset-cream disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2.5 px-7 py-3.5 font-body text-[11px] font-medium
+      uppercase tracking-[0.24em] transition-all duration-300
+      active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed
+      border border-charcoal/45 text-charcoal-light
+      hover:border-charcoal hover:bg-charcoal hover:text-cream;
   }
-
+  .btn-secondary:focus-visible {
+    @apply outline-none ring-2 ring-charcoal ring-offset-2 ring-offset-cream;
+  }
   .btn-secondary-light {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-cream text-cream font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-cream hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-cream focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2.5 px-7 py-3.5 font-body text-[11px] font-medium
+      uppercase tracking-[0.24em] transition-all duration-300
+      active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed
+      border border-cream/60 text-cream
+      hover:border-cream hover:bg-cream hover:text-charcoal;
   }
-
+  .btn-secondary-light:focus-visible {
+    @apply outline-none ring-2 ring-cream ring-offset-2 ring-offset-charcoal;
+  }
   .btn-gold {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-gold text-charcoal font-medium text-sm tracking-wide uppercase transition-all duration-300 hover:bg-gold-light focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2.5 px-7 py-3.5 font-body text-[11px] font-medium
+      uppercase tracking-[0.24em] transition-all duration-300
+      active:translate-y-px disabled:opacity-50 disabled:cursor-not-allowed
+      bg-gold text-charcoal hover:bg-gold-light;
+  }
+  .btn-gold:focus-visible {
+    @apply outline-none ring-2 ring-gold ring-offset-2 ring-offset-cream;
   }
 
-  .section-heading {
-    @apply font-display text-4xl md:text-5xl font-semibold text-charcoal-light tracking-tight;
+  /* Text link with growing underline ----------------------------------------- */
+  .btn-link {
+    @apply relative inline-flex items-center gap-2 font-body text-[11px] font-medium
+      uppercase tracking-[0.24em] transition-colors duration-300;
+  }
+  .btn-link::after {
+    content: "";
+    @apply absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-current
+      transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)];
+  }
+  .group:hover > .btn-link::after,
+  .btn-link:hover::after {
+    @apply scale-x-100;
   }
 
-  .section-subheading {
-    @apply text-gold font-medium text-sm uppercase tracking-[0.2em] mb-3;
-  }
-
+  /* Forms --------------------------------------------------------------------- */
   .input-field {
-    @apply w-full px-4 py-3 bg-white border border-stone-light/40 text-charcoal-light placeholder:text-stone-light focus:outline-none focus:ring-2 focus:ring-wine/30 focus:border-wine transition-colors;
+    @apply w-full rounded-none border-0 border-b border-charcoal/25 bg-transparent
+      px-0.5 py-2.5 text-[0.95rem] text-charcoal-light transition-colors duration-200
+      placeholder:text-stone-light disabled:opacity-50 disabled:cursor-not-allowed;
   }
-
+  .input-field:focus {
+    @apply outline-none border-wine;
+  }
   .label-field {
-    @apply block text-sm font-medium text-charcoal-light mb-1.5;
+    @apply mb-2 block font-body text-[11px] font-medium uppercase tracking-[0.16em] text-stone;
   }
 
+  /* Paper panel (quiet editorial sheet, not a flashy card) -------------------- */
   .card {
-    @apply bg-white border border-cream-dark shadow-sm;
+    @apply border border-charcoal/10 bg-ivory/70;
+  }
+
+  /* Subtle pill for chips/badges (allergens, filters, statuses) --------------- */
+  .pill {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  /* Hidden scrollbar for horizontally scrolling rails (menu categories) ------- */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Interior-page hero (legacy; keep for safety) ------------------------------ */
+  .page-hero {
+    @apply relative overflow-hidden bg-charcoal pt-36 pb-20 text-cream md:pt-44 md:pb-24;
   }
 }

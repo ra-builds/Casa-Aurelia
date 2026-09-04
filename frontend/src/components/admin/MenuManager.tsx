@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { ImageIcon, Pencil, Plus, Star, Trash2 } from 'lucide-react'
 import LoadingSpinner from '../ui/LoadingSpinner'
 import ErrorMessage from '../ui/ErrorMessage'
+import SuccessMessage from '../ui/SuccessMessage'
 import { adminMenuApi } from '../../services/api'
 import { formatPrice } from '../../utils/helpers'
+import { useRestaurant } from '../../contexts/RestaurantContext'
 import type { MenuItem, MenuItemInput, MenuCategory } from '../../types'
 
 const MAX_IMAGE_MB = 5
@@ -24,6 +26,7 @@ const EMPTY_FORM: MenuItemInput = {
 
 export default function MenuManager() {
   const { t } = useTranslation()
+  const { restaurant } = useRestaurant()
   const [categories, setCategories] = useState<MenuCategory[]>([])
   const [items, setItems] = useState<MenuItem[]>([])
   const [allergenCatalog, setAllergenCatalog] = useState<{ code: string; name: string }[]>([])
@@ -206,27 +209,44 @@ export default function MenuManager() {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <h2 className="font-display text-2xl font-semibold">{t('admin.menu.title')}</h2>
-        <button type="button" onClick={openCreate} className="btn-primary flex items-center gap-2">
+        <div>
+          <p className="label-micro">{t('admin.tab.items')}</p>
+          <h2 className="mt-2 font-display text-2xl font-medium text-charcoal-light">{t('admin.menu.title')}</h2>
+        </div>
+        <button type="button" onClick={openCreate} className="btn-gold flex items-center gap-2">
           <Plus size={16} />
           {t('admin.menu.addItem')}
         </button>
       </div>
 
-      {error && <div className="mb-6"><ErrorMessage message={error} /></div>}
+      {error && (
+        <div className="mb-6">
+          <ErrorMessage message={error} />
+          <button
+            type="button"
+            onClick={loadData}
+            className="btn-link mt-3 text-wine"
+          >
+            {t('admin.retry')}
+          </button>
+        </div>
+      )}
       {!error && savedMessage && (
-        <div role="status" className="mb-6 px-4 py-3 bg-green-50 text-green-800 border border-green-200 text-sm">
-          {savedMessage}
+        <div className="mb-6">
+          <SuccessMessage message={savedMessage} />
         </div>
       )}
 
       {formOpen && (
-        <div className="card p-6 mb-8">
-          <h3 className="font-display text-xl font-semibold mb-6">
-            {editingId === null ? t('admin.menu.addItem') : t('admin.menu.editItem')}
-          </h3>
-          {formError && <div className="mb-4"><ErrorMessage message={formError} /></div>}
-          <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-5" noValidate={false}>
+        <div className="card p-6 md:p-8 mb-8">
+          <div className="flex items-center gap-5">
+            <span className="h-px w-10 bg-gold/60" aria-hidden="true" />
+            <h3 className="font-display text-xl font-medium text-charcoal-light">
+              {editingId === null ? t('admin.menu.addItem') : t('admin.menu.editItem')}
+            </h3>
+          </div>
+          {formError && <div className="mt-5 mb-4"><ErrorMessage message={formError} /></div>}
+          <form onSubmit={handleSubmit} className="mt-6 grid md:grid-cols-2 gap-5" noValidate={false}>
             <div>
               <label htmlFor="menu-name" className="label-field">{t('admin.menu.name')}</label>
               <input
@@ -286,7 +306,7 @@ export default function MenuManager() {
                 value={form.dietary_info ?? ''}
                 onChange={(e) => setForm({ ...form, dietary_info: e.target.value.trim() || null })}
                 className="input-field"
-                placeholder="Vegetarian, Gluten-Free, Vegan…"
+                placeholder={t('admin.menu.dietaryPlaceholder')}
                 maxLength={100}
               />
             </div>
@@ -320,14 +340,14 @@ export default function MenuManager() {
                 {t('admin.menu.featured')}
               </label>
             </div>
-            <div className="md:col-span-2 pt-2 border-t border-cream-dark">
+            <div className="md:col-span-2 pt-4 border-t border-charcoal/10">
               <span className="label-field">{t('admin.menu.image')}</span>
               <div className="flex flex-wrap items-center gap-4">
                 {imagePreview ? (
                   <img
                     src={imagePreview}
                     alt={form.name || t('admin.menu.image')}
-                    className="h-24 w-24 rounded-md object-cover border border-cream-dark"
+                    className="h-24 w-24 rounded-md object-cover border border-charcoal/15"
                   />
                 ) : (
                   <div className="h-24 w-24 rounded-md border border-dashed border-stone-light/50 flex flex-col items-center justify-center gap-1 text-stone-light" aria-hidden="true">
@@ -352,7 +372,7 @@ export default function MenuManager() {
                       type="button"
                       onClick={handleRemoveImage}
                       disabled={saving || removingImage}
-                      className="text-sm text-red-600 hover:text-red-700 disabled:opacity-50 text-left"
+                      className="text-sm text-rose-600 hover:text-rose-700 disabled:opacity-50 text-left"
                     >
                       {t('admin.menu.removeImage')}
                     </button>
@@ -360,7 +380,7 @@ export default function MenuManager() {
                 </div>
               </div>
             </div>
-            <div className="md:col-span-2 pt-2 border-t border-cream-dark">
+            <div className="md:col-span-2 pt-4 border-t border-charcoal/10">
               <span className="label-field">{t('admin.menu.allergens')}</span>
               {allergenCatalog.length === 0 ? (
                 <p className="text-sm text-stone">{t('admin.menu.empty')}</p>
@@ -380,7 +400,7 @@ export default function MenuManager() {
                 </div>
               )}
             </div>
-            <div className="md:col-span-2 flex gap-3 pt-2 border-t border-cream-dark">
+            <div className="md:col-span-2 flex gap-3 pt-4 border-t border-charcoal/10">
               <button type="submit" className="btn-primary" disabled={saving}>
                 {saving ? t('admin.menu.saving') : t('admin.menu.save')}
               </button>
@@ -396,9 +416,9 @@ export default function MenuManager() {
         <div className="card p-12 text-center text-stone">{t('admin.menu.empty')}</div>
       ) : (
         <div className="card overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[720px] text-sm">
             <thead>
-              <tr className="border-b border-cream-dark text-left">
+              <tr className="border-b border-charcoal/10 text-left">
                 <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.menu.name')}</th>
                 <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.menu.category')}</th>
                 <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.menu.price')}</th>
@@ -411,7 +431,7 @@ export default function MenuManager() {
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr key={item.id} className={`border-b border-cream-dark/50 hover:bg-cream/50 ${item.is_available ? '' : 'opacity-60'}`}>
+                <tr key={item.id} className={`border-b border-charcoal/5 hover:bg-ivory/50 ${item.is_available ? '' : 'opacity-60'}`}>
                   <td className="p-4">
                     <div className="flex items-center gap-3">
                       {item.image_url && (
@@ -431,10 +451,10 @@ export default function MenuManager() {
                     </div>
                   </td>
                   <td className="p-4 whitespace-nowrap">{item.category?.name ?? `#${item.category_id}`}</td>
-                  <td className="p-4 whitespace-nowrap">{formatPrice(item.price, 'EUR')}</td>
+                  <td className="p-4 whitespace-nowrap">{formatPrice(item.price, restaurant?.currency)}</td>
                   <td className="p-4 hidden md:table-cell">
                     {item.dietary_info ? (
-                      <span className="text-xs uppercase tracking-wider text-gold border border-gold/30 px-2 py-0.5">
+                      <span className="pill border border-gold/40 text-gold-deep uppercase tracking-wider">
                         {item.dietary_info}
                       </span>
                     ) : '—'}
@@ -446,7 +466,8 @@ export default function MenuManager() {
                       disabled={actionLoading === item.id}
                       aria-pressed={item.is_featured}
                       title={t('admin.menu.featured')}
-                      className={`p-1.5 rounded transition-colors ${item.is_featured ? 'text-gold' : 'text-stone-light hover:text-gold'}`}
+                      aria-label={t('admin.menu.toggleFeatured', { name: item.name })}
+                      className={`p-2 rounded-md transition-colors ${item.is_featured ? 'text-gold' : 'text-stone-light hover:text-gold'}`}
                     >
                       <Star size={16} className={item.is_featured ? 'fill-gold' : ''} />
                     </button>
@@ -457,8 +478,11 @@ export default function MenuManager() {
                       onClick={() => handleToggle(item, 'is_available')}
                       disabled={actionLoading === item.id}
                       aria-pressed={item.is_available}
-                      className={`px-2 py-1 text-xs uppercase tracking-wider rounded-full transition-colors ${
-                        item.is_available ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'
+                      aria-label={item.is_available ? t('admin.menu.makeUnavailable', { name: item.name }) : t('admin.menu.makeAvailable', { name: item.name })}
+                      className={`pill uppercase tracking-wider border transition-colors ${
+                        item.is_available
+                          ? 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                          : 'border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100'
                       }`}
                     >
                       {item.is_available ? t('admin.menu.available') : t('menu.unavailable')}
@@ -471,8 +495,9 @@ export default function MenuManager() {
                         type="button"
                         onClick={() => openEdit(item)}
                         disabled={actionLoading === item.id}
-                        className="p-1.5 text-stone hover:bg-cream-dark hover:text-charcoal rounded transition-colors"
+                        className="p-2 text-stone hover:bg-charcoal/10 hover:text-charcoal rounded-md transition-colors"
                         title={t('admin.menu.edit')}
+                        aria-label={t('admin.menu.editItemFor', { name: item.name })}
                       >
                         <Pencil size={16} />
                       </button>
@@ -480,8 +505,9 @@ export default function MenuManager() {
                         type="button"
                         onClick={() => handleDelete(item)}
                         disabled={actionLoading === item.id}
-                        className="p-1.5 text-stone hover:bg-red-50 hover:text-red-600 rounded transition-colors"
+                        className="p-2 text-stone hover:bg-rose-50 hover:text-rose-600 rounded-md transition-colors"
                         title={t('admin.menu.delete')}
+                        aria-label={t('admin.menu.deleteItemFor', { name: item.name })}
                       >
                         <Trash2 size={16} />
                       </button>

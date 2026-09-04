@@ -11,14 +11,22 @@ const LANGUAGE_DISPLAY_NAMES: Record<string, string> = {
   es: 'Español',
 }
 
-export default function LanguageSelector() {
-  const { i18n } = useTranslation()
+interface Props {
+  tone?: 'cream' | 'charcoal'
+}
+
+export default function LanguageSelector({ tone = 'cream' }: Props) {
+  const { t, i18n } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
   const currentLang = i18n.language
+  const triggerColor =
+    tone === 'cream'
+      ? 'text-cream/80 hover:text-cream'
+      : 'text-charcoal/70 hover:text-charcoal'
 
   const close = useCallback(() => {
     setIsOpen(false)
@@ -103,8 +111,8 @@ export default function LanguageSelector() {
         onKeyDown={handleButtonKeyDown}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        aria-label="Select language"
-        className="flex items-center gap-1.5 text-sm text-cream/80 hover:text-cream transition-colors py-1"
+        aria-label={t('language.selectLabel')}
+        className={`flex items-center gap-1.5 text-sm transition-colors py-1 ${triggerColor}`}
       >
         <Globe size={16} aria-hidden="true" />
         <span className="uppercase tracking-wider">
@@ -121,7 +129,7 @@ export default function LanguageSelector() {
         <ul
           ref={listRef}
           role="listbox"
-          aria-label="Available languages"
+          aria-label={t('language.availableLabel')}
           className="absolute right-0 mt-2 w-40 bg-charcoal border border-charcoal-light/30 shadow-lg z-50 py-1"
         >
           {SUPPORTED_LANGUAGES.map((lng, index) => (

@@ -8,7 +8,10 @@ export default function ErrorMessage({ message }: Props) {
   const { t } = useTranslation()
 
   return (
-    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm" role="alert">
+    <div
+      role="alert"
+      className="border-l-2 border-wine bg-wine/5 px-5 py-3.5 text-sm text-wine-deep"
+    >
       {message || t('common.defaultError')}
     </div>
   )

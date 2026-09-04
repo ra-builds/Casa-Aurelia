@@ -3,12 +3,15 @@ import secrets
 from datetime import date, datetime, time, timezone
 
 from sqlalchemy import func, insert, literal, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.models.reservation import Reservation
 from app.models.restaurant import Restaurant
 from app.schemas.reservation import ReservationCreate, ReservationLookup, ReservationStats, ReservationUpdate
+from app.services import email_service
+from app.services import closure_service
 from app.services.restaurant_service import get_capacity, get_restaurant
 
 logger = logging.getLogger(__name__)
@@ -38,6 +41,22 @@ def generate_reference_code() -> str:
     return f"CASA-{secrets.token_hex(3).upper()}"
 
 
+# Bounded re-attempts when a freshly generated reference code collides with an
+# existing reservation (the reference_code column is UNIQUE). Collisions are
+# astronomically rare with 6 hex chars, but without a retry an identical code
+# would surface as an unhandled IntegrityError -> 500 instead of recovering.
+MAX_REFERENCE_CODE_ATTEMPTS = 3
+
+
+class AlreadyCancelledError(ValueError):
+    """Raised when a customer tries to cancel a reservation already cancelled.
+
+    Subclasses ValueError so existing `except ValueError` handlers still
+    work, but the router can distinguish this state conflict from a genuinely
+    missing reservation (which stays a 404).
+    """
+
+
 def get_booked_guests(db: Session, reservation_date: date, reservation_time: str) -> int:
     parsed_time = _parse_time(reservation_time)
     result = (
@@ -54,12 +73,32 @@ def get_booked_guests(db: Session, reservation_date: date, reservation_time: str
 
 
 def check_availability(db: Session, reservation_date: date, reservation_time: str, guests: int) -> dict:
+    # A date strictly before server-local today can never be reserved: the
+    # create endpoint rejects it (schemas.validate_date_not_past -> 422). Report
+    # it as unavailable so the availability contract never contradicts what can
+    # actually be booked. Uses the same server-local `date.today()` boundary.
+    if reservation_date < date.today():
+        return {
+            "available": False,
+            "remaining_capacity": 0,
+            "message": "Reservations cannot be made for a past date.",
+        }
+
     restaurant = get_restaurant(db)
     if restaurant and is_closed_day(reservation_date, restaurant.closed_day):
         return {
             "available": False,
             "remaining_capacity": 0,
             "message": f"Restaurant is closed on {restaurant.closed_day}s.",
+        }
+
+    # Holiday / blackout closure: an explicitly configured one-off closed date
+    # (see Closure model). Reported as unavailable regardless of the weekday.
+    if closure_service.is_closed_date(db, reservation_date):
+        return {
+            "available": False,
+            "remaining_capacity": 0,
+            "message": "Restaurant is closed on this date.",
         }
 
     booked = get_booked_guests(db, reservation_date, reservation_time)
@@ -138,97 +177,130 @@ def create_reservation(db: Session, data: ReservationCreate) -> Reservation:
     if restaurant and is_closed_day(data.reservation_date, restaurant.closed_day):
         raise ValueError(f"Reservations are not accepted on {restaurant.closed_day}s.")
 
+    if closure_service.is_closed_date(db, data.reservation_date):
+        raise ValueError("Reservations are not accepted on this date (restaurant closed).")
+
     if check_duplicate_reservation(db, data.email, data.reservation_date, data.reservation_time):
         raise ValueError("You already have a reservation for this date and time.")
 
     parsed_time = _parse_time(data.reservation_time)
-    now = datetime.now(timezone.utc)
-    reservation = Reservation(
-        reference_code=generate_reference_code(),
-        first_name=data.first_name.strip(),
-        last_name=data.last_name.strip(),
-        email=data.email.lower(),
-        phone=data.phone,
-        reservation_date=data.reservation_date,
-        reservation_time=parsed_time,
-        guests=data.guests,
-        special_requests=data.special_requests,
-        status="pending",
-    )
 
-    # Genuinely atomic capacity reservation.
-    #
-    # The Phase 7D implementation used a SAVEPOINT (begin_nested) around an
-    # UNLOCKED SELECT-then-INSERT. A SAVEPOINT only guarantees atomic rollback,
-    # not isolation from concurrent writers, so two concurrent requests could
-    # both read the same "booked" count and both pass the capacity check,
-    # oversubscribing the restaurant.
-    #
-    # Instead we perform a single INSERT ... SELECT ... WHERE (capacity_ok) so
-    # that the capacity check and the insertion are ONE write statement.
-    # SQLite (WAL) serializes writers: the second concurrent statement only
-    # runs after the first commits, at which point its re-read of the active
-    # guest sum observes the committed rows, so the WHERE evaluates false and
-    # exactly one request succeeds. This requires no schema change and is also
-    # portable to PostgreSQL (the same single-statement semantics hold there).
-    #
-    # Phase 8D: the WHERE clause additionally requires that NO active (non-
-    # cancelled, non-deleted) reservation already exists for this email + date +
-    # time (_duplicate_ok_condition). Under the same WAL single-writer
-    # serialization, two concurrent identical requests serialize; the second
-    # re-reads the first's committed row, the duplicate guard fails, and it
-    # inserts 0 rows. This closes the concurrent-duplicate race without a unique
-    # index / migration, while deliberately not blocking re-bookings after a
-    # cancellation or soft-delete.
-    capacity_src = select(
-        literal(reservation.reference_code).label("reference_code"),
-        literal(reservation.first_name).label("first_name"),
-        literal(reservation.last_name).label("last_name"),
-        literal(reservation.email).label("email"),
-        literal(reservation.phone).label("phone"),
-        literal(reservation.reservation_date).label("reservation_date"),
-        literal(reservation.reservation_time).label("reservation_time"),
-        literal(reservation.guests).label("guests"),
-        literal(reservation.special_requests).label("special_requests"),
-        literal(reservation.status).label("status"),
-        literal(now).label("created_at"),
-        literal(now).label("updated_at"),
-        literal(None).label("deleted_at"),
-    ).where(
-        _capacity_ok_condition(data.reservation_date, parsed_time, data.guests),
-        _duplicate_ok_condition(data.email.lower(), data.reservation_date, parsed_time),
-    )
+    # The reference_code column is UNIQUE. Reference codes are short (6 hex
+    # chars), so a freshly generated code can, in principle, collide with an
+    # existing reservation. Without recovery a collision surfaces as an
+    # unhandled IntegrityError -> 500. We therefore retry a bounded number of
+    # times with a fresh code. Regenerating the code only affects this
+    # reservation's own identifier: each attempt still runs the same atomic
+    # INSERT ... SELECT ... WHERE (capacity_ok AND duplicate_ok) guard, so the
+    # capacity and duplicate invariants are preserved unchanged.
+    reservation = None
+    for _ in range(MAX_REFERENCE_CODE_ATTEMPTS):
+        now = datetime.now(timezone.utc)
+        reservation = Reservation(
+            reference_code=generate_reference_code(),
+            first_name=data.first_name.strip(),
+            last_name=data.last_name.strip(),
+            email=data.email.lower(),
+            phone=data.phone,
+            reservation_date=data.reservation_date,
+            reservation_time=parsed_time,
+            guests=data.guests,
+            special_requests=data.special_requests,
+            status="pending",
+        )
 
-    stmt = insert(Reservation.__table__).from_select(
-        [
-            Reservation.reference_code,
-            Reservation.first_name,
-            Reservation.last_name,
-            Reservation.email,
-            Reservation.phone,
-            Reservation.reservation_date,
-            Reservation.reservation_time,
-            Reservation.guests,
-            Reservation.special_requests,
-            Reservation.status,
-            Reservation.created_at,
-            Reservation.updated_at,
-            Reservation.deleted_at,
-        ],
-        capacity_src,
-    )
+        # Genuinely atomic capacity reservation.
+        #
+        # The Phase 7D implementation used a SAVEPOINT (begin_nested) around an
+        # UNLOCKED SELECT-then-INSERT. A SAVEPOINT only guarantees atomic
+        # rollback, not isolation from concurrent writers, so two concurrent
+        # requests could both read the same "booked" count and both pass the
+        # capacity check, oversubscribing the restaurant.
+        #
+        # Instead we perform a single INSERT ... SELECT ... WHERE (capacity_ok)
+        # so that the capacity check and the insertion are ONE write statement.
+        # SQLite (WAL) serializes writers: the second concurrent statement only
+        # runs after the first commits, at which point its re-read of the active
+        # guest sum observes the committed rows, so the WHERE evaluates false
+        # and exactly one request succeeds. This requires no schema change and
+        # is also portable to PostgreSQL (the same single-statement semantics
+        # hold there).
+        #
+        # Phase 8D: the WHERE clause additionally requires that NO active (non-
+        # cancelled, non-deleted) reservation already exists for this email +
+        # date + time (_duplicate_ok_condition). Under the same WAL single-
+        # writer serialization, two concurrent identical requests serialize; the
+        # second re-reads the first's committed row, the duplicate guard fails,
+        # and it inserts 0 rows. This closes the concurrent-duplicate race
+        # without a unique index / migration, while deliberately not blocking
+        # re-bookings after a cancellation or soft-delete.
+        capacity_src = select(
+            literal(reservation.reference_code).label("reference_code"),
+            literal(reservation.first_name).label("first_name"),
+            literal(reservation.last_name).label("last_name"),
+            literal(reservation.email).label("email"),
+            literal(reservation.phone).label("phone"),
+            literal(reservation.reservation_date).label("reservation_date"),
+            literal(reservation.reservation_time).label("reservation_time"),
+            literal(reservation.guests).label("guests"),
+            literal(reservation.special_requests).label("special_requests"),
+            literal(reservation.status).label("status"),
+            literal(now).label("created_at"),
+            literal(now).label("updated_at"),
+            literal(None).label("deleted_at"),
+        ).where(
+            _capacity_ok_condition(data.reservation_date, parsed_time, data.guests),
+            _duplicate_ok_condition(data.email.lower(), data.reservation_date, parsed_time),
+        )
 
-    result = db.execute(stmt)
-    if result.rowcount == 0:
-        # The atomic guard rejected the insert (capacity race). Distinguish the
-        # reason for a user-safe message, re-checking the committed state.
-        if check_duplicate_reservation(db, data.email, data.reservation_date, data.reservation_time):
-            raise ValueError("You already have a reservation for this date and time.")
-        booked = get_booked_guests(db, data.reservation_date, data.reservation_time)
-        capacity = get_capacity(db)
-        raise ValueError(f"Only {max(capacity - booked, 0)} seats remaining. Please choose another time.")
+        stmt = insert(Reservation.__table__).from_select(
+            [
+                Reservation.reference_code,
+                Reservation.first_name,
+                Reservation.last_name,
+                Reservation.email,
+                Reservation.phone,
+                Reservation.reservation_date,
+                Reservation.reservation_time,
+                Reservation.guests,
+                Reservation.special_requests,
+                Reservation.status,
+                Reservation.created_at,
+                Reservation.updated_at,
+                Reservation.deleted_at,
+            ],
+            capacity_src,
+        )
 
-    db.commit()
+        try:
+            result = db.execute(stmt)
+            if result.rowcount == 0:
+                # The atomic guard rejected the insert (capacity race).
+                # Distinguish the reason for a user-safe message, re-checking
+                # the committed state.
+                if check_duplicate_reservation(db, data.email, data.reservation_date, data.reservation_time):
+                    raise ValueError("You already have a reservation for this date and time.")
+                booked = get_booked_guests(db, data.reservation_date, data.reservation_time)
+                capacity = get_capacity(db)
+                raise ValueError(f"Only {max(capacity - booked, 0)} seats remaining. Please choose another time.")
+
+            db.commit()
+            break
+        except IntegrityError:
+            # A reference_code collision: SQLite raises the UNIQUE violation
+            # when the conflicting INSERT executes. Roll back so the session is
+            # usable, then retry the same atomic insert with a fresh code. All
+            # other unique/integrity violations on this insert path are
+            # reference_code collisions (capacity/duplicate are enforced by the
+            # WHERE clause, not constraints).
+            db.rollback()
+            reservation = None
+
+    if reservation is None:
+        raise RuntimeError(
+            f"Could not allocate a unique reservation reference code after "
+            f"{MAX_REFERENCE_CODE_ATTEMPTS} attempts. Please try again."
+        )
 
     reservation = (
         db.query(Reservation)
@@ -237,12 +309,55 @@ def create_reservation(db: Session, data: ReservationCreate) -> Reservation:
     )
 
     logger.info(
-        "Confirmation email (mock) sent to %s for reservation %s",
-        reservation.email,
+        "Reservation %s created for %s at %s",
         reservation.reference_code,
+        reservation.email,
+        _format_time(reservation.reservation_time),
     )
 
+    # Communication-layer (post-roadmap): deliver a real confirmation email to
+    # the guest and a notification to the owner. Both are best-effort: a send
+    # failure must never roll back or fail the reservation. The outcome is
+    # recorded on the object as a transient attribute (not a DB column) so the
+    # response can report delivery honestly. The confirmation email goes to the
+    # guest; the owner notification relies on the email service's recipients
+    # (configured list falling back to the restaurant address).
+    _send_reservation_emails(reservation, restaurant)
+
     return reservation
+
+
+def _send_reservation_emails(reservation: Reservation, restaurant: Restaurant | None) -> None:
+    """Best-effort reservation confirmation + owner notification emails.
+
+    Records both outcomes on the reservation object as transient attributes read
+    by ``reservation_to_response``. Never raises.
+    """
+    restaurant_name = restaurant.name if restaurant else None
+
+    guest_email_result = email_service.send_reservation_confirmation_email(
+        to=reservation.email,
+        reference_code=reservation.reference_code,
+        first_name=reservation.first_name,
+        reservation_date=str(reservation.reservation_date),
+        reservation_time=_format_time(reservation.reservation_time),
+        guests=reservation.guests,
+        restaurant_name=restaurant_name or "Casa Aurelia",
+    )
+
+    email_service.send_owner_reservation_notification(
+        first_name=reservation.first_name,
+        last_name=reservation.last_name,
+        guest_email=reservation.email,
+        reference_code=reservation.reference_code,
+        reservation_date=str(reservation.reservation_date),
+        reservation_time=_format_time(reservation.reservation_time),
+        guests=reservation.guests,
+        restaurant_email=restaurant.email if restaurant else None,
+    )
+
+    reservation._email_sent = guest_email_result.success
+    reservation._email_reason = guest_email_result.reason if not guest_email_result.success else None
 
 
 def lookup_reservation(db: Session, reference_code: str, email: str) -> Reservation | None:
@@ -264,7 +379,7 @@ def customer_cancel_reservation(db: Session, reference_code: str, email: str) ->
     if not reservation:
         raise ValueError("Reservation not found. Please check your reference code and email.")
     if reservation.status == "cancelled":
-        raise ValueError("This reservation has already been cancelled.")
+        raise AlreadyCancelledError("This reservation has already been cancelled.")
     reservation.status = "cancelled"
     reservation.updated_at = datetime.now(timezone.utc)
     db.commit()
@@ -290,6 +405,9 @@ def check_duplicate_reservation(db: Session, email: str, reservation_date: date,
 
 
 def reservation_to_response(reservation: Reservation) -> dict:
+    # email_sent/email_reason are only populated transiently on the creation
+    # path; listings and lookups default to not-sent (there is no per-request
+    # email side-effect to report there).
     return {
         "id": reservation.id,
         "reference_code": reservation.reference_code,
@@ -304,6 +422,8 @@ def reservation_to_response(reservation: Reservation) -> dict:
         "status": reservation.status,
         "created_at": reservation.created_at,
         "updated_at": reservation.updated_at,
+        "email_sent": bool(getattr(reservation, "_email_sent", False)),
+        "email_reason": getattr(reservation, "_email_reason", None),
     }
 
 
@@ -345,6 +465,43 @@ def get_reservations(
 
 def update_reservation(db: Session, reservation: Reservation, data: ReservationUpdate) -> Reservation:
     if data.status is not None:
+        # Reactivating a cancelled reservation puts it back into the active,
+        # capacity-consuming set. Every other booking path (create, concurrency,
+        # availability) enforces the capacity and duplicate invariants; this
+        # admin transition originally enforced neither, so cancel -> rebook ->
+        # reactivate could both oversubscribe the restaurant AND / or create a
+        # second active reservation for the same email+date+time. Enforce both
+        # guards here. The cancelled row being reactivated is excluded from both
+        # checks (check_duplicate_reservation and get_booked_guests filter
+        # status != "cancelled"), so they only account for the OTHER active
+        # reservations at this date/time.
+        if reservation.status == "cancelled" and data.status in ("pending", "confirmed"):
+            if check_duplicate_reservation(
+                db,
+                reservation.email,
+                reservation.reservation_date,
+                _format_time(reservation.reservation_time),
+            ):
+                raise ValueError("You already have a reservation for this date and time.")
+            # The cancelled row is excluded from this count, so `booked` is the
+            # total of the OTHER active (non-cancelled, non-deleted) guests at
+            # this date/time; the reservation's own guests are added on top.
+            booked = (
+                db.query(func.coalesce(func.sum(Reservation.guests), 0))
+                .filter(
+                    Reservation.reservation_date == reservation.reservation_date,
+                    Reservation.reservation_time == reservation.reservation_time,
+                    Reservation.status != "cancelled",
+                    Reservation.deleted_at.is_(None),
+                )
+                .scalar()
+                or 0
+            )
+            capacity = get_capacity(db)
+            if reservation.guests > capacity - booked:
+                raise ValueError(
+                    f"Only {max(capacity - booked, 0)} seats remaining. Please choose another time."
+                )
         reservation.status = data.status
     if data.special_requests is not None:
         reservation.special_requests = data.special_requests
@@ -364,9 +521,22 @@ def get_stats(db: Session) -> ReservationStats:
     base_query = db.query(Reservation).filter(Reservation.deleted_at.is_(None))
     today = date.today()
     total = base_query.count()
-    today_reservations = base_query.filter(Reservation.reservation_date == today).all()
-    today_count = len(today_reservations)
-    today_guests = sum(r.guests for r in today_reservations if r.status != "cancelled")
+    # Aggregates are computed in SQL rather than materializing today's rows into
+    # Python, so the cost stays constant as reservation volume grows. Semantics
+    # are identical to the previous in-memory loop: today_count counts every
+    # non-deleted reservation dated today, while today_guests sums only the
+    # non-cancelled ones.
+    today_guests = (
+        db.query(func.coalesce(func.sum(Reservation.guests), 0))
+        .filter(
+            Reservation.deleted_at.is_(None),
+            Reservation.reservation_date == today,
+            Reservation.status != "cancelled",
+        )
+        .scalar()
+        or 0
+    )
+    today_count = base_query.filter(Reservation.reservation_date == today).count()
     upcoming = (
         base_query
         .filter(Reservation.reservation_date >= today, Reservation.status != "cancelled")

@@ -1,45 +1,45 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import SectionHeading from '../ui/SectionHeading'
+import Container from '../ui/Container'
+import Reveal from '../ui/Reveal'
+import ImageReveal from '../ui/ImageReveal'
 import { IMAGES } from '../../utils/constants'
 
 export default function RestaurantIntroSection() {
   const { t } = useTranslation()
 
   return (
-    <section className="py-20 md:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section className="py-24 md:py-36">
+      <Container>
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
           <div>
-            <SectionHeading
-              title={t('home.intro.title')}
-              subtitle={t('home.intro.subtitle')}
-              centered={false}
-            />
-            <p className="mt-6 text-stone leading-relaxed">
-              {t('home.intro.paragraph1')}
-            </p>
-            <p className="mt-4 text-stone leading-relaxed">
-              {t('home.intro.paragraph2')}
-            </p>
-            <Link
-              to="/about"
-              className="inline-block mt-8 text-wine font-medium text-sm uppercase tracking-wider hover:text-wine-dark transition-colors"
-            >
-              {t('home.intro.ourStory')}
-            </Link>
+            <Reveal>
+              <p className="label-micro">{t('home.intro.subtitle')}</p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h2 className="headline-section mt-4">{t('home.intro.title')}</h2>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="lead mt-7">{t('home.intro.paragraph1')}</p>
+            </Reveal>
+            <Reveal delay={0.22}>
+              <p className="lead mt-5">{t('home.intro.paragraph2')}</p>
+            </Reveal>
+            <Reveal delay={0.28}>
+              <Link to="/about" className="btn-link mt-10 text-wine">
+                {t('home.intro.ourStory')} <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </Reveal>
           </div>
-          <div className="relative">
-            <img
+          <Reveal delay={0.1} className="lg:ml-auto">
+            <ImageReveal
               src={IMAGES.intro}
               alt={t('home.intro.imageAlt')}
-              className="w-full h-[400px] md:h-[500px] object-cover shadow-xl"
-              loading="lazy"
+              aspect="aspect-[4/5] lg:w-[70vw] lg:max-w-[34rem]"
             />
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 border-2 border-gold hidden md:block" />
-          </div>
+          </Reveal>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

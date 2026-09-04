@@ -1,5 +1,7 @@
 import { useTranslation } from 'react-i18next'
-import { MapPin, Clock } from 'lucide-react'
+import { MapPin, Clock, Phone } from 'lucide-react'
+import Container from '../ui/Container'
+import Reveal from '../ui/Reveal'
 import type { Restaurant } from '../../types'
 
 interface Props {
@@ -28,46 +30,55 @@ export default function HoursLocationSection({ restaurant }: Props) {
   const telHref = `tel:${restaurant?.phone.replace(/[^\d+]/g, '') ?? ''}`
 
   return (
-    <section className="py-20 bg-cream-dark">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12">
-          <div className="card p-8 md:p-10">
-            <div className="flex items-center gap-3 mb-6">
-              <Clock className="text-wine" size={24} aria-hidden="true" />
-              <h3 className="font-display text-2xl font-semibold">{t('home.hours.title')}</h3>
+    <section className="bg-cream-dark py-24 md:py-32">
+      <Container>
+        <div className="grid gap-10 md:grid-cols-2">
+          <Reveal>
+            <div className="card h-full p-10 md:p-12">
+              <div className="flex items-center gap-4">
+                <Clock size={20} className="text-gold" aria-hidden="true" />
+                <p className="label-micro">{t('home.hours.title')}</p>
+              </div>
+              <dl className="mt-8 divide-y divide-charcoal/10">
+                <div className="flex items-baseline justify-between gap-6 py-4">
+                  <dt className="text-sm text-stone">{t('home.hours.lunch')}</dt>
+                  <dd className="whitespace-nowrap font-display text-lg text-charcoal-light">
+                    {restaurant?.lunch_hours ?? ''}
+                  </dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-6 py-4">
+                  <dt className="text-sm text-stone">{t('home.hours.dinner')}</dt>
+                  <dd className="whitespace-nowrap font-display text-lg text-charcoal-light">
+                    {restaurant?.dinner_hours ?? ''}
+                  </dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-6 py-4">
+                  <dt className="text-sm text-stone">{t('home.hours.closed')}</dt>
+                  <dd className="whitespace-nowrap font-display text-lg text-wine">{closedDayLabel}</dd>
+                </div>
+              </dl>
             </div>
-            <dl className="space-y-3 text-stone">
-              <div className="flex justify-between">
-                <dt>{t('home.hours.lunch')}</dt>
-                <dd className="font-medium text-charcoal-light">{restaurant?.lunch_hours ?? ''}</dd>
+          </Reveal>
+
+          <Reveal delay={0.12}>
+            <div className="card flex h-full flex-col p-10 md:p-12">
+              <div className="flex items-center gap-4">
+                <MapPin size={20} className="text-gold" aria-hidden="true" />
+                <p className="label-micro">{t('home.location.title')}</p>
               </div>
-              <div className="flex justify-between">
-                <dt>{t('home.hours.dinner')}</dt>
-                <dd className="font-medium text-charcoal-light">{restaurant?.dinner_hours ?? ''}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt>{t('home.hours.closed')}</dt>
-                <dd className="font-medium text-charcoal-light">{closedDayLabel}</dd>
-              </div>
-            </dl>
-          </div>
-          <div className="card p-8 md:p-10">
-            <div className="flex items-center gap-3 mb-6">
-              <MapPin className="text-wine" size={24} aria-hidden="true" />
-              <h3 className="font-display text-2xl font-semibold">{t('home.location.title')}</h3>
-            </div>
-            <p className="text-stone leading-relaxed">{restaurant?.address ?? ''}</p>
-            <p className="mt-4 text-stone">
-              <a href={telHref} className="hover:text-wine transition-colors">
-                {restaurant?.phone ?? ''}
+              <p className="lead mt-8">{restaurant?.address ?? ''}</p>
+              <a href={telHref} className="btn-link mt-6 text-wine">
+                <Phone size={14} aria-hidden="true" /> {restaurant?.phone ?? ''}
               </a>
-            </p>
-            <div className="mt-6 h-48 bg-stone-light/20 flex items-center justify-center text-stone text-sm">
-              {t('home.location.mapLabel')}
+              <div className="mt-auto pt-9">
+                <div className="flex h-40 items-center justify-center border border-charcoal/10 bg-parchment/60 text-sm text-stone-light">
+                  {t('home.location.mapLabel')}
+                </div>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

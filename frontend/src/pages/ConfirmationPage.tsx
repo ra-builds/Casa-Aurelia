@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { CheckCircle, CalendarPlus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Button from '../components/ui/Button'
-import { usePageTitle } from '../hooks/usePageTitle'
+import { usePageSeo } from '../hooks/usePageTitle'
 import { useRestaurant } from '../contexts/RestaurantContext'
+import { SITE_CONFIG } from '../config/site'
 import { formatDate, generateCalendarLink } from '../utils/helpers'
 import type { Reservation } from '../types'
 
 export default function ConfirmationPage() {
-  usePageTitle('pageTitles.confirmation')
+  usePageSeo({ titleKey: 'pageTitles.confirmation', noindex: true })
 
   const location = useLocation()
   const { t } = useTranslation()
@@ -21,7 +22,7 @@ export default function ConfirmationPage() {
   }
 
   const calendarLink = generateCalendarLink(
-    t('confirmation.calendarTitle', { name: restaurant?.name ?? 'Casa Aurelia' }),
+    t('confirmation.calendarTitle', { name: restaurant?.name ?? SITE_CONFIG.brandName }),
     reservation.reservation_date,
     reservation.reservation_time,
     t('confirmation.calendarDescription', { code: reservation.reference_code, guests: reservation.guests }),
@@ -29,51 +30,51 @@ export default function ConfirmationPage() {
   )
 
   return (
-    <section className="min-h-screen pt-32 pb-20 flex items-center">
-      <div className="max-w-lg mx-auto px-4 sm:px-6 text-center">
+    <section className="min-h-screen px-5 pb-24 pt-36 flex items-center md:pt-44">
+      <div className="mx-auto max-w-lg text-center sm:px-6">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <CheckCircle size={64} className="text-wine mx-auto mb-6" />
-          <h1 className="font-display text-4xl md:text-5xl font-semibold mb-4">
-            {t('confirmation.title')}
+          <span className="inline-flex h-20 w-20 items-center justify-center rounded-full border border-gold/50 bg-ivory/70">
+            <CheckCircle size={40} className="text-gold" aria-hidden="true" />
+          </span>
+          <h1 className="mt-8 font-display font-medium leading-[1.05] tracking-[-0.015em] text-[clamp(2.4rem,5vw,3.8rem)] text-charcoal-light">
+            {t('confirmation.headline')}
           </h1>
-          <p className="text-stone mb-10">
-            {t('confirmation.message')}
+          <p className="mt-5 text-stone">
+            {reservation.email_sent
+              ? t('confirmation.messageEmailSent')
+              : t('confirmation.messageNoEmail')}
           </p>
 
-          <div className="card p-8 text-left space-y-4 mb-10">
-            <div className="text-center pb-4 border-b border-cream-dark">
-              <p className="text-xs uppercase tracking-widest text-stone mb-1">{t('confirmation.reference')}</p>
-              <p className="font-display text-2xl font-semibold text-wine">
-                {reservation.reference_code}
-              </p>
+          <div className="card mt-10 p-8 text-left">
+            <div className="border-b border-charcoal/10 pb-5 text-center">
+              <p className="mb-1 text-xs uppercase tracking-[0.2em] text-stone">{t('confirmation.reference')}</p>
+              <p className="font-display text-2xl font-semibold text-wine">{reservation.reference_code}</p>
             </div>
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="mt-6 grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-stone text-xs uppercase tracking-wider">{t('confirmation.guest')}</p>
-                <p className="font-medium mt-1">
-                  {reservation.first_name} {reservation.last_name}
-                </p>
+                <p className="text-xs uppercase tracking-wider text-stone">{t('confirmation.guest')}</p>
+                <p className="mt-1 font-medium">{reservation.first_name} {reservation.last_name}</p>
               </div>
               <div>
-                <p className="text-stone text-xs uppercase tracking-wider">{t('confirmation.guests')}</p>
-                <p className="font-medium mt-1">{reservation.guests}</p>
+                <p className="text-xs uppercase tracking-wider text-stone">{t('confirmation.guests')}</p>
+                <p className="mt-1 font-medium">{reservation.guests}</p>
               </div>
               <div>
-                <p className="text-stone text-xs uppercase tracking-wider">{t('confirmation.date')}</p>
-                <p className="font-medium mt-1">{formatDate(reservation.reservation_date)}</p>
+                <p className="text-xs uppercase tracking-wider text-stone">{t('confirmation.date')}</p>
+                <p className="mt-1 font-medium">{formatDate(reservation.reservation_date)}</p>
               </div>
               <div>
-                <p className="text-stone text-xs uppercase tracking-wider">{t('confirmation.time')}</p>
-                <p className="font-medium mt-1">{reservation.reservation_time}</p>
+                <p className="text-xs uppercase tracking-wider text-stone">{t('confirmation.time')}</p>
+                <p className="mt-1 font-medium">{reservation.reservation_time}</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-10 flex flex-col sm:flex-row sm:flex-wrap gap-4 justify-center">
             <a
               href={calendarLink}
               target="_blank"

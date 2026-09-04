@@ -1,0 +1,108 @@
+# Nginx production configuration template — CASA AURELIA
+#
+# PLACEHOLDER TEMPLATE ONLY. Replace every value marked with a "<PLACEHOLDER>"
+# with operator-specific values. This file contains:
+#   - no real domain        (use: casaaurelia.example)
+#   - no real certificate   (use: /etc/letsencrypt/live/...)
+#   - no secrets
+#
+# Architecture:
+#   Internet -> HTTPS (this server block) -> 127.0.0.1:8000 (uvicorn)
+#   static frontend served from <PLACEHOLDER_FRONTEND_DIST>
+#
+# Reference: docs/Production_Deployment.md, docs/Security_Headers_CSP_HSTS.md,
+#            docs/Deployment_Runbook.md
+#
+# Suggested install (Debian/Ubuntu, as root):
+#   cp deploy/nginx-casaaurelia.conf.example \
+#      /etc/nginx/sites-available/casaaurelia
+#   ln -s /etc/nginx/sites-available/casaaurelia /etc/nginx/sites-enabled/
+#   nginx -t && systemctl reload nginx
+
+# ---- HTTP -> HTTPS redirect -------------------------------------------------
+server {
+    listen 80;
+    listen [::]:80;
+    server_name casaaurelia.example;   # <PLACEHOLDER> operator domain
+
+    # Redirect everything to HTTPS. Do NOT put HSTS here (HTTP responses never
+    # carry Strict-Transport-Security; the header is set only on https).
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# ---- HTTPS site --------------------------------------------------------------
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name casaaurelia.example;   # <PLACEHOLDER> operator domain
+
+    # <PLACEHOLDER> Paths to the operator-managed TLS certificate/key.
+    ssl_certificate     /etc/letsencrypt/live/casaaurelia.example/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/casaaurelia.example/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    # Static frontend build (npm run build -> <root>/frontend/dist).
+    root <PLACEHOLDER>/frontend/dist;   # <PLACEHOLDER> absolute path on the host
+    index index.html;
+
+    # ---- Security headers ------------------------------------------------
+    # HSTS on https responses only (enable AFTER TLS is verified working).
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    # Document-level CSP. Keep the image/font origins or the site loses
+    # Unsplash images + Google Fonts (see docs/Security_Headers_CSP_HSTS.md).
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self'; frame-ancestors 'none'" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header X-Frame-Options DENY always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+    # ---- SPA fallback: unmatched non-asset routes go to index.html --------
+    location / {
+        try_files $uri $uri/ /index.html;
+        # No long caching on index.html so deployments propagate immediately.
+        add_header Cache-Control "no-cache" always;
+    }
+
+    # ---- Hashed build assets: long-lived immutable cache ------------------
+    location /assets/ {
+        try_files $uri =404;
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # ---- API reverse proxy ------------------------------------------------
+    # The backend allows up to 5 MB menu-image uploads (max_upload_size_mb);
+    # raise nginx's default 1 MB request body limit so uploads are accepted.
+    client_max_body_size 6m;
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+        # Do not double-buffer large uploads unboundedly; 6m covers the limit.
+        proxy_request_buffering on;
+    }
+
+    location /uploads/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        # Let nginx serve cacheable static uploads with short caching.
+        expires 7d;
+        add_header Cache-Control "public";
+    }
+
+    # ---- Logging ------------------------------------------------------------
+    access_log /var/log/nginx/casaaurelia.access.log;
+    error_log  /var/log/nginx/casaaurelia.error.log warn;
+}

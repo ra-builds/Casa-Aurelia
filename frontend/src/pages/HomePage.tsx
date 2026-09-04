@@ -1,4 +1,4 @@
-import { usePageTitle, useMetaDescription } from '../hooks/usePageTitle'
+import { usePageSeo } from '../hooks/usePageTitle'
 import { MotionConfig } from 'framer-motion'
 import { useRestaurant } from '../contexts/RestaurantContext'
 import HeroSection from '../components/home/HeroSection'
@@ -13,8 +13,7 @@ import ReservationCtaSection from '../components/home/ReservationCtaSection'
 
 export default function HomePage() {
   const { restaurant } = useRestaurant()
-  usePageTitle('')
-  useMetaDescription('meta.home')
+  usePageSeo({ titleKey: '', descriptionKey: 'meta.home' })
 
   return (
     <MotionConfig reducedMotion="user">

@@ -73,6 +73,21 @@ export interface Reservation {
   status: 'pending' | 'confirmed' | 'cancelled'
   created_at: string
   updated_at: string
+  email_sent?: boolean
+  email_reason?: string | null
+}
+
+export interface ContactFormData {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
+
+export interface ContactSubmitResponse {
+  id: number
+  stored: boolean
+  email_sent: boolean
 }
 
 export interface AvailabilityResponse {
@@ -103,6 +118,18 @@ export interface AuthUser {
   id: number
   email: string
   full_name: string
+}
+
+export interface Closure {
+  id: number
+  closure_date: string
+  reason: string | null
+  created_at: string
+}
+
+export interface ClosureInput {
+  closure_date: string
+  reason?: string | null
 }
 
 export interface ApiError {

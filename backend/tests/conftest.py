@@ -26,6 +26,9 @@ os.environ["ADMIN_EMAIL"] = "admin@test.it"
 os.environ["ADMIN_PASSWORD"] = "test-admin-password-123"
 os.environ["UPLOAD_DIR"] = str(TEST_UPLOADS)
 os.environ["CORS_ORIGINS"] = "http://localhost:5173"
+# Test client runs over plain HTTP, so the Secure refresh-token cookie must be
+# disabled for the cookie jar to store/send it (mirrors a dev environment).
+os.environ["AUTH_COOKIE_SECURE"] = "false"
 
 # Import app modules only now that the environment is pinned to the temp DB.
 from fastapi.testclient import TestClient  # noqa: E402

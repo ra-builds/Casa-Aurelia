@@ -1,0 +1,60 @@
+# systemd unit template — CASA AURELIA backend (uvicorn) — PLACEHOLDER ONLY
+#
+# Replace every value in <> with operator-specific values. No real users or
+# paths are assumed. The unit runs the FastAPI app as a NON-ROOT service user,
+# WITHOUT --reload (production), restarts on failure, and logs to journalctl.
+#
+# Install:
+#   sudo cp deploy/casaaurelia-backend.service.example \
+#       /etc/systemd/system/casaaurelia-backend.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now casaaurelia-backend
+#   journalctl -u casaaurelia-backend -f
+#
+# Preconditions (documented in docs/Deployment_Runbook.md):
+#   - a non-root service user exists (e.g. casaaurelia)
+#   - the venv is created and dependencies installed
+#   - backend/.env exists with real values (loaded below via EnvironmentFile)
+#   - `alembic upgrade head` has been run
+#   - the database + uploads directories are writable by the service user
+
+[Unit]
+Description=Casa Aurelia backend (FastAPI / uvicorn)
+# Wait for the network before starting so forwarded-IP handling is sane.
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+# OPERATOR: change to the checkout path and a dedicated non-root service user.
+WorkingDirectory=/opt/casaaurelia/backend     # <OPERATOR> absolute repo path
+User=casaaurelia                              # <OPERATOR> non-root service user
+Group=casaaurelia                             # <OPERATOR> service group
+
+# OPERATOR: absolute path to the production environment file (secrets stay here,
+# never in the unit file or repository).
+EnvironmentFile=/opt/casaaurelia/backend/.env # <OPERATOR> absolute env path
+
+# Production: NO --reload. The venv uvicorn binary; bind loopback only — nginx
+# terminates TLS and proxies /api + /uploads. --proxy-headers lets uvicorn
+# honour the X-Forwarded-* headers set by nginx for logging/access addresses.
+# If a different host/port is needed, change both here and the nginx proxy_pass.
+ExecStart=/opt/casaaurelia/backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --proxy-headers --forwarded-allow-ips=127.0.0.1
+
+Restart=on-failure
+RestartSec=5
+
+# Lighter hardening that does not break writing the SQLite DB / uploads under
+# the service home. Do NOT add ProtectSystem=full/read-only while the DB and
+# uploads live under WorkingDirectory — uvicorn must write there.
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0027
+
+# Do not leave zombie/child processes on stop.
+KillMode=mixed
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

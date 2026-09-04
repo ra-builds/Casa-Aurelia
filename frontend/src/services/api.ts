@@ -2,6 +2,10 @@ import type {
   AuthUser,
   AvailabilityResponse,
   CategoryInput,
+  Closure,
+  ClosureInput,
+  ContactFormData,
+  ContactSubmitResponse,
   MenuItem,
   MenuItemInput,
   MenuCategory,
@@ -13,6 +17,7 @@ import type {
   Restaurant,
 } from '../types'
 import { apiRequest } from '../utils/helpers'
+import { setAccessToken } from '../utils/authToken'
 
 export const restaurantApi = {
   getRestaurant: () => apiRequest<Restaurant>('/api/restaurant'),
@@ -113,15 +118,50 @@ export const reservationApi = {
 }
 
 export const authApi = {
-  login: (email: string, password: string) =>
-    apiRequest<{ access_token: string; refresh_token: string; token_type: string }>('/api/auth/login', {
+  login: async (email: string, password: string) => {
+    const data = await apiRequest<{ access_token: string; token_type: string }>('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
-    }),
-
+    })
+    setAccessToken(data.access_token)
+    return data
+  },
+  // Restores a session on page load by exchanging the HttpOnly refresh cookie
+  // for a fresh in-memory access token.
+  refresh: async () => {
+    const data = await apiRequest<{ access_token: string; token_type: string }>('/api/auth/refresh', {
+      method: 'POST',
+    })
+    setAccessToken(data.access_token)
+    return data
+  },
+  logout: () => apiRequest<void>('/api/auth/logout', { method: 'POST' }),
   me: () => apiRequest<AuthUser>('/api/auth/me'),
 }
 
 export const healthApi = {
   check: () => apiRequest<{ status: string }>('/api/health'),
+}
+
+export const contactApi = {
+  submit: (data: ContactFormData) =>
+    apiRequest<ContactSubmitResponse>('/api/contact', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+}
+
+export const closureApi = {
+  getAll: () => apiRequest<Closure[]>('/api/closures'),
+}
+
+export const adminClosureApi = {
+  getAll: () => apiRequest<Closure[]>('/api/admin/closures'),
+  create: (data: ClosureInput) =>
+    apiRequest<Closure>('/api/admin/closures', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  delete: (id: number) =>
+    apiRequest<void>(`/api/admin/closures/${id}`, { method: 'DELETE' }),
 }

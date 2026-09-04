@@ -1,42 +1,46 @@
 import { useTranslation } from 'react-i18next'
-import { motion } from 'framer-motion'
 import Button from '../ui/Button'
-import SectionHeading from '../ui/SectionHeading'
+import Container from '../ui/Container'
+import Reveal from '../ui/Reveal'
+import MenuImage from '../ui/MenuImage'
 import { SIGNATURE_DISHES } from '../../utils/constants'
 
 export default function SignatureDishesSection() {
   const { t } = useTranslation()
 
   return (
-    <section className="py-20 bg-cream-dark">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading title={t('home.signatureDishes.title')} subtitle={t('home.signatureDishes.subtitle')} />
-        <div className="mt-14 grid md:grid-cols-3 gap-8">
+    <section className="bg-cream-dark py-24 md:py-36">
+      <Container>
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <p className="label-micro">{t('home.signatureDishes.subtitle')}</p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="headline-section mt-4">{t('home.signatureDishes.title')}</h2>
+          </Reveal>
+        </div>
+
+        <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
           {SIGNATURE_DISHES.map((dish, i) => (
-            <motion.div
-              key={dish.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group"
-            >
-              <div className="overflow-hidden">
-                <img
-                  src={dish.image}
-                  alt={dish.name}
-                  className="w-full h-64 object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-              <h3 className="font-display text-xl font-semibold mt-4">{dish.name}</h3>
-            </motion.div>
+            <Reveal key={dish.name} delay={i * 0.12} className="group text-center">
+              <MenuImage
+                src={dish.image}
+                alt={dish.name}
+                aspect="aspect-[3/4]"
+                className="transition-transform duration-700 motion-safe:group-hover:scale-[1.03]"
+              />
+              <h3 className="mt-7 font-display text-2xl font-medium text-charcoal-light">
+                {dish.name}
+              </h3>
+              <span className="mx-auto mt-4 block h-px w-10 bg-gold/60" aria-hidden="true" />
+            </Reveal>
           ))}
         </div>
-        <div className="text-center mt-12">
+
+        <Reveal delay={0.1} className="mt-16 text-center">
           <Button to="/menu" variant="primary">{t('home.signatureDishes.exploreMenu')}</Button>
-        </div>
-      </div>
+        </Reveal>
+      </Container>
     </section>
   )
 }

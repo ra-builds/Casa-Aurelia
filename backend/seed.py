@@ -25,6 +25,33 @@ CATEGORIES = [
     {"name": "Drinks", "slug": "drinks", "sort_order": 5},
 ]
 
+UNSPLASH_BASE = "https://images.unsplash.com/photo-{photo_id}?auto=format&fit=crop&w=1000&q=80"
+
+# Curated food photography (verified live URLs) seeded into menu items.
+# Admin uploads replace these per item; backfill only ever fills NULL image_url.
+DISH_IMAGES = {
+    "Burrata Pugliese": "1621072156002-e2fccdc0b176",
+    "Carpaccio di Manzo": "1623479322729-28b25c16b011",
+    "Polpo alla Griglia": "1598866594230-a7c12756260f",
+    "Bruschetta al Pomodoro": "1572695157366-5e585ab2b69f",
+    "Tagliatelle al Tartufo": "1473093295043-cdd812d0e601",
+    "Risotto ai Funghi": "1476124369491-e7addf5db371",
+    "Ravioli di Ricotta": "1601050690597-df0568f70950",
+    "Spaghetti alle Vongole": "1585032226651-759b368d7246",
+    "Branzino al Limone": "1559847844-5315695dadae",
+    "Filetto di Manzo": "1600891964092-4316c288032e",
+    "Pollo alla Milanese": "1626082927389-6cd097cdc6ec",
+    "Melanzane alla Parmigiana": "1629115916087-7e8c114a24ed",
+    "Tiramisù": "1571877227200-a0d98ea607e9",
+    "Panna Cotta": "1488477181946-6428a0291777",
+    "Cannolo Siciliano": "1606312619070-d48b4c652a52",
+    "Affogato al Caffè": "1517701550927-30cf4ba1dba5",
+    "Negroni Classico": "1514362545857-3bc16c4c7d1b",
+    "Aperol Spritz": "1560512823-829485b8bf24",
+    "Barolo DOCG": "1510812431401-41d2bd2722f3",
+    "San Pellegrino": "1536935338788-846bb9981813",
+}
+
 MENU_ITEMS = [
     # Antipasti
     {"category": "antipasti", "name": "Burrata Pugliese", "description": "Creamy burrata from Puglia with heirloom tomatoes, basil oil, and aged balsamic.", "price": 16.00, "dietary_info": "Vegetarian", "is_featured": True},
@@ -108,8 +135,19 @@ def seed():
                     dietary_info=item_data["dietary_info"],
                     is_featured=item_data["is_featured"],
                     sort_order=i + 1,
+                    image_url=(
+                        UNSPLASH_BASE.format(photo_id=DISH_IMAGES[item_data["name"]])
+                        if item_data["name"] in DISH_IMAGES
+                        else None
+                    ),
                 )
                 db.add(item)
+
+        for name, photo_id in DISH_IMAGES.items():
+            missing = db.query(MenuItem).filter(MenuItem.name == name, MenuItem.image_url.is_(None)).first()
+            if missing:
+                missing.image_url = UNSPLASH_BASE.format(photo_id=photo_id)
+                print(f"Backfilled image for: {missing.name}")
 
         for key, value in RESTAURANT_SETTINGS.items():
             existing = db.query(RestaurantSetting).filter(RestaurantSetting.key == key).first()

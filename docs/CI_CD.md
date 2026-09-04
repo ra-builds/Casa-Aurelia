@@ -32,10 +32,11 @@ fresh, temporary database):
    npm ci
    ```
 6. Lint: `npm run lint`
-7. Type-check + production build: `npm run build` (runs `tsc -b && vite build`)
+7. Specs: `npm test`
+8. Type-check + production build: `npm run build` (runs `tsc -b && vite build`)
 
 ### Repository / security
-8. Ensure no secrets are committed: `.env*` files are git-ignored; treat any diff
+9. Ensure no secrets are committed: `.env*` files are git-ignored; treat any diff
    touching `backend/.env` as a hard failure.
 
 ## Notes for maintainers
@@ -51,6 +52,6 @@ fresh, temporary database):
 ## Release checklist
 
 - [ ] CI green (tests, lint, build) on the target commit.
-- [ ] `backend/venv/bin/python -m alembic heads` shows a single `007_allergen_system` head.
+- [ ] `backend/venv/bin/python -m alembic heads` shows a single `009_closures` head.
 - [ ] Fresh DB backup taken (see `Backup_Restore.md`).
 - [ ] Deploy per `Production_Deployment.md`; run `alembic upgrade head` if schema changed.

@@ -1,31 +1,38 @@
 import { useTranslation } from 'react-i18next'
 import Button from '../ui/Button'
-import SectionHeading from '../ui/SectionHeading'
+import Container from '../ui/Container'
+import Reveal from '../ui/Reveal'
 import { IMAGES } from '../../utils/constants'
 
 export default function ExperienceSection() {
   const { t } = useTranslation()
 
   return (
-    <section className="relative py-20 md:py-28">
+    <section className="relative overflow-hidden py-28 md:py-40">
       <div
-        className="absolute inset-0 bg-cover bg-center md:bg-fixed"
+        className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${IMAGES.experience})` }}
+        aria-hidden="true"
       />
-      <div className="absolute inset-0 bg-charcoal/80" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <SectionHeading
-          title={t('home.experience.title')}
-          subtitle={t('home.experience.subtitle')}
-          light
-        />
-        <p className="mt-6 text-cream/80 max-w-2xl mx-auto leading-relaxed">
-          {t('home.experience.paragraph')}
-        </p>
-        <div className="mt-10">
-          <Button to="/gallery" variant="gold">{t('home.experience.viewGallery')}</Button>
+      <div className="absolute inset-0 bg-gradient-to-b from-charcoal/85 via-charcoal/70 to-charcoal/90" />
+      <Container className="relative z-10">
+        <div className="mx-auto max-w-2xl text-center text-cream">
+          <Reveal>
+            <p className="label-micro-light">{t('home.experience.subtitle')}</p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <h2 className="headline-section mt-4 !text-cream">{t('home.experience.title')}</h2>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="lead-light mt-7">{t('home.experience.paragraph')}</p>
+          </Reveal>
+          <Reveal delay={0.24}>
+            <div className="mt-11">
+              <Button to="/gallery" variant="gold">{t('home.experience.viewGallery')}</Button>
+            </div>
+          </Reveal>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

@@ -9,6 +9,7 @@ interface Props {
   type?: 'button' | 'submit'
   disabled?: boolean
   onClick?: () => void
+  ariaLabel?: string
 }
 
 export default function Button({
@@ -19,6 +20,7 @@ export default function Button({
   type = 'button',
   disabled,
   onClick,
+  ariaLabel,
 }: Props) {
   const variants = {
     primary: 'btn-primary',
@@ -31,14 +33,20 @@ export default function Button({
 
   if (to) {
     return (
-      <Link to={to} className={classes}>
+      <Link to={to} className={classes} aria-label={ariaLabel}>
         {children}
       </Link>
     )
   }
 
   return (
-    <button type={type} className={classes} disabled={disabled} onClick={onClick}>
+    <button
+      type={type}
+      className={classes}
+      disabled={disabled}
+      onClick={onClick}
+      aria-label={ariaLabel}
+    >
       {children}
     </button>
   )

@@ -4,7 +4,10 @@ interface Props {
 
 export default function SuccessMessage({ message }: Props) {
   return (
-    <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 text-sm" role="status">
+    <div
+      role="status"
+      className="border-l-2 border-gold bg-gold/10 px-5 py-3.5 text-sm text-charcoal-light"
+    >
       {message}
     </div>
   )

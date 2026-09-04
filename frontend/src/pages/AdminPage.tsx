@@ -14,10 +14,11 @@ import LoadingSpinner from '../components/ui/LoadingSpinner'
 import ErrorMessage from '../components/ui/ErrorMessage'
 import MenuManager from '../components/admin/MenuManager'
 import CategoryManager from '../components/admin/CategoryManager'
+import ClosuresManager from '../components/admin/ClosuresManager'
 import { useAuth } from '../hooks/useAuth'
-import { usePageTitle } from '../hooks/usePageTitle'
+import { usePageSeo } from '../hooks/usePageTitle'
 import { reservationApi } from '../services/api'
-import { formatDate } from '../utils/helpers'
+import { formatDate, formatNumber, getMinDate } from '../utils/helpers'
 import type { Reservation, ReservationStats } from '../types'
 
 function LoginForm() {
@@ -42,17 +43,22 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream px-4">
-      <div className="card p-8 md:p-10 w-full max-w-md">
-        <h1 className="font-display text-3xl font-semibold text-center mb-2">{t('admin.loginTitle')}</h1>
-        <p className="text-stone text-sm text-center mb-8">{t('admin.loginSubtitle')}</p>
-        {error && <div className="mb-4"><ErrorMessage message={error} /></div>}
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="min-h-screen flex items-center justify-center bg-cream px-4 py-16">
+      <div className="card p-8 md:p-12 w-full max-w-md border-gold/20">
+        <p className="label-micro">{t('admin.kicker')}</p>
+        <h1 className="mt-4 font-display text-4xl font-medium leading-tight text-charcoal-light">
+          {t('admin.loginTitle')}
+        </h1>
+        <span className="mt-5 block h-px w-12 bg-gold/60" aria-hidden="true" />
+        <p className="mt-5 text-stone text-sm">{t('admin.loginSubtitle')}</p>
+        {error && <div className="mt-6 mb-4"><ErrorMessage message={error} /></div>}
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div>
             <label htmlFor="admin-email" className="label-field">{t('admin.email')}</label>
             <input
               id="admin-email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="input-field"
@@ -64,6 +70,7 @@ function LoginForm() {
             <input
               id="admin-password"
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="input-field"
@@ -81,13 +88,17 @@ function LoginForm() {
 
 function StatCard({ label, value, icon: Icon }: { label: string; value: number; icon: ElementType }) {
   return (
-    <div className="card p-6">
-      <div className="flex items-center justify-between">
+    <div className="card px-6 py-7">
+      <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-stone text-xs uppercase tracking-wider">{label}</p>
-          <p className="font-display text-3xl font-semibold mt-1">{value}</p>
+          <p className="text-xs uppercase tracking-[0.18em] text-stone">{label}</p>
+          <p className="mt-2 font-display text-4xl font-medium leading-none text-charcoal-light">
+            {value}
+          </p>
         </div>
-        <Icon className="text-wine/40" size={28} />
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/30 bg-gold/10" aria-hidden="true">
+          <Icon size={20} className="text-gold-deep" />
+        </span>
       </div>
     </div>
   )
@@ -96,7 +107,7 @@ function StatCard({ label, value, icon: Icon }: { label: string; value: number; 
 function Dashboard() {
   const { user, logout } = useAuth()
   const { t } = useTranslation()
-  const [tab, setTab] = useState<'reservations' | 'menu'>('reservations')
+  const [tab, setTab] = useState<'reservations' | 'menu' | 'closures'>('reservations')
   const [menuTab, setMenuTab] = useState<'categories' | 'items'>('items')
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [stats, setStats] = useState<ReservationStats | null>(null)
@@ -174,41 +185,62 @@ function Dashboard() {
   }
 
   const statusColors: Record<string, string> = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    confirmed: 'bg-green-100 text-green-800',
-    cancelled: 'bg-red-100 text-red-800',
+    pending: 'border border-amber-200 bg-amber-50 text-amber-800',
+    confirmed: 'border border-emerald-200 bg-emerald-50 text-emerald-800',
+    cancelled: 'border border-rose-200 bg-rose-50 text-rose-700',
+  }
+
+  const chipClasses: Record<string, string> = {
+    pending: 'border border-amber-200 bg-amber-50 text-amber-800',
+    confirmed: 'border border-emerald-200 bg-emerald-50 text-emerald-800',
+    cancelled: 'border border-rose-200 bg-rose-50 text-rose-700',
   }
 
   return (
     <div className="min-h-screen bg-cream">
-      <header className="bg-charcoal text-cream py-4 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <header className="bg-charcoal text-cream">
+        <div className="container-site py-8 flex items-center justify-between gap-6">
           <div>
-            <h1 className="font-display text-xl font-semibold">{t('admin.dashboardTitle')}</h1>
-            <p className="text-stone-light text-xs mt-0.5">{user?.email}</p>
+            <p className="label-micro-light">{t('admin.kicker')}</p>
+            <h1 className="mt-2 font-display text-2xl font-medium leading-tight text-cream lg:text-3xl">
+              {t('admin.dashboardTitle')}
+            </h1>
+            <p className="mt-1 text-stone-light text-xs">{user?.email}</p>
           </div>
           <button
             type="button"
             onClick={logout}
-            className="flex items-center gap-2 text-sm text-stone-light hover:text-cream transition-colors"
+            className="flex items-center gap-2 px-2 py-2 -mr-2 text-sm text-stone-light transition-colors hover:text-gold-light focus-visible:text-gold-light"
           >
             <LogOut size={16} />
             {t('admin.logout')}
           </button>
         </div>
+        <div className="hairline-light" aria-hidden="true" />
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {error && <div className="mb-6"><ErrorMessage message={error} /></div>}
+      <div className="container-site py-8 lg:py-12">
+        {error && (
+          <div className="mb-6">
+            <ErrorMessage message={error} />
+            <button
+              type="button"
+              onClick={() => loadData(page)}
+              className="btn-link mt-3 text-wine"
+            >
+              {t('admin.retry')}
+            </button>
+          </div>
+        )}
 
-        <div className="flex gap-1 mb-8 border-b border-cream-dark" role="tablist">
+        <div className="flex gap-1 mb-8 border-b border-charcoal/10" role="tablist">
           <button
             type="button"
             role="tab"
             aria-selected={tab === 'reservations'}
             onClick={() => setTab('reservations')}
             className={`px-5 py-3 text-sm uppercase tracking-wider transition-colors border-b-2 -mb-px ${
-              tab === 'reservations' ? 'border-wine text-wine font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
+              tab === 'reservations' ? 'border-gold text-gold-deep font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
             }`}
           >
             {t('admin.tab.reservations')}
@@ -219,12 +251,29 @@ function Dashboard() {
             aria-selected={tab === 'menu'}
             onClick={() => setTab('menu')}
             className={`px-5 py-3 text-sm uppercase tracking-wider transition-colors border-b-2 -mb-px ${
-              tab === 'menu' ? 'border-wine text-wine font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
+              tab === 'menu' ? 'border-gold text-gold-deep font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
             }`}
           >
             {t('admin.tab.menu')}
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'closures'}
+            onClick={() => setTab('closures')}
+            className={`px-5 py-3 text-sm uppercase tracking-wider transition-colors border-b-2 -mb-px ${
+              tab === 'closures' ? 'border-gold text-gold-deep font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
+            }`}
+          >
+            {t('admin.tab.closures')}
+          </button>
         </div>
+
+        {tab === 'closures' && (
+          <div>
+            <ClosuresManager />
+          </div>
+        )}
 
         {tab === 'menu' && (
           <div>
@@ -262,26 +311,27 @@ function Dashboard() {
         )}
 
         {stats && (
-          <div className="flex flex-wrap gap-4 mb-8 text-sm">
-            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full">
+          <div className="flex flex-wrap gap-3 mb-8 text-sm">
+            <span className={`pill uppercase tracking-wider ${chipClasses.pending}`}>
               {t('admin.status.pending')}: {stats.pending}
             </span>
-            <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full">
+            <span className={`pill uppercase tracking-wider ${chipClasses.confirmed}`}>
               {t('admin.status.confirmed')}: {stats.confirmed}
             </span>
-            <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full">
+            <span className={`pill uppercase tracking-wider ${chipClasses.cancelled}`}>
               {t('admin.status.cancelled')}: {stats.cancelled}
             </span>
           </div>
         )}
 
-        <div className="card p-4 mb-6">
+        <div className="card p-4 sm:p-5 mb-6">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone" />
               <input
                 type="text"
                 placeholder={t('admin.searchPlaceholder')}
+                aria-label={t('admin.searchPlaceholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="input-field pl-10"
@@ -289,6 +339,7 @@ function Dashboard() {
             </div>
             <select
               value={statusFilter}
+              aria-label={t('admin.filter.status')}
               onChange={(e) => setStatusFilter(e.target.value)}
               className="input-field sm:w-40"
             >
@@ -300,9 +351,17 @@ function Dashboard() {
             <input
               type="date"
               value={dateFilter}
+              aria-label={t('admin.filter.date')}
               onChange={(e) => setDateFilter(e.target.value)}
               className="input-field sm:w-44"
             />
+            <button
+              type="button"
+              onClick={() => setDateFilter(getMinDate())}
+              className="btn-secondary whitespace-nowrap"
+            >
+              {t('admin.filter.today')}
+            </button>
           </div>
         </div>
 
@@ -314,9 +373,9 @@ function Dashboard() {
           </div>
         ) : (
           <div className="card overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[680px] text-sm">
               <thead>
-                <tr className="border-b border-cream-dark text-left">
+                <tr className="border-b border-charcoal/10 text-left">
                   <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.table.customer')}</th>
                   <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.table.date')}</th>
                   <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.table.time')}</th>
@@ -329,7 +388,7 @@ function Dashboard() {
               </thead>
               <tbody>
                 {reservations.map((r) => (
-                  <tr key={r.id} className="border-b border-cream-dark/50 hover:bg-cream/50">
+                  <tr key={r.id} className="border-b border-charcoal/5 hover:bg-ivory/50">
                     <td className="p-4">
                       <p className="font-medium">{r.first_name} {r.last_name}</p>
                       <p className="text-stone text-xs">{r.reference_code}</p>
@@ -339,7 +398,7 @@ function Dashboard() {
                     <td className="p-4">{r.guests}</td>
                     <td className="p-4 hidden md:table-cell">{r.phone}</td>
                     <td className="p-4">
-                      <span className={`px-2 py-1 text-xs uppercase tracking-wider rounded-full ${statusColors[r.status]}`}>
+                      <span className={`pill uppercase tracking-wider ${statusColors[r.status]}`}>
                         {t(`admin.status.${r.status}`)}
                       </span>
                     </td>
@@ -353,8 +412,9 @@ function Dashboard() {
                             type="button"
                             onClick={() => handleStatusUpdate(r.id, 'confirmed')}
                             disabled={actionLoading === r.id}
-                            className="p-1.5 text-green-700 hover:bg-green-50 rounded transition-colors"
+                            className="p-2 text-emerald-700 hover:bg-emerald-50 rounded-md transition-colors"
                             title={t('admin.action.confirm')}
+                            aria-label={t('admin.action.confirm')}
                           >
                             <CheckCircle size={16} />
                           </button>
@@ -364,8 +424,9 @@ function Dashboard() {
                             type="button"
                             onClick={() => handleStatusUpdate(r.id, 'cancelled')}
                             disabled={actionLoading === r.id}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                            className="p-2 text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                             title={t('admin.action.cancel')}
+                            aria-label={t('admin.action.cancel')}
                           >
                             <XCircle size={16} />
                           </button>
@@ -374,8 +435,9 @@ function Dashboard() {
                           type="button"
                           onClick={() => handleDelete(r.id)}
                           disabled={actionLoading === r.id}
-                          className="p-1.5 text-stone hover:bg-red-50 hover:text-red-600 rounded transition-colors"
+                          className="p-2 text-stone hover:bg-rose-50 hover:text-rose-600 rounded-md transition-colors"
                           title={t('admin.action.delete')}
+                          aria-label={t('admin.action.delete')}
                         >
                           <Trash2 size={16} />
                         </button>
@@ -389,32 +451,32 @@ function Dashboard() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-4 px-1">
+          <div className="flex flex-wrap items-center justify-between gap-2 mt-4 px-1">
             <p className="text-sm text-stone">
               {t('admin.pagination.showing', {
-                from: Math.min((page - 1) * PAGE_SIZE + 1, total),
-                to: Math.min(page * PAGE_SIZE, total),
-                total,
+                from: formatNumber(Math.min((page - 1) * PAGE_SIZE + 1, total)),
+                to: formatNumber(Math.min(page * PAGE_SIZE, total)),
+                total: formatNumber(total),
               })}
             </p>
-            <nav className="flex items-center gap-1" aria-label={t('admin.pagination.label')}>
+            <nav className="flex items-center gap-2" aria-label={t('admin.pagination.label')}>
               <button
                 type="button"
                 onClick={() => setPage(page - 1)}
                 disabled={page <= 1}
-                className="px-3 py-1.5 text-sm rounded border border-cream-dark hover:bg-cream disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-2 text-sm rounded-md border border-charcoal/15 hover:border-charcoal hover:bg-charcoal hover:text-cream disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 aria-label={t('admin.pagination.previous')}
               >
                 {t('admin.pagination.previousShort')}
               </button>
-              <span className="px-3 py-1.5 text-sm text-stone">
-                {t('admin.pagination.pageOf', { page, totalPages })}
+              <span className="px-3 py-1.5 text-sm text-stone" aria-current="page">
+                {t('admin.pagination.pageOf', { page: formatNumber(page), totalPages: formatNumber(totalPages) })}
               </span>
               <button
                 type="button"
                 onClick={() => setPage(page + 1)}
                 disabled={page >= totalPages}
-                className="px-3 py-1.5 text-sm rounded border border-cream-dark hover:bg-cream disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="px-3 py-2 text-sm rounded-md border border-charcoal/15 hover:border-charcoal hover:bg-charcoal hover:text-cream disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 aria-label={t('admin.pagination.next')}
               >
                 {t('admin.pagination.nextShort')}
@@ -430,7 +492,7 @@ function Dashboard() {
 }
 
 export default function AdminPage() {
-  usePageTitle('pageTitles.admin')
+  usePageSeo({ titleKey: 'pageTitles.admin', noindex: true })
   const { isAuthenticated, isLoading } = useAuth()
 
   if (isLoading) {

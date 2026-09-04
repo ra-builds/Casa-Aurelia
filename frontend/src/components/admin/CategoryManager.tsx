@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Pencil, Plus, Trash2 } from 'lucide-react'
 import LoadingSpinner from '../ui/LoadingSpinner'
 import ErrorMessage from '../ui/ErrorMessage'
+import SuccessMessage from '../ui/SuccessMessage'
 import { adminCategoryApi } from '../../services/api'
 import type { CategoryInput, MenuCategory } from '../../types'
 
@@ -134,27 +135,44 @@ export default function CategoryManager() {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <h2 className="font-display text-2xl font-semibold">{t('admin.menu.categories')}</h2>
-        <button type="button" onClick={openCreate} className="btn-primary flex items-center gap-2">
+        <div>
+          <p className="label-micro">{t('admin.tab.items')}</p>
+          <h2 className="mt-2 font-display text-2xl font-medium text-charcoal-light">{t('admin.menu.categories')}</h2>
+        </div>
+        <button type="button" onClick={openCreate} className="btn-gold flex items-center gap-2">
           <Plus size={16} />
           {t('admin.menu.addCategory')}
         </button>
       </div>
 
-      {error && <div className="mb-6"><ErrorMessage message={error} /></div>}
+      {error && (
+        <div className="mb-6">
+          <ErrorMessage message={error} />
+          <button
+            type="button"
+            onClick={loadData}
+            className="btn-link mt-3 text-wine"
+          >
+            {t('admin.retry')}
+          </button>
+        </div>
+      )}
       {!error && savedMessage && (
-        <div role="status" className="mb-6 px-4 py-3 bg-green-50 text-green-800 border border-green-200 text-sm">
-          {savedMessage}
+        <div className="mb-6">
+          <SuccessMessage message={savedMessage} />
         </div>
       )}
 
       {formOpen && (
-        <div className="card p-6 mb-8">
-          <h3 className="font-display text-xl font-semibold mb-6">
-            {editingId === null ? t('admin.menu.addCategory') : t('admin.menu.editCategory')}
-          </h3>
-          {formError && <div className="mb-4"><ErrorMessage message={formError} /></div>}
-          <form onSubmit={handleSubmit} className="grid md:grid-cols-3 gap-5" noValidate={false}>
+        <div className="card p-6 md:p-8 mb-8">
+          <div className="flex items-center gap-5">
+            <span className="h-px w-10 bg-gold/60" aria-hidden="true" />
+            <h3 className="font-display text-xl font-medium text-charcoal-light">
+              {editingId === null ? t('admin.menu.addCategory') : t('admin.menu.editCategory')}
+            </h3>
+          </div>
+          {formError && <div className="mt-5 mb-4"><ErrorMessage message={formError} /></div>}
+          <form onSubmit={handleSubmit} className="mt-6 grid md:grid-cols-3 gap-5" noValidate={false}>
             <div>
               <label htmlFor="cat-name" className="label-field">{t('admin.menu.categoryName')}</label>
               <input
@@ -193,7 +211,7 @@ export default function CategoryManager() {
                 className="input-field"
               />
             </div>
-            <div className="md:col-span-3 flex gap-3 pt-2 border-t border-cream-dark">
+            <div className="md:col-span-3 flex gap-3 pt-4 border-t border-charcoal/10">
               <button type="submit" className="btn-primary" disabled={saving}>
                 {saving ? t('admin.menu.saving') : t('admin.menu.save')}
               </button>
@@ -209,9 +227,9 @@ export default function CategoryManager() {
         <div className="card p-12 text-center text-stone">{t('admin.menu.empty')}</div>
       ) : (
         <div className="card overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[560px] text-sm">
             <thead>
-              <tr className="border-b border-cream-dark text-left">
+              <tr className="border-b border-charcoal/10 text-left">
                 <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.menu.categoryName')}</th>
                 <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.menu.categorySlug')}</th>
                 <th className="p-4 font-medium text-stone uppercase text-xs tracking-wider">{t('admin.menu.categorySortOrder')}</th>
@@ -220,7 +238,7 @@ export default function CategoryManager() {
             </thead>
             <tbody>
               {categories.map((category) => (
-                <tr key={category.id} className="border-b border-cream-dark/50 hover:bg-cream/50">
+                <tr key={category.id} className="border-b border-charcoal/5 hover:bg-ivory/50">
                   <td className="p-4 font-medium">{category.name}</td>
                   <td className="p-4 font-mono text-xs text-stone">{category.slug}</td>
                   <td className="p-4">{category.sort_order}</td>
@@ -230,8 +248,9 @@ export default function CategoryManager() {
                         type="button"
                         onClick={() => openEdit(category)}
                         disabled={actionLoading === category.id}
-                        className="p-1.5 text-stone hover:bg-cream-dark hover:text-charcoal rounded transition-colors"
+                        className="p-2 text-stone hover:bg-charcoal/10 hover:text-charcoal rounded-md transition-colors"
                         title={t('admin.menu.editCategory')}
+                        aria-label={t('admin.menu.editCategoryFor', { name: category.name })}
                       >
                         <Pencil size={16} />
                       </button>
@@ -239,8 +258,9 @@ export default function CategoryManager() {
                         type="button"
                         onClick={() => handleDelete(category)}
                         disabled={actionLoading === category.id}
-                        className="p-1.5 text-stone hover:bg-red-50 hover:text-red-600 rounded transition-colors"
+                        className="p-2 text-stone hover:bg-rose-50 hover:text-rose-600 rounded-md transition-colors"
                         title={t('admin.menu.deleteCategory')}
+                        aria-label={t('admin.menu.deleteCategoryFor', { name: category.name })}
                       >
                         <Trash2 size={16} />
                       </button>

@@ -10,7 +10,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from sqlalchemy import text
 
-from app.api.routers import auth, menu, reservations, restaurant
+from app.api.routers import auth, closures, contact, menu, reservations, restaurant
 from app.core.config import get_settings
 from app.db.database import init_db, SessionLocal
 from app.services.image_service import ensure_upload_dirs
@@ -33,7 +33,11 @@ SECURITY_HEADERS = {
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
+    # create_all is a development convenience only. In production the schema is
+    # owned and managed exclusively by Alembic migrations (alembic upgrade head);
+    # startup must never silently create tables that migrations have not declared.
+    if settings.app_env != "production":
+        init_db()
     yield
 
 
@@ -70,6 +74,9 @@ app.include_router(reservations.router)
 app.include_router(menu.router)
 app.include_router(menu.admin_router)
 app.include_router(restaurant.router)
+app.include_router(contact.router)
+app.include_router(closures.router)
+app.include_router(closures.admin_router)
 
 app.mount(
     "/uploads",

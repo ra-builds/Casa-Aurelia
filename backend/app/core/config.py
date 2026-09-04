@@ -23,6 +23,49 @@ class Settings(BaseSettings):
     upload_dir: str = "uploads"
     max_upload_size_mb: int = 5
 
+    # --- Email / SMTP (communication layer — post-roadmap hardening) ---
+    # All email configuration and secrets come from the environment (never
+    # hard-coded or committed). When SMTP is not configured, the app runs without
+    # sending email: communication is honestly reported as not-delivered rather
+    # than silently pretending to send.
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    smtp_use_tls: bool = False  # implicit TLS (SMTPS) on connect
+    smtp_starttls: bool = True  # upgrade the connection via STARTTLS
+    smtp_from: str = "no-reply@casaaurelia.it"
+    smtp_from_name: str = "Casa Aurelia"
+    # Comma-separated owner/restaurant notification recipients (reservation and
+    # contact-form notifications). Falls back to the seeded restaurant email when
+    # empty (see email_service).
+    notification_recipients: str = ""
+
+    # --- Auth / refresh-token cookie (P1 hardening) ---
+    # The refresh token is delivered as an HttpOnly cookie (never exposed to
+    # JavaScript) and the access token is kept in memory only on the client.
+    # `auth_cookie_secure` must be True over HTTPS; in local/development HTTP it
+    # is set False so the cookie works without TLS. SameSite=Lax is safe because
+    # the frontend and API share an origin (dev via the Vite proxy, production
+    # via the reverse proxy).
+    auth_cookie_secure: bool = True
+    auth_cookie_name: str = "casaaurelia_refresh"
+    auth_cookie_samesite: str = "lax"
+    auth_cookie_path: str = "/api/auth"
+
+    @property
+    def refresh_token_cookie_max_age(self) -> int:
+        return self.refresh_token_expire_days * 24 * 60 * 60
+
+    @property
+    def notification_recipient_list(self) -> list[str]:
+        return [r.strip() for r in self.notification_recipients.split(",") if r.strip()]
+
+    @property
+    def email_enabled(self) -> bool:
+        """True only when SMTP is fully configured (host + username + password)."""
+        return bool(self.smtp_host and self.smtp_username)
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     @model_validator(mode="after")
@@ -43,6 +86,44 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @model_validator(mode="after")
+    def _reject_placeholder_production_secrets(self):
+        # Production placeholder-secret guard (P1 hardening). In production, the
+        # app MUST refuse to boot while any security-sensitive required secret is
+        # still a known placeholder/default (e.g. the values shipped in
+        # .env.production.example). Development and test environments are
+        # explicitly NOT subject to this guard so local workflows keep working.
+        #
+        # The check never logs or returns the secret values — it only reports
+        # WHICH setting is a placeholder by name, never its value.
+        if self.app_env != "production":
+            return self
+
+        placeholders = (
+            "replace_with",
+            "changeme",
+            "change-me",
+            "change_me",
+            "your_secret",
+            "your-password",
+            "secret",
+        )
+        insecure = [
+            name
+            for name, value in (
+                ("SECRET_KEY", self.secret_key),
+                ("ADMIN_PASSWORD", self.admin_password),
+            )
+            if not value or value.lower() in placeholders or "replace_with" in value.lower()
+        ]
+        if insecure:
+            raise ValueError(
+                "Refusing to start in production: the following required production "
+                f"secret(s) are still placeholder/default values and must be set in "
+                f"the environment: {', '.join(insecure)}. No secret values are logged."
+            )
+        return self
 
 
 @lru_cache

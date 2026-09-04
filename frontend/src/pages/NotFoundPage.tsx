@@ -1,26 +1,33 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Button from '../components/ui/Button'
-import { usePageTitle } from '../hooks/usePageTitle'
+import { usePageSeo } from '../hooks/usePageTitle'
+import { SITE_CONFIG } from '../config/site'
 
 export default function NotFoundPage() {
-  usePageTitle('pageTitles.notFound')
+  const { t } = useTranslation()
+  usePageSeo({ titleKey: 'pageTitles.notFound', noindex: true })
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4">
-      <div className="text-center">
-        <p className="text-gold text-sm uppercase tracking-[0.3em] mb-4">404</p>
-        <h1 className="font-display text-5xl md:text-6xl font-semibold mb-4">
-          Page Not Found
+    <section className="flex min-h-screen items-center justify-center px-5 py-24">
+      <div className="max-w-xl text-center">
+        <p className="font-display text-7xl font-medium text-gold md:text-8xl" aria-hidden="true">
+          404
+        </p>
+        <p className="label-micro mt-6">{SITE_CONFIG.brandName}</p>
+        <h1 className="mt-4 font-display text-4xl font-medium text-charcoal-light md:text-5xl">
+          {t('notFound.title')}
         </h1>
-        <p className="text-stone mb-10 max-w-md mx-auto">
-          The page you are looking for does not exist or may have been moved.
-        </p>
-        <Button to="/" variant="primary">Return Home</Button>
-        <p className="mt-6">
-          <Link to="/menu" className="text-wine text-sm hover:underline">
-            View our menu
+        <p className="lead mx-auto mt-6 max-w-md">{t('notFound.message')}</p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Button to="/" variant="primary">{t('notFound.backToHome')}</Button>
+          <Link
+            to="/menu"
+            className="text-sm uppercase tracking-wider text-wine transition-colors hover:text-wine-dark py-3 px-6"
+          >
+            {t('notFound.viewMenu')}
           </Link>
-        </p>
+        </div>
       </div>
     </section>
   )

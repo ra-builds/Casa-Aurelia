@@ -63,6 +63,11 @@ class ReservationResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime
+    # Communication-layer truth: whether a reservation confirmation email was
+    # actually delivered. The frontend uses this to show an honest confirmation
+    # message rather than claiming an email that may not have been sent.
+    email_sent: bool = False
+    email_reason: str | None = None
 
     model_config = {"from_attributes": True}
 

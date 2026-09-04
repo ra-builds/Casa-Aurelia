@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ArrowRight } from 'lucide-react'
 import LanguageSelector from '../LanguageSelector'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useRestaurant } from '../../contexts/RestaurantContext'
+import { SITE_CONFIG } from '../../config/site'
 import { NAV_LINKS } from '../../utils/constants'
+
+const EASE = [0.22, 1, 0.36, 1] as const
+
+const DARK_TOP_ROUTES = new Set([
+  '/', '/menu', '/about', '/signatures', '/gallery', '/reservations', '/contact',
+])
 
 export default function Navbar() {
   const { t } = useTranslation()
@@ -14,57 +21,90 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
 
+  const darkTop = DARK_TOP_ROUTES.has(location.pathname)
+  const solid = scrolled || !darkTop
+
   useEffect(() => {
     setIsOpen(false)
   }, [location.pathname])
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll)
+    const handleScroll = () => setScrolled(window.scrollY > 24)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const isHome = location.pathname === '/'
-  const navBg = scrolled || !isHome
-    ? 'bg-charcoal/95 backdrop-blur-md shadow-lg'
-    : 'bg-transparent'
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (!isOpen) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false)
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen])
+
+  const solidText = solid ? 'text-charcoal hover:text-wine' : 'text-cream/85 hover:text-cream'
+  const activeText = solid ? 'text-wine' : 'text-gold-light'
+  const markText = solid ? 'text-charcoal' : 'text-cream'
+  const barColor = solid ? 'bg-ivory/95 backdrop-blur-md border-b border-charcoal/10 shadow-card' : 'bg-transparent'
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}>
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-20">
-          <Link to="/" className="font-display text-2xl font-semibold text-gold tracking-wide">
-            {restaurant?.name ?? ''}
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${barColor}`}>
+      <nav className="container-site" aria-label={t('nav.mainNavigation')}>
+        <div className="flex items-center justify-between py-4 md:py-5">
+          <Link
+            to="/"
+            className={`group flex flex-col items-start rounded-sm transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${markText}`}
+          >
+            <span className="font-display text-[1.35rem] font-semibold leading-none tracking-[0.18em] uppercase sm:text-[1.6rem]">
+              {restaurant?.name ?? ''}
+            </span>
+            {restaurant?.city && (
+              <span className={`mt-1.5 text-[10px] font-medium uppercase tracking-[0.32em] ${solid ? 'text-stone' : 'text-gold-light'}`}>
+                {SITE_CONFIG.businessTypeLabel} · {restaurant.city}
+              </span>
+            )}
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden xl:flex items-center gap-9">
             {NAV_LINKS.map((link) => {
-              const navKey = link.path === '/' ? 'home' : link.path.slice(1)
+              const active = location.pathname === link.path
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`text-sm uppercase tracking-wider transition-colors ${
-                    location.pathname === link.path
-                      ? 'text-gold'
-                      : 'text-cream/80 hover:text-cream'
+                  aria-current={active ? 'page' : undefined}
+                  className={`group relative py-1.5 text-[11px] font-medium uppercase tracking-[0.26em] transition-colors duration-300 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
+                    active ? activeText : solidText
                   }`}
                 >
-                  {t(`nav.${navKey}`)}
+                  {t(link.labelKey)}
+                  <span
+                    className={`absolute -bottom-0.5 left-0 right-0 h-px bg-current transition-transform duration-500 origin-left ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                    }`}
+                  />
                 </Link>
               )
             })}
-            <LanguageSelector />
-            <Link to="/reservations" className="btn-gold text-xs py-2.5 px-5">
+            <LanguageSelector tone={solid ? 'charcoal' : 'cream'} />
+            <Link to="/reservations" className="btn-gold !px-6 !py-3">
               {t('nav.reserveTable')}
             </Link>
           </div>
 
-          <div className="flex items-center gap-3 lg:hidden">
-            <LanguageSelector />
+          <div className="flex items-center gap-4 xl:hidden">
+            <LanguageSelector tone={solid ? 'charcoal' : 'cream'} />
             <button
               type="button"
-              className="text-cream p-2"
+              className={`p-2.5 rounded-sm transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${markText}`}
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={isOpen}
@@ -78,29 +118,74 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-charcoal border-t border-charcoal-light/30 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+            className="xl:hidden fixed inset-0 z-50 flex flex-col bg-charcoal text-cream"
           >
-            <div className="px-4 py-6 space-y-1">
-              {NAV_LINKS.map((link) => {
-                const navKey = link.path === '/' ? 'home' : link.path.slice(1)
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`block py-3 text-sm uppercase tracking-wider ${
-                      location.pathname === link.path ? 'text-gold' : 'text-cream/80'
-                    }`}
-                  >
-                    {t(`nav.${navKey}`)}
-                  </Link>
-                )
-              })}
-              <Link to="/reservations" className="btn-gold w-full mt-4 text-center">
-                {t('nav.reserveTable')}
-              </Link>
+            <div className="container-site flex items-center justify-between py-4 md:py-5">
+              <span className="font-display text-[1.35rem] font-semibold leading-none tracking-[0.18em] uppercase text-cream">
+                {restaurant?.name ?? ''}
+              </span>
+              <button
+                type="button"
+                className="p-2.5 rounded-sm text-cream transition-colors hover:text-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                onClick={() => setIsOpen(false)}
+                aria-label={t('nav.closeMenu')}
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <motion.nav
+              className="container-site flex flex-1 flex-col justify-center"
+              aria-label={t('nav.mainNavigation')}
+            >
+              <ul className="space-y-1">
+                {NAV_LINKS.map((link, index) => {
+                  const active = location.pathname === link.path
+                  return (
+                    <motion.li
+                      key={link.path}
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.06 * index + 0.1, duration: 0.5, ease: EASE }}
+                    >
+                      <Link
+                        to={link.path}
+                        aria-current={active ? 'page' : undefined}
+                        className={`group flex items-baseline gap-4 py-2.5 font-display text-3xl font-medium tracking-wide transition-colors duration-300 sm:text-4xl rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
+                          active ? 'text-gold-light' : 'text-cream/90 hover:text-gold-light'
+                        }`}
+                      >
+                        <span className="text-xs font-body tracking-[0.3em] text-stone-light group-hover:text-gold-light transition-colors">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        {t(link.labelKey)}
+                      </Link>
+                    </motion.li>
+                  )
+                })}
+              </ul>
+
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, duration: 0.5, ease: EASE }}
+                className="mt-12 border-t border-cream/15 pt-10"
+              >
+                <Link to="/reservations" className="btn-gold w-full justify-between sm:w-auto sm:px-10">
+                  {t('nav.reserveTable')}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </motion.div>
+            </motion.nav>
+
+            <div className="container-site pb-10">
+              <p className={`label-micro-muted ${solid ? '' : ''}`}>
+                {restaurant ? `${restaurant.city}, ${restaurant.country}` : ''}
+              </p>
             </div>
           </motion.div>
         )}
