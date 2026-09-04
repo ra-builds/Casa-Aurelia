@@ -93,7 +93,7 @@ equivalent can be done elsewhere.
   ```bash
   cd /opt/casaaurelia/backend
   ./venv/bin/python -m alembic upgrade head
-  ./venv/bin/python -m alembic current    # must show: 007_allergen_system (head)
+  ./venv/bin/python -m alembic current    # must show: 009_closures (head)
   ```
 - **OPERATOR-REQUIRED**: take a fresh backup immediately before migrating a
   previously populated DB (see `docs/Backup_Restore.md`).

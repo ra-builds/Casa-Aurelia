@@ -173,7 +173,7 @@ venv/bin/python -m alembic upgrade head
 ```
 
 Keep a fresh DB backup immediately before migrating (see `Backup_Restore.md`). The
-migration chain is linear and its head is `007_allergen_system`.
+migration chain is linear and its head is `009_closures`.
 
 ## Verifying a deployment
 
