@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -18,14 +18,14 @@ interface Props {
   sizes?: string
 }
 
-const HIDDEN = { clipPath: 'inset(0% 0% 100% 0%)', scale: 1.05 }
-const OPEN = { clipPath: 'inset(0% 0% 0% 0%)', scale: 1 }
+const HIDDEN = { opacity: 0, scale: 1.05 }
+const OPEN = { opacity: 1, scale: 1 }
 
 /**
  * Robust food photography module with a premium fallback instead of broken
  * icons. While an image loads (or when it is missing / fails), a quiet ivory
- * sheet shows the Casa Aurelia monogram. Once loaded, the photograph unrolls
- * upward from a gentle pre-zoom. Reduced-motion users skip the clip reveal.
+ * sheet shows the Casa Aurelia monogram. Once loaded, the photograph fades in
+ * from a gentle pre-zoom. Reduced-motion users skip the reveal.
  */
 export default function MenuImage({
   src,
@@ -41,8 +41,11 @@ export default function MenuImage({
 }: Props) {
   const [status, setStatus] = useState<Status>(() => (src ? 'loading' : 'empty'))
   const reduced = !!useReducedMotion()
+  const prevSrcRef = useRef(src)
 
   useEffect(() => {
+    if (prevSrcRef.current === src) return
+    prevSrcRef.current = src
     setStatus(src ? 'loading' : 'empty')
   }, [src])
 

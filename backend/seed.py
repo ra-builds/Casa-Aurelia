@@ -30,8 +30,8 @@ UNSPLASH_BASE = "https://images.unsplash.com/photo-{photo_id}?auto=format&fit=cr
 # Curated food photography (verified live URLs) seeded into menu items.
 # Admin uploads replace these per item; backfill only ever fills NULL image_url.
 DISH_IMAGES = {
-    "Burrata Pugliese": "1621072156002-e2fccdc0b176",
-    "Carpaccio di Manzo": "1623479322729-28b25c16b011",
+    "Burrata Pugliese": "1767441357990-4c6d05ce79af",
+    "Carpaccio di Manzo": "1769638913675-49d0fc2ca54c",
     "Polpo alla Griglia": "1598866594230-a7c12756260f",
     "Bruschetta al Pomodoro": "1572695157366-5e585ab2b69f",
     "Tagliatelle al Tartufo": "1473093295043-cdd812d0e601",
