@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.models.restaurant import Restaurant
+from app.schemas.restaurant import RestaurantUpdate
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -53,3 +54,15 @@ def get_social_links(db: Session) -> dict | None:
         except (json.JSONDecodeError, TypeError):
             return None
     return None
+
+
+def update_restaurant(db: Session, data: RestaurantUpdate) -> Restaurant:
+    restaurant = get_or_create_restaurant(db)
+    for field, value in data.model_dump(exclude_unset=True).items():
+        if field == "social_links":
+            restaurant.social_links = json.dumps(value) if value is not None else None
+        else:
+            setattr(restaurant, field, value)
+    db.commit()
+    db.refresh(restaurant)
+    return restaurant

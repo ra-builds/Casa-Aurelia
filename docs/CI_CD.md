@@ -35,6 +35,26 @@ fresh, temporary database):
 7. Specs: `npm test`
 8. Type-check + production build: `npm run build` (runs `tsc -b && vite build`)
 
+### E2E / cross-browser (`frontend/`, `backend/run_e2e.py`)
+The `e2e` job installs the backend requirements and the three Playwright browsers,
+then runs the full E2E suite (Chromium primary) and the cross-browser smoke
+(Chromium + Firefox + WebKit). It uses the same disposable launcher as local
+development: `backend/run_e2e.py` creates a throwaway SQLite database, forces SMTP
+off, and seeds the admin from the environment.
+
+### Migration integrity (part of the backend job)
+Run on a fresh disposable SQLite database (`DATABASE_URL` pointed at a temp file):
+`python -m alembic upgrade head`, then assert `python -m alembic heads` yields
+exactly one `(head)` (currently `009_closures`). No developer database is used.
+
+### CI secrets
+The E2E job's admin credentials come from repository secrets only:
+- `E2E_ADMIN_EMAIL`
+- `E2E_ADMIN_PASSWORD` (≥ 8 characters)
+
+`backend/run_e2e.py` refuses to start when either is missing, so CI fails clearly
+instead of degrading. Credentials are never defaulted, committed, or echoed.
+
 ### Repository / security
 9. Ensure no secrets are committed: `.env*` files are git-ignored; treat any diff
    touching `backend/.env` as a hard failure.

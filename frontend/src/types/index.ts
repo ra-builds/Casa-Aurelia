@@ -90,6 +90,15 @@ export interface ContactSubmitResponse {
   email_sent: boolean
 }
 
+export interface ContactMessage {
+  id: number
+  name: string
+  email: string
+  subject: string
+  message: string
+  created_at: string
+}
+
 export interface AvailabilityResponse {
   available: boolean
   remaining_capacity: number
@@ -165,4 +174,21 @@ export interface Restaurant {
   capacity: number
   social_links: SocialLinks | null
   logo_url: string | null
+}
+
+export interface RestaurantUpdate {
+  name?: string
+  tagline?: string | null
+  address?: string
+  city?: string
+  country?: string
+  phone?: string
+  email?: string
+  currency?: string
+  lunch_hours?: string
+  dinner_hours?: string
+  closed_day?: string
+  capacity?: number
+  social_links?: SocialLinks | null
+  logo_url?: string | null
 }

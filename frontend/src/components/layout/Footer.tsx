@@ -116,15 +116,15 @@ export default function Footer() {
             <h3 className="label-micro-light">{t('footer.hours')}</h3>
             <div className="mt-7 space-y-3 text-sm text-stone-light">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-stone">{t('footer.lunch')}</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-stone-light">{t('footer.lunch')}</p>
                 <p className="mt-1">{restaurant?.lunch_hours ?? ''}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-stone">{t('footer.dinner')}</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-stone-light">{t('footer.dinner')}</p>
                 <p className="mt-1">{restaurant?.dinner_hours ?? ''}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-stone">{t('footer.closed')}</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-stone-light">{t('footer.closed')}</p>
                 <p className="mt-1">{closedDayLabel}</p>
               </div>
             </div>
@@ -133,10 +133,10 @@ export default function Footer() {
 
         <div className="hairline-light mt-16" />
         <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-xs text-stone">
+          <p className="text-xs text-stone-light">
             &copy; {formatNumber(month)} {restaurant?.name ?? ''}. {t('footer.allRightsReserved')}
           </p>
-          <Link to="/admin" className="text-xs text-stone transition-colors hover:text-stone-light rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
+          <Link to="/admin" className="text-xs text-stone-light transition-colors hover:text-stone rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
             {t('footer.staffLogin')}
           </Link>
         </div>

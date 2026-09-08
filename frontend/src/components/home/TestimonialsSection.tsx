@@ -36,7 +36,7 @@ export default function TestimonialsSection() {
                       &ldquo;{t(`home.testimonials.items.${key}.text`)}&rdquo;
                     </p>
                   </blockquote>
-                  <figcaption className="mt-7 border-t border-charcoal/10 pt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-stone-light">
+                  <figcaption className="mt-7 border-t border-charcoal/10 pt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-stone">
                     {t(`home.testimonials.items.${key}.name`)}
                   </figcaption>
                 </figure>

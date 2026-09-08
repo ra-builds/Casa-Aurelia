@@ -313,7 +313,7 @@ export default function MenuPage() {
                 <PenLine size={13} strokeWidth={1.5} aria-hidden="true" />
                 {t('menu.writtenDailyTag')}
               </p>
-              <span className="hidden font-display text-lg italic text-stone-light sm:block" aria-hidden="true">
+              <span className="hidden font-display text-lg italic text-stone sm:block" aria-hidden="true">
                 {placeName}
               </span>
             </div>
@@ -367,7 +367,7 @@ export default function MenuPage() {
                     <section aria-labelledby={`menu-cat-${cat.slug}`}>
                       <div className="mb-10 flex items-end gap-6 md:mb-12">
                         <span
-                          className="hidden font-display text-4xl text-gold/50 sm:block md:text-5xl"
+                          className="hidden font-display text-4xl text-gold-deep sm:block md:text-5xl"
                           aria-hidden="true"
                         >
                           {ROMAN[ci] ?? ci + 1}

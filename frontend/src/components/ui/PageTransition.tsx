@@ -15,7 +15,9 @@ export default function PageTransition() {
     <AnimatePresence mode="wait" initial={false}>
       <motion.main
         key={location.pathname}
-        className="flex-1"
+        id="main"
+        tabIndex={-1}
+        className="flex-1 focus:outline-none"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}

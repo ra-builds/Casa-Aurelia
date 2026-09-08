@@ -11,7 +11,8 @@
     "reserveTable": "Réserver une Table",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
-    "mainNavigation": "Navigation principale"
+    "mainNavigation": "Navigation principale",
+    "skipToMain": "Aller au contenu principal"
   },
   "home": {
     "welcome": "Bienvenue à Casa Aurelia",
@@ -439,10 +440,12 @@
     "loginFailed": "Échec de la connexion",
     "dashboardTitle": "Tableau de Bord Admin",
     "logout": "Déconnexion",
-"tab": {
-      "reservations": "RAcservations",
+    "tab": {
+      "reservations": "Réservations",
       "menu": "Menu",
       "closures": "Clôtures",
+      "messages": "Messages",
+      "restaurant": "Restaurant",
       "items": "Plats"
     },
     "searchPlaceholder": "Rechercher par nom, e-référence...",
@@ -507,6 +510,50 @@
       "delete": "Supprimer",
       "deleteConfirm": "Retirer la fermeture du {{date}} ? Les réservations seront de nouveau acceptées à cette date.",
       "deleteFor": "Retirer la fermeture du {{date}}"
+    },
+    "messages": {
+      "kicker": "Casa Aurelia · Messages",
+      "title": "Messages de Contact",
+      "subtitle": "Messages envoyés via le formulaire de contact public, du plus récent au plus ancien.",
+      "loading": "Chargement des messages...",
+      "empty": "Aucun message pour le moment.",
+      "loadFailed": "Échec du chargement des messages.",
+      "name": "Expéditeur",
+      "email": "E-mail",
+      "subject": "Objet",
+      "date": "Date",
+      "message": "Message"
+    },
+    "restaurant": {
+      "kicker": "Casa Aurelia · Informations du Restaurant",
+      "title": "Informations du Restaurant",
+      "subtitle": "Modifiez les informations affichées sur le site public, le processus de réservation et la page de contact.",
+      "loading": "Chargement des informations du restaurant...",
+      "saving": "Enregistrement...",
+      "save": "Enregistrer les Modifications",
+      "saved": "Informations du restaurant enregistrées.",
+      "saveFailed": "Échec de l'enregistrement des informations.",
+      "loadFailed": "Échec du chargement des informations.",
+      "retry": "Réessayer",
+      "name": "Nom",
+      "tagline": "Slogan",
+      "address": "Adresse",
+      "city": "Ville",
+      "country": "Pays",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "emailHint": "Cette adresse reçoit les notifications de réservation et de contact.",
+      "currency": "Devise",
+      "lunchHours": "Horaires du Déjeuner",
+      "dinnerHours": "Horaires du Dîner",
+      "closedDay": "Jour de Fermeture",
+      "capacity": "Capacité",
+      "socialLinks": "Réseaux Sociaux",
+      "instagram": "URL Instagram",
+      "facebook": "URL Facebook",
+      "tripadvisor": "URL TripAdvisor",
+      "logoUrl": "URL du Logo",
+      "logoUrlHint": "Une URL d'image publique. Aucun téléversement disponible."
     },
     "menu": {
       "title": "Gestion du Menu",

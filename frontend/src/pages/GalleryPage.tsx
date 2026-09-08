@@ -230,7 +230,6 @@ function LightboxDialog({
       <motion.div
         className="absolute inset-0 flex items-center justify-center px-16 md:px-28"
         style={{ touchAction: 'pan-y' }}
-        onClick={(e) => e.stopPropagation()}
         onPanEnd={handlePanEnd}
       >
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -259,6 +258,7 @@ function LightboxDialog({
                 alt={image.alt}
                 onLoad={() => setStatus('loaded')}
                 onError={() => setStatus('error')}
+                onClick={(e) => e.stopPropagation()}
                 animate={{ opacity: status === 'loaded' ? 1 : 0 }}
                 transition={{ duration: 0.6, ease: EASE }}
                 className="max-h-[72vh] max-w-[90vw] object-contain md:max-h-[76vh]"
@@ -401,7 +401,7 @@ export default function GalleryPage() {
                 {t('gallery.subtitle')}
               </p>
               <span
-                className="hidden font-display text-lg italic text-stone-light sm:block"
+                className="hidden font-display text-lg italic text-stone sm:block"
                 aria-hidden="true"
               >
                 {placeName}

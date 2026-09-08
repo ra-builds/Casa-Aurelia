@@ -15,6 +15,8 @@ import ErrorMessage from '../components/ui/ErrorMessage'
 import MenuManager from '../components/admin/MenuManager'
 import CategoryManager from '../components/admin/CategoryManager'
 import ClosuresManager from '../components/admin/ClosuresManager'
+import MessagesManager from '../components/admin/MessagesManager'
+import RestaurantManager from '../components/admin/RestaurantManager'
 import { useAuth } from '../hooks/useAuth'
 import { usePageSeo } from '../hooks/usePageTitle'
 import { reservationApi } from '../services/api'
@@ -107,7 +109,7 @@ function StatCard({ label, value, icon: Icon }: { label: string; value: number; 
 function Dashboard() {
   const { user, logout } = useAuth()
   const { t } = useTranslation()
-  const [tab, setTab] = useState<'reservations' | 'menu' | 'closures'>('reservations')
+  const [tab, setTab] = useState<'reservations' | 'menu' | 'closures' | 'messages' | 'restaurant'>('reservations')
   const [menuTab, setMenuTab] = useState<'categories' | 'items'>('items')
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [stats, setStats] = useState<ReservationStats | null>(null)
@@ -267,11 +269,45 @@ function Dashboard() {
           >
             {t('admin.tab.closures')}
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'messages'}
+            onClick={() => setTab('messages')}
+            className={`px-5 py-3 text-sm uppercase tracking-wider transition-colors border-b-2 -mb-px ${
+              tab === 'messages' ? 'border-gold text-gold-deep font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
+            }`}
+          >
+            {t('admin.tab.messages')}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={tab === 'restaurant'}
+            onClick={() => setTab('restaurant')}
+            className={`px-5 py-3 text-sm uppercase tracking-wider transition-colors border-b-2 -mb-px ${
+              tab === 'restaurant' ? 'border-gold text-gold-deep font-medium' : 'border-transparent text-stone hover:text-charcoal-light'
+            }`}
+          >
+            {t('admin.tab.restaurant')}
+          </button>
         </div>
 
         {tab === 'closures' && (
           <div>
             <ClosuresManager />
+          </div>
+        )}
+
+        {tab === 'messages' && (
+          <div>
+            <MessagesManager />
+          </div>
+        )}
+
+        {tab === 'restaurant' && (
+          <div>
+            <RestaurantManager />
           </div>
         )}
 

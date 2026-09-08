@@ -35,7 +35,7 @@ export default function RestaurantIntroSection() {
             <ImageReveal
               src={IMAGES.intro}
               alt={t('home.intro.imageAlt')}
-              aspect="aspect-[4/5] lg:w-[70vw] lg:max-w-[34rem]"
+              aspect="aspect-[4/5] lg:w-full lg:max-w-[34rem]"
             />
           </Reveal>
         </div>

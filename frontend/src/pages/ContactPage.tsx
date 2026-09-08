@@ -169,7 +169,7 @@ export default function ContactPage() {
                   objectPosition="center"
                   sizes="(min-width: 1024px) 48vw, 96vw"
                 />
-                <p className="mt-4 text-right text-sm italic text-stone-light">
+                <p className="mt-4 text-right text-sm italic text-stone">
                   {placeName} — {t('contact.phoneLabel')}
                 </p>
               </Reveal>
@@ -218,6 +218,7 @@ export default function ContactPage() {
                 </dd>
               </div>
               <div className="flex justify-between border-t border-b border-charcoal/15 py-6">
+                <dd>
                 <a
                   href={mapsHref}
                   target="_blank"
@@ -228,6 +229,7 @@ export default function ContactPage() {
                   {t('contact.getDirections')}
                   <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
                 </a>
+                </dd>
               </div>
             </dl>
 
@@ -368,48 +370,56 @@ export default function ContactPage() {
                     <input
                       id="name"
                       type="text"
+                      required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="input-field bg-transparent"
                       aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'name-error' : undefined}
                     />
-                    {errors.name && <p className="text-red-600 text-xs mt-1">{errors.name}</p>}
+                    {errors.name && <p id="name-error" role="alert" className="text-red-600 text-xs mt-1">{errors.name}</p>}
                   </div>
                   <div>
                     <label htmlFor="email" className="label-field">{t('contact.email')}</label>
                     <input
                       id="email"
                       type="email"
+                      required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       className="input-field bg-transparent"
                       aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'email-error' : undefined}
                     />
-                    {errors.email && <p className="text-red-600 text-xs mt-1">{errors.email}</p>}
+                    {errors.email && <p id="email-error" role="alert" className="text-red-600 text-xs mt-1">{errors.email}</p>}
                   </div>
                   <div>
                     <label htmlFor="subject" className="label-field">{t('contact.subject')}</label>
                     <input
                       id="subject"
                       type="text"
+                      required
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
                       className="input-field bg-transparent"
                       aria-invalid={!!errors.subject}
+                      aria-describedby={errors.subject ? 'subject-error' : undefined}
                     />
-                    {errors.subject && <p className="text-red-600 text-xs mt-1">{errors.subject}</p>}
+                    {errors.subject && <p id="subject-error" role="alert" className="text-red-600 text-xs mt-1">{errors.subject}</p>}
                   </div>
                   <div>
                     <label htmlFor="message" className="label-field">{t('contact.message')}</label>
                     <textarea
                       id="message"
                       rows={5}
+                      required
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                       className="input-field resize-none bg-transparent"
                       aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
                     />
-                    {errors.message && <p className="text-red-600 text-xs mt-1">{errors.message}</p>}
+                    {errors.message && <p id="message-error" role="alert" className="text-red-600 text-xs mt-1">{errors.message}</p>}
                   </div>
                   <Button type="submit" variant="primary" disabled={submitting}>
                     {submitting ? t('contact.sending') : t('contact.send')}

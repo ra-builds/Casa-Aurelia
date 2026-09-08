@@ -85,11 +85,11 @@ export default function MenuImage({
         }`}
       >
         <div className="flex flex-col items-center gap-2.5 text-center">
-          <span className="font-display text-[clamp(0.85rem,1.4vw,1.3rem)] tracking-[0.42em] text-wine/45">
+          <span className="font-display text-[clamp(0.85rem,1.4vw,1.3rem)] tracking-[0.42em] text-wine/75">
             CASA AURELIA
           </span>
           <span className="h-px w-10 bg-gold/40" aria-hidden="true" />
-          <span className="font-display text-[clamp(0.85rem,1.4vw,1.3rem)] tracking-[0.42em] text-wine/45">
+          <span className="font-display text-[clamp(0.85rem,1.4vw,1.3rem)] tracking-[0.42em] text-wine/75">
             IL MENÙ
           </span>
         </div>

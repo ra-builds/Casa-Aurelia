@@ -22,6 +22,16 @@ class ReservationCreate(BaseModel):
     guests: int = Field(ge=1, le=12)
     special_requests: str | None = Field(default=None, max_length=1000)
 
+    @field_validator("first_name", "last_name")
+    @classmethod
+    def validate_person_name(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("Name cannot be blank or whitespace-only")
+        if re.search(r"[\x00-\x1f\x7f]", v):
+            raise ValueError("Name cannot contain control characters")
+        return v
+
     @field_validator("phone")
     @classmethod
     def validate_phone(cls, v: str) -> str:

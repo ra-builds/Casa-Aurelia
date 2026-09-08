@@ -5,6 +5,7 @@ import type {
   Closure,
   ClosureInput,
   ContactFormData,
+  ContactMessage,
   ContactSubmitResponse,
   MenuItem,
   MenuItemInput,
@@ -15,12 +16,22 @@ import type {
   ReservationFormData,
   ReservationStats,
   Restaurant,
+  RestaurantUpdate,
 } from '../types'
 import { apiRequest } from '../utils/helpers'
 import { setAccessToken } from '../utils/authToken'
 
 export const restaurantApi = {
   getRestaurant: () => apiRequest<Restaurant>('/api/restaurant'),
+}
+
+export const adminRestaurantApi = {
+  get: () => apiRequest<Restaurant>('/api/admin/restaurant'),
+  update: (data: RestaurantUpdate) =>
+    apiRequest<Restaurant>('/api/admin/restaurant', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
 }
 
 export const menuApi = {
@@ -149,6 +160,10 @@ export const contactApi = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+}
+
+export const adminMessageApi = {
+  getAll: () => apiRequest<ContactMessage[]>('/api/contact/messages'),
 }
 
 export const closureApi = {

@@ -17,9 +17,12 @@ import { getWeekdayFromDateOnly } from '../utils/date'
 import { GALLERY_CLOSING_IMAGE, gallerySrc } from '../utils/galleryImages'
 import type { ReservationFormData } from '../types'
 
+// Indices follow JavaScript Date.getDay() (0=Sunday..6=Saturday), the same
+// coordinate returned by `getWeekdayFromDateOnly`, so a date's weekday can be
+// compared directly against the restaurant's closed day.
 const WEEKDAY_INDEX: Record<string, number> = {
-  monday: 0, tuesday: 1, wednesday: 2, thursday: 3,
-  friday: 4, saturday: 5, sunday: 6,
+  monday: 1, tuesday: 2, wednesday: 3, thursday: 4,
+  friday: 5, saturday: 6, sunday: 0,
 }
 
 const TOTAL_STEPS = 5
@@ -218,6 +221,7 @@ export default function ReservationsPage() {
                         <input
                           id="date"
                           type="date"
+                          required
                           min={getMinDate()}
                           value={form.reservation_date}
                           onChange={(e) => setForm({ ...form, reservation_date: e.target.value })}
@@ -330,6 +334,7 @@ export default function ReservationsPage() {
                             <input
                               id="first_name"
                               type="text"
+                              required
                               autoComplete="given-name"
                               value={form.first_name}
                               onChange={(e) => setForm({ ...form, first_name: e.target.value })}
@@ -346,6 +351,7 @@ export default function ReservationsPage() {
                             <input
                               id="last_name"
                               type="text"
+                              required
                               autoComplete="family-name"
                               value={form.last_name}
                               onChange={(e) => setForm({ ...form, last_name: e.target.value })}
@@ -364,6 +370,7 @@ export default function ReservationsPage() {
                             <input
                               id="email"
                               type="email"
+                              required
                               autoComplete="email"
                               value={form.email}
                               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -380,6 +387,7 @@ export default function ReservationsPage() {
                             <input
                               id="phone"
                               type="tel"
+                              required
                               autoComplete="tel"
                               value={form.phone}
                               onChange={(e) => setForm({ ...form, phone: e.target.value })}

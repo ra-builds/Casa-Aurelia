@@ -133,7 +133,7 @@ function DishSpread({ dish, spec, roman, t, currency }: DishSpreadProps) {
           <Reveal>
             <p
               aria-hidden="true"
-              className={`font-display text-[clamp(2.4rem,4vw,3.75rem)] leading-none text-gold/40 ${
+              className={`font-display text-[clamp(2.4rem,4vw,3.75rem)] leading-none text-gold-deep ${
                 spec.watermark ? 'lg:hidden' : ''
               }`}
             >

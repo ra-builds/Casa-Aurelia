@@ -123,7 +123,7 @@ export default function ReservationLookupPage() {
                       { n: 'III', text: t('reservation.lookup.indexStep3') },
                     ].map((s) => (
                       <li key={s.n} className="flex items-start gap-5">
-                        <span aria-hidden="true" className="font-display text-[1.6rem] leading-none text-gold/40">{s.n}</span>
+                        <span aria-hidden="true" className="font-display text-[1.6rem] leading-none text-gold-deep">{s.n}</span>
                         <span className="mt-1 text-sm leading-[1.6] text-stone">{s.text}</span>
                       </li>
                     ))}

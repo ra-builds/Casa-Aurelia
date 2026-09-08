@@ -71,7 +71,7 @@ export default function HoursLocationSection({ restaurant }: Props) {
                 <Phone size={14} aria-hidden="true" /> {restaurant?.phone ?? ''}
               </a>
               <div className="mt-auto pt-9">
-                <div className="flex h-40 items-center justify-center border border-charcoal/10 bg-parchment/60 text-sm text-stone-light">
+                <div className="flex h-40 items-center justify-center border border-charcoal/10 bg-parchment/60 text-sm text-stone">
                   {t('home.location.mapLabel')}
                 </div>
               </div>

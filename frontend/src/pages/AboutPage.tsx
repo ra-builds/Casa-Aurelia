@@ -109,7 +109,7 @@ export default function AboutPage() {
                   <blockquote className="mt-6 font-display text-[1.75rem] italic leading-[1.35] text-charcoal-light md:text-[2.1rem]">
                     {t('about.story.pull')}
                   </blockquote>
-                  <figcaption className="mt-5 text-[10px] uppercase tracking-[0.26em] text-stone-light">
+                  <figcaption className="mt-5 text-[10px] uppercase tracking-[0.26em] text-stone">
                     {placeName}
                   </figcaption>
                 </figure>
@@ -197,7 +197,7 @@ export default function AboutPage() {
             </div>
             <div className="md:col-span-6 md:col-start-7">
               <Reveal delay={0.18}>
-                <span className="font-display text-[clamp(4rem,8vw,7rem)] leading-none text-parchment" aria-hidden="true">
+                <span className="font-display text-[clamp(4rem,8vw,7rem)] leading-none text-gold-deep" aria-hidden="true">
                   04
                 </span>
               </Reveal>
@@ -285,7 +285,7 @@ export default function AboutPage() {
               aspect="aspect-[21/9]"
               objectPosition="center 45%"
             />
-            <p className="mt-4 text-center text-sm italic text-stone-light">
+            <p className="mt-4 text-center text-sm italic text-stone">
               {t('gallery.captions.g01')}
             </p>
           </Reveal>

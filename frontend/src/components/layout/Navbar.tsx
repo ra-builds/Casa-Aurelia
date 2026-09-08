@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Menu, X, ArrowRight } from 'lucide-react'
@@ -11,7 +11,7 @@ import { NAV_LINKS } from '../../utils/constants'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const DARK_TOP_ROUTES = new Set([
-  '/', '/menu', '/about', '/signatures', '/gallery', '/reservations', '/contact',
+  '/', '/about', '/signatures', '/reservations', '/contact',
 ])
 
 export default function Navbar() {
@@ -20,6 +20,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const wasOpenRef = useRef(false)
 
   const darkTop = DARK_TOP_ROUTES.has(location.pathname)
   const solid = scrolled || !darkTop
@@ -48,6 +50,16 @@ export default function Navbar() {
     }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen])
+
+  useEffect(() => {
+    const wasOpen = wasOpenRef.current
+    wasOpenRef.current = isOpen
+    if (!wasOpen || isOpen) return
+    const timeout = window.setTimeout(() => {
+      triggerRef.current?.focus()
+    }, 320)
+    return () => window.clearTimeout(timeout)
   }, [isOpen])
 
   const solidText = solid ? 'text-charcoal hover:text-wine' : 'text-cream/85 hover:text-cream'
@@ -103,6 +115,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4 xl:hidden">
             <LanguageSelector tone={solid ? 'charcoal' : 'cream'} />
             <button
+              ref={triggerRef}
               type="button"
               className={`p-2.5 rounded-sm transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${markText}`}
               onClick={() => setIsOpen(!isOpen)}
@@ -183,7 +196,7 @@ export default function Navbar() {
             </motion.nav>
 
             <div className="container-site pb-10">
-              <p className={`label-micro-muted ${solid ? '' : ''}`}>
+              <p className="label-micro-muted text-stone-light">
                 {restaurant ? `${restaurant.city}, ${restaurant.country}` : ''}
               </p>
             </div>

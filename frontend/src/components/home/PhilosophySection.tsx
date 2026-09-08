@@ -29,7 +29,7 @@ export default function PhilosophySection() {
             <ImageReveal
               src={IMAGES.philosophy}
               alt={t('home.philosophy.imageAlt')}
-              aspect="aspect-[4/5] lg:w-[70vw] lg:max-w-[34rem]"
+              aspect="aspect-[4/5] lg:w-full lg:max-w-[34rem]"
             />
           </Reveal>
         </div>

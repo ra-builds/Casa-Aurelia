@@ -11,14 +11,14 @@
   --color-wine-light: #a03a45;
   --color-gold: #b2915a;
   --color-gold-light: #c8a878;
-  --color-gold-deep: #8f7242;
+  --color-gold-deep: #7a5d34;
   --color-cream: #faf6ee;
   --color-ivory: #f5efe3;
   --color-parchment: #efe6d5;
   --color-cream-dark: #e8ddc9;
   --color-charcoal: #1a1512;
   --color-charcoal-light: #2b241d;
-  --color-stone: #6f6458;
+  --color-stone: #64594d;
   --color-stone-light: #a3968a;
 
   --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
@@ -85,7 +85,7 @@
     @apply inline-block font-body text-[11px] font-medium uppercase tracking-[0.28em] text-gold-light;
   }
   .label-micro-muted {
-    @apply inline-block font-body text-[11px] font-medium uppercase tracking-[0.28em] text-stone-light;
+    @apply inline-block font-body text-[11px] font-medium uppercase tracking-[0.28em] text-stone;
   }
 
   .hairline {
