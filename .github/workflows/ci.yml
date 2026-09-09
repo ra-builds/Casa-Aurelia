@@ -10,6 +10,12 @@ on:
 permissions:
   contents: read
 
+# Cancel superseded runs on the same branch/PR so a newer push cuts off an older,
+# still-running one instead of wasting runner-minutes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   backend:
     name: Backend (tests)
@@ -140,5 +146,5 @@ jobs:
           path: |
             frontend/playwright-report/
             frontend/test-results/
-          if-no-files-found: ignore
+          if-no-files-found: warn
           retention-days: 7
