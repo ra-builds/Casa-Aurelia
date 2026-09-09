@@ -20,7 +20,7 @@ metadata.
 | Capability | Evidence |
 |---|---|
 | **Responsive** | Fluid layout (Tailwind breakpoints `sm`→`xl`), mobile nav drawer, responsive grids/cards/tables |
-| **Multilingual** | 5 locales (EN, IT, FR, DE, ES), identical key parity (472×5), language selector in the navbar on every screen |
+| **Multilingual** | 5 locales (EN, IT, FR, DE, ES), identical key parity (538×5), language selector in the navbar on every screen |
 | **Online reservations** | 5-step flow (date → guests → time → details → review), real-time availability check, confirmation + lookup + self-service cancel |
 | **Dynamic menu** | Menu, categories, items, prices, images, availability, dietary/allergen info — all loaded from the API |
 | **Admin dashboard** | Secure login → KPI stats, reservation management (search/filter/confirm/cancel/delete), menu + category management |
@@ -96,8 +96,10 @@ throwaway demo password set only in your local `.env`, and rotate/clear it after
 
 ## Visual QA / screenshots
 
-Manual or browser-based visual QA was **not** performed in the authoring environment that
-produced this guide. Before presenting:
+Automated visual and responsive QA is implemented and runs through CI: the Playwright suite
+covers full-page visual snapshots and viewport-related checks (`tests/visualResponsive.spec.ts`),
+and a cross-browser smoke runs across Chromium, Firefox, and WebKit. For portfolio presentation,
+do the following as a **supplemental** operator pass:
 
 - Run both demonstration flows above in a real browser (desktop + a mobile viewport /
   device tools).
@@ -105,4 +107,5 @@ produced this guide. Before presenting:
 - Verify the homepage hero shows the live city, the reservation flow completes end-to-end, and
   the language switch is instant across all pages.
 
-**Operator required:** visual verification of the completed presentation.
+**Operator required:** a visual pass on the completed presentation is still recommended on top of
+the automated QA.

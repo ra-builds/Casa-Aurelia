@@ -4,8 +4,8 @@ A polished, production-grade restaurant website built as a **portfolio demonstra
 showcases a complete, data-driven restaurant platform: a responsive public website, a
 multilingual interface, online reservations, a dynamic menu, and an administration dashboard.
 
-> This is the frontend package of the Casa Aurelia project. See the repository root
-> `Phase19_Report.md` and `docs/Demo_Guide.md` for the full portfolio context and a
+> This is the frontend package of the Casa Aurelia project. See the repository
+> [`README.md`](../README.md) for the full project context and `docs/Demo_Guide.md` for a
 > step-by-step demonstration script.
 
 ---
@@ -89,7 +89,7 @@ src/
   config/site.ts             # Static brand config — the template customization point (Phase 17/18)
   contexts/RestaurantContext.tsx  # Live restaurant data (GET /api/restaurant)
   hooks/                      # useAuth, usePageTitle/usePageSeo, useFeaturedDishes
-  i18n/translations/         # en, it, fr, de, es locale files (472×5 parity)
+  i18n/translations/         # en, it, fr, de, es locale files (538×5 parity)
   layouts/MainLayout.tsx     # Navbar + Footer + Suspense + page transitions
   pages/                     # Home, Menu, Signatures, About, Gallery, Reservations,
                              #   Confirmation, ReservationLookup, Contact, Admin, 404
@@ -112,8 +112,7 @@ scripts/generate-seo.mjs     # Build-time robots.txt + sitemap.xml generator
 `src/config/site.ts` is the single source for the **static brand identity** (brand name, default
 title, OG image, business-type label, default currency, reference-code prefix). Live restaurant
 data (name, address, phone, currency, hours, menu, …) is served by the backend and consumed via
-`RestaurantContext`. See the config file comment block and `Phase17_Report.md` / `Phase18_Report.md`
-for the full customization architecture.
+`RestaurantContext`. See the config file comment block for the full customization architecture.
 
 ---
 
@@ -124,7 +123,25 @@ for the full customization architecture.
   boundary (34).
 - `npm run lint` — oxlint.
 - `npm run build` — TypeScript type-check + Vite production build (route-split chunks).
+- `npm run test:e2e` — Playwright E2E suite (132 tests) against a disposable backend
+  (`backend/run_e2e.py`); requires `E2E_ADMIN_EMAIL` / `E2E_ADMIN_PASSWORD`.
+- `npm run test:e2e -- --config=playwright.crossbrowser.config.ts --project=chromium
+  --project=firefox --project=webkit` — cross-browser smoke (Chromium, Firefox, WebKit).
 - `npm audit` — dependency audit (0 vulnerabilities at last run).
 
-> **Note:** Browser / visual QA was not performed in the authoring environment. Run the demo
-> flows from `docs/Demo_Guide.md` in a real browser to verify the presentation.
+### Browser, accessibility & visual QA
+
+Automated browser, accessibility, visual/responsive, and cross-browser QA are covered by the
+Playwright suite and run through CI:
+
+- **Accessibility** — axe-based checks (`tests/accessibility.spec.ts`).
+- **Visual / responsive** — full-page visual snapshots and viewport-related QA
+  (`tests/visualResponsive.spec.ts`).
+- **E2E** — end-to-end user flows: smoke, public navigation, reservation, auth, admin
+  reservations, error edge cases.
+- **Cross-browser** — representative smoke scenarios run across Chromium, Firefox, and WebKit
+  (`playwright.crossbrowser.config.ts`).
+
+GitHub Actions CI (`../.github/workflows/ci.yml`) runs the full E2E suite and the cross-browser
+smoke on every push to `main` and on pull requests. A manual visual review is still useful for
+portfolio presentation, but it is supplemental to the automated QA described above.
