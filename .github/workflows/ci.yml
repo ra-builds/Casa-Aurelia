@@ -41,8 +41,12 @@ jobs:
         # Fresh disposable SQLite database: no application/developer database is
         # ever used. Verifies migrations 001 -> head apply cleanly and that the
         # chain has exactly one head (currently documented as 009_closures).
+        # Importing app.db.database requires SECRET_KEY/ADMIN_PASSWORD, so
+        # disposable CI-only values are supplied here (never used in production).
         env:
           DATABASE_URL: sqlite:////tmp/casaaurelia_ci_migration.db
+          SECRET_KEY: ci-only-non-secret-key-0123456789abcdef
+          ADMIN_PASSWORD: ci-only-admin-password-123
         run: |
           rm -f /tmp/casaaurelia_ci_migration.db*
           python -m alembic upgrade head
