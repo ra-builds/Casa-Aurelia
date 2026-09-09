@@ -85,7 +85,7 @@ export default function Navbar() {
             )}
           </Link>
 
-          <div className="hidden xl:flex items-center gap-9">
+          <div className="hidden xl:flex items-center gap-6">
             {NAV_LINKS.map((link) => {
               const active = location.pathname === link.path
               return (
@@ -93,7 +93,7 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   aria-current={active ? 'page' : undefined}
-                  className={`group relative py-1.5 text-[11px] font-medium uppercase tracking-[0.26em] transition-colors duration-300 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
+                  className={`group relative whitespace-nowrap py-1.5 text-[11px] font-medium uppercase tracking-[0.26em] transition-colors duration-300 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
                     active ? activeText : solidText
                   }`}
                 >
