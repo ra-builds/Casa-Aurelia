@@ -254,7 +254,6 @@ currently publicly deployed**; this repository does not claim a live production 
 - `docs/Production_Deployment.md`, `docs/Deployment_Runbook.md` — deployment
 - `docs/Backup_Restore.md`, `docs/Rollback_Procedures.md` — operations
 - `docs/Security_Headers_CSP_HSTS.md` — security configuration
-- `docs/Maintenance_Support.md` — maintenance considerations
 - `frontend/README.md` — frontend-package-specific development details
 
 ---
