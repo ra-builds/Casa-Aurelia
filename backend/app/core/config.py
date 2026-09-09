@@ -19,6 +19,11 @@ class Settings(BaseSettings):
     admin_email: str = "admin@casaaurelia.it"
     admin_password: str = Field(..., min_length=8)
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    # Comma-separated allow-list of HTTP Host header values the app answers to
+    # (TrustedHostMiddleware). Empty in development -> the local development
+    # hosts are allowed (see trusted_host_list). REQUIRED in production: the app
+    # refuses to boot there without an explicit non-empty value (no "*" fallback).
+    allowed_hosts: str = ""
     restaurant_capacity: int = 40
     upload_dir: str = "uploads"
     max_upload_size_mb: int = 5
@@ -87,16 +92,34 @@ class Settings(BaseSettings):
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
+    @property
+    def trusted_host_list(self) -> list[str]:
+        """Hosts the app is allowed to answer for (TrustedHostMiddleware).
+
+        Parses the comma-separated ALLOWED_HOSTS value. When it is empty, every
+        NON-production environment falls back to the local development hosts
+        (localhost, the loopback IP and the pytest client host "testserver") so
+        local workflows and the isolated test suite keep working. Production
+        never gets a fallback: an empty ALLOWED_HOSTS there is rejected at boot
+        (see the production guard below) instead of silently meaning "*".
+        """
+        explicit = [host.strip().lower() for host in self.allowed_hosts.split(",") if host.strip()]
+        if explicit:
+            return explicit
+        return ["localhost", "127.0.0.1", "testserver"]
+
     @model_validator(mode="after")
     def _reject_placeholder_production_secrets(self):
-        # Production placeholder-secret guard (P1 hardening). In production, the
-        # app MUST refuse to boot while any security-sensitive required secret is
+        # Production boot guards (P1 + P2-0B hardening). In production the app
+        # MUST refuse to start while any security-sensitive required setting is
         # still a known placeholder/default (e.g. the values shipped in
-        # .env.production.example). Development and test environments are
-        # explicitly NOT subject to this guard so local workflows keep working.
+        # .env.production.example), or while ALLOWED_HOSTS is missing entirely
+        # (an explicit host allow-list is mandatory in production).
+        # Development and test environments are explicitly NOT subject to this
+        # guard so local workflows keep working.
         #
         # The check never logs or returns the secret values — it only reports
-        # WHICH setting is a placeholder by name, never its value.
+        # WHICH setting is a placeholder/missing by name, never its value.
         if self.app_env != "production":
             return self
 
@@ -117,11 +140,14 @@ class Settings(BaseSettings):
             )
             if not value or value.lower() in placeholders or "replace_with" in value.lower()
         ]
+        if not self.allowed_hosts.strip():
+            insecure.append("ALLOWED_HOSTS")
         if insecure:
             raise ValueError(
                 "Refusing to start in production: the following required production "
-                f"secret(s) are still placeholder/default values and must be set in "
-                f"the environment: {', '.join(insecure)}. No secret values are logged."
+                f"setting(s) are missing or still placeholder/default values and must "
+                f"be set in the environment: {', '.join(insecure)}. No secret values "
+                "are logged."
             )
         return self
 

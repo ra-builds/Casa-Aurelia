@@ -9,6 +9,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from sqlalchemy import text
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.routers import auth, closures, contact, menu, reservations, restaurant
 from app.core.config import get_settings
@@ -17,6 +18,9 @@ from app.services.image_service import ensure_upload_dirs
 
 settings = get_settings()
 ensure_upload_dirs()
+
+# Production boolean used to gate environment-sensitive behaviour (P2-0B).
+IS_PRODUCTION = settings.app_env == "production"
 
 # Security headers applied to every FastAPI-served response (API + static uploads).
 # Values are safe for API/upload responses. A Content-Security-Policy is intentionally
@@ -46,10 +50,27 @@ app = FastAPI(
     description="Restaurant website and reservation API",
     version="1.0.0",
     lifespan=lifespan,
+    # API documentation policy (P2-0B): the interactive docs (/docs and /redoc)
+    # and the OpenAPI schema endpoint (/openapi.json) are only exposed outside
+    # production. In production they are disabled entirely — GET /api/health is
+    # the production health-check endpoint and always remains available.
+    docs_url=None if IS_PRODUCTION else "/docs",
+    redoc_url=None if IS_PRODUCTION else "/redoc",
+    openapi_url=None if IS_PRODUCTION else "/openapi.json",
 )
 
 app.state.limiter = reservations.limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+# Host-header allow-list (P2-0B). TrustedHostMiddleware rejects any request whose
+# Host header is not in ALLOWED_HOSTS (dev/test fallback: the local hosts handled
+# by trusted_host_list). It is registered first so it runs as the outermost
+# middleware and arbitrates before CORS / rate limiting. www-redirect is disabled:
+# canonicalisation is the reverse proxy's job.
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=settings.trusted_host_list,
+    www_redirect=False,
+)
 app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(

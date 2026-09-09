@@ -44,11 +44,20 @@ ADMIN_EMAIL=admin@...
 ADMIN_PASSWORD=<long random, ≥8 chars>
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 CORS_ORIGINS=https://yourdomain.example
+ALLOWED_HOSTS=casaaurelia.example
 UPLOAD_DIR=/absolute/path/to/uploads
 ```
 
 `APP_ENV=production` is a first-class setting (introduced in Phase 8C). Reserve
 `development` for local work.
+
+`ALLOWED_HOSTS` (comma-separated, **required** in production) is the allow-list
+for the `Host` header the app answers to (backed by `TrustedHostMiddleware`).
+Set it to the canonical production hostname(s). The app **refuses to boot** in
+production without it — there is no `*` wildcard fallback. In development it
+may be left empty; the local hosts (`localhost`, `127.0.0.1`) and the pytest
+client host (`testserver`) are allowed automatically. The reverse proxy must
+pass the real `Host` header through so the middleware sees the public origin.
 
 ## Running the backend as a service (systemd example)
 
@@ -60,7 +69,7 @@ After=network.target
 [Service]
 WorkingDirectory=/opt/casaaurelia/backend
 EnvironmentFile=/opt/casaaurelia/backend/.env
-ExecStart=/opt/casaaurelia/backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+ExecStart=/opt/casaaurelia/backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --proxy-headers --forwarded-allow-ips=127.0.0.1
 Restart=on-failure
 User=casaaurelia
 Group=casaaurelia
@@ -69,19 +78,68 @@ Group=casaaurelia
 WantedBy=multi-user.target
 ```
 
+> The template `deploy/casaaurelia-backend.service.example` is the authoritative
+> systemd unit (non-root service user, `EnvironmentFile`, no `--reload`,
+> `--proxy-headers --forwarded-allow-ips=127.0.0.1`).
+>
+> For the **first deployment only**, after `alembic upgrade head`, run the seed
+> process once (`./venv/bin/python seed.py`) to create the admin user, the
+> restaurant configuration and the starter menu. Seed is idempotent and safe to
+> re-run, but it is intended to run once.
+
+## API documentation policy
+
+The interactive API docs are development/runtime conveniences and are **not
+exposed in production**:
+
+| Endpoint      | Development/test            | Production |
+|---------------|----------------------------|------------|
+| `/docs`       | available (Swagger UI)     | `404` |
+| `/redoc`      | available (ReDoc)          | `404` |
+| `/openapi.json` | available (OpenAPI schema) | `404` |
+| `/api/health` | available                  | available (the production health check) |
+
+No authentication is introduced for the docs; they are simply not mounted when
+`APP_ENV=production`.
+
+## Timezone
+
+The server timezone **must** be `Europe/Rome`. Reservation "today"/closed-day
+logic depends on server-local calendar dates (`date.today()`), so a wrong server
+timezone shifts booking-window and closure cutoffs. Set it during provisioning,
+e.g. `sudo timedatectl set-timezone Europe/Rome` (Debian/Ubuntu), and verify with
+`timedatectl`.
+
+## Persistent storage
+
+Two things live on disk and must persist across restarts and redeploys:
+
+- the **SQLite database** (`DATABASE_URL` absolute path);
+- the **uploaded menu images** directory (`UPLOAD_DIR`, served under `/uploads/`).
+
+Both must be on **persistent** storage (a real disk / mounted volume), writable
+by the non-root service user, and never ephemeral (no throwaway/container
+ephemeral storage). Back up both (see `Backup_Restore.md`). Uploads are plain
+files on disk; no object storage is used or configured.
+
 ## Reverse proxy responsibilities (F1, F2, HSTS, CSP)
 
 The proxy must:
 
 1. **Terminate TLS** and redirect `http://` → `https://`.
 2. **Proxy** `/api/` and `/uploads/` to `127.0.0.1:8000`.
-3. **SPA fallback** (F2): serve `frontend/dist/index.html` for any unmatched
+3. **Pass through the real `Host` header** (`proxy_set_header Host $host`) so the
+   backend's `TrustedHostMiddleware` allow-list sees the public origin, and
+   `X-Forwarded-*` headers so uvicorn (`--proxy-headers
+   --forwarded-allow-ips=127.0.0.1`) records real client addresses (rate limiting
+   keyed by IP depends on this).
+4. **SPA fallback** (F2): serve `frontend/dist/index.html` for any unmatched
    non-asset route so client-side routing works on refresh/deep-links.
-4. Set **HSTS** on `https` responses (only after TLS is confirmed working):
+5. Set **HSTS** on `https` responses (only after TLS is confirmed working):
    `Strict-Transport-Security: max-age=31536000; includeSubDomains`.
-5. Set the **Content-Security-Policy** (CSP) on the HTML/document responses
+6. Set the **Content-Security-Policy** (CSP) on the HTML/document responses
    (F1/CSP1), NOT on API/JSON or uploaded-image responses where it is ineffective.
-6. Set `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
+7. Set `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
    `Referrer-Policy` (the API middleware also sets the API-side equivalents; the
    proxy headers govern the HTML document).
 
@@ -174,6 +232,24 @@ venv/bin/python -m alembic upgrade head
 
 Keep a fresh DB backup immediately before migrating (see `Backup_Restore.md`). The
 migration chain is linear and its head is `009_closures`.
+
+### First deployment (fresh database) — required sequence
+
+1. Provision the persistent directories (DB + uploads, writable by the service
+   user) and set the production environment variables (see "Environment" above,
+   including `ALLOWED_HOSTS`).
+2. Apply migrations:
+   ```bash
+   venv/bin/python -m alembic upgrade head
+   venv/bin/python -m alembic current   # must show: 009_closures (head)
+   ```
+3. Seed once for the initial admin user, restaurant configuration and menu:
+   ```bash
+   venv/bin/python seed.py
+   ```
+   Seed is idempotent (safe to re-run) but is meant to run once.
+4. Start the backend **without** `--reload` (systemd unit/`uvicorn app.main:app`).
+   Startup never auto-creates tables in production; Alembic owns the schema.
 
 ## Verifying a deployment
 

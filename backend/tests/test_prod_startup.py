@@ -33,12 +33,16 @@ def _probe(probe_body: str, db_path: Path, *, secret_key: str = "prod-probe-secr
                 f'os.environ["ADMIN_PASSWORD"] = {admin_password!r}',
                 f'os.environ["UPLOAD_DIR"] = {uploads_dir!r}',
                 'os.environ["CORS_ORIGINS"] = "http://localhost:5173"',
+                # TrustedHostMiddleware (P2-0B): production requires an explicit
+                # ALLOWED_HOSTS. The probe drives the app via TestClient, whose
+                # Host header is "testserver".
+                'os.environ["ALLOWED_HOSTS"] = "testserver"',
                 'os.environ.pop("RESTAURANT_CAPACITY", None)',
             ]
         )
         probe.write_text(header + "\n\n" + probe_body, encoding="utf-8")
         env = os.environ.copy()
-        for key in ("DATABASE_URL", "SECRET_KEY", "UPLOAD_DIR", "CORS_ORIGINS", "APP_ENV"):
+        for key in ("DATABASE_URL", "SECRET_KEY", "UPLOAD_DIR", "CORS_ORIGINS", "APP_ENV", "ALLOWED_HOSTS"):
             env.pop(key, None)
         env["PYTHONPATH"] = str(BACKEND_DIR)
         result = subprocess.run(

@@ -16,11 +16,53 @@ equivalent can be done elsewhere.
 
 ---
 
+## 0. Deployment sequence (at a glance)
+
+```
+GitHub
+   |
+   v
+clone / update
+   |
+   v
+backend environment  (.env: APP_ENV, DATABASE_URL, SECRET_KEY, ADMIN_*,
+                       CORS_ORIGINS, ALLOWED_HOSTS, UPLOAD_DIR, timezone)
+   |
+   v
+frontend production build  (VITE_SITE_URL set; dist/ output)
+   |
+   v
+database migration  (alembic upgrade head)
+   |
+   v
+seed  (run once: admin user, restaurant, menu)
+   |
+   v
+systemd  (uvicorn, non-root, no --reload, loopback only)
+   |
+   v
+nginx  (static frontend + SPA fallback + /api and /uploads proxy)
+   |
+   v
+HTTPS  (TLS certificate, HSTS, HTTP -> HTTPS redirect)
+   |
+   v
+smoke tests  (health endpoint, pages, reservation flow, admin, uploads)
+```
+
+---
+
 ## 1. Provision host
 
-- **OPERATOR-REQUIRED**: choose a host/VPS/VM with a public IP, a DNS A record
-  pointing at it, and an open inbound 443 (and 80 to redirect). Enable outbound
-  HTTPS for package installs.
+- **OPERATOR-REQUIRED**: choose an **always-on** VPS/VM with a **persistent
+  disk**, a public IP, a DNS A record pointing at it, and an open inbound 443
+  (and 80 to redirect). Enable outbound HTTPS for package installs.
+- **OPERATOR-REQUIRED**: set the server timezone to **Europe/Rome** — the
+  reservation "today"/closed-day logic depends on server-local dates:
+  ```bash
+  sudo timedatectl set-timezone Europe/Rome
+  timedatectl    # verify
+  ```
 - **OPERATOR-REQUIRED**: create a non-root deploy/service user, e.g. `casaaurelia`.
 
 ## 2. Install required runtime
@@ -67,7 +109,9 @@ equivalent can be done elsewhere.
   ```bash
   cp .env.production.example /opt/casaaurelia/backend/.env
   # EDIT /opt/casaaurelia/backend/.env: APP_ENV, DATABASE_URL (absolute),
-  # UPLOAD_DIR (absolute), SECRET_KEY, ADMIN_EMAIL, ADMIN_PASSWORD, CORS_ORIGINS
+  # UPLOAD_DIR (absolute), SECRET_KEY, ADMIN_EMAIL, ADMIN_PASSWORD, CORS_ORIGINS,
+  # ALLOWED_HOSTS (REQUIRED - the production Host header allow-list; the app
+  # refuses to start in production without it)
   chown casaaurelia:casaaurelia .env
   chmod 600 .env
   ```
@@ -80,13 +124,15 @@ equivalent can be done elsewhere.
 ## 7. Configure database path
 
 - **OPERATOR-REQUIRED**: set `DATABASE_URL=sqlite:////opt/casaaurelia/backend/casa_aurelia.db`
-  (an **absolute** path in production) in `.env`. Create the uploads directory:
+  (an **absolute** path in production) in `.env`. Create the uploads directory
+  on **persistent disk** (the database and `UPLOAD_DIR` must survive restarts,
+  redeploys and ephemeral cleanups; they are plain files, no object storage):
   ```bash
   mkdir -p /opt/casaaurelia/backend/uploads/menu
   chown -R casaaurelia:casaaurelia /opt/casaaurelia/backend/uploads
   ```
 
-## 8. Run Alembic migrations
+## 8. Run Alembic migrations and seed
 
 - **safe/reproducible** (schema is owned by migrations; do **not** rely on
   startup auto-`create_all`, which is disabled in production):
@@ -94,6 +140,12 @@ equivalent can be done elsewhere.
   cd /opt/casaaurelia/backend
   ./venv/bin/python -m alembic upgrade head
   ./venv/bin/python -m alembic current    # must show: 009_closures (head)
+  ```
+- **safe/reproducible (first deployment only)**: seed once for the initial admin
+  user, restaurant configuration and menu. Idempotent (safe to re-run) but
+  intended to run exactly once:
+  ```bash
+  ./venv/bin/python seed.py
   ```
 - **OPERATOR-REQUIRED**: take a fresh backup immediately before migrating a
   previously populated DB (see `docs/Backup_Restore.md`).
@@ -144,7 +196,9 @@ equivalent can be done elsewhere.
   systemctl status casaaurelia-backend
   journalctl -u casaaurelia-backend -f
   ```
-  The unit runs uvicorn WITHOUT `--reload`, bound to `127.0.0.1:8000` only.
+  The unit runs uvicorn WITHOUT `--reload`, bound to `127.0.0.1:8000` only, with
+  `--proxy-headers --forwarded-allow-ips=127.0.0.1` so nginx-forwarded client
+  addresses are trusted for rate limiting and logging.
 
 ## 12. Configure DNS
 
@@ -184,6 +238,12 @@ equivalent can be done elsewhere.
   ```bash
   curl -s https://casaaurelia.example/api/health
   # {"status":"healthy","service":"Casa Aurelia API","database":"connected"}
+  ```
+- **safe/reproducible**: the interactive API docs are disabled in production —
+  `/docs`, `/redoc` and `/openapi.json` must all return `404` (not exposed):
+  ```bash
+  curl -s -o /dev/null -w '%{http_code}\n' https://casaaurelia.example/docs
+  # 404
   ```
 
 ## 17. Verify customer pages
