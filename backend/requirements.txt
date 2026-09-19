@@ -1,7 +1,7 @@
 fastapi==0.141.1
 starlette==1.6.0
 uvicorn[standard]==0.34.0
-sqlalchemy==2.0.36
+sqlalchemy==2.0.54
 pydantic==2.10.4
 pydantic-settings==2.7.0
 python-jose[cryptography]==3.5.0
