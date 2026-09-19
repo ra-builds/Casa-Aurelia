@@ -35,6 +35,11 @@ export default function MessagesManager() {
       timeStyle: 'short',
     })
 
+  const buildReplyHref = (message: ContactMessage) => {
+    const subject = message.subject.trim() || t('admin.messages.replySubjectFallback')
+    return `mailto:${message.email}?subject=${encodeURIComponent(`Re: ${subject}`)}`
+  }
+
   if (loading) {
     return (
       <div className="py-20 flex flex-col items-center gap-3">
@@ -92,6 +97,15 @@ export default function MessagesManager() {
               <div className="mt-4">
                 <p className="label-micro">{t('admin.messages.message')}</p>
                 <p className="mt-1 text-sm text-stone whitespace-pre-line">{m.message}</p>
+              </div>
+              <div className="mt-5">
+                <a
+                  href={buildReplyHref(m)}
+                  className="btn-link text-wine"
+                  aria-label={`${t('admin.messages.reply')}: ${m.name}`}
+                >
+                  {t('admin.messages.reply')}
+                </a>
               </div>
             </div>
           ))}

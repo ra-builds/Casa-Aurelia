@@ -8,7 +8,7 @@
     "build": "node scripts/generate-seo.mjs && tsc -b && vite build",
     "lint": "oxlint",
     "preview": "node scripts/generate-seo.mjs && vite preview",
-    "test": "node spec/getMinDate.test.mjs && node spec/reservationClosedDay.test.mjs && node spec/slotGroups.test.mjs && node spec/responsiveLayout.test.mjs && node spec/formatting.test.mjs && node spec/seo.test.mjs && node spec/performance.test.mjs && node spec/production.test.mjs && node spec/customization.test.mjs && node spec/template.test.mjs",
+    "test": "node spec/getMinDate.test.mjs && node spec/reservationClosedDay.test.mjs && node spec/slotGroups.test.mjs && node spec/responsiveLayout.test.mjs && node spec/formatting.test.mjs && node spec/seo.test.mjs && node spec/performance.test.mjs && node spec/production.test.mjs && node spec/customization.test.mjs && node spec/messagesReply.test.mjs && node spec/template.test.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report"

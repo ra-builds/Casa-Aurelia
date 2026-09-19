@@ -11,6 +11,32 @@ pipeline.
 
 ---
 
+## Engineering Highlights
+
+- **Atomic, concurrency-safe capacity control** — reservations are admitted through a single
+  `INSERT … SELECT … WHERE capacity-ok` statement evaluated against a correlated capacity
+  subquery, so the capacity check and the row insert are one atomic write. A dedicated
+  concurrency test suite exercises the race and confirms the seat invariant is never broken.
+- **Hardened session handling** — the JWT access token is held in memory only on the client;
+  refresh tokens rotate through an HttpOnly, SameSite=Lax cookie scoped to `/api/auth`, and
+  logout clears the cookie so no token is ever persisted to browser storage.
+- **Comprehensive automated testing** — 112 backend tests (pytest, isolated disposable
+  database), 132 Playwright end-to-end tests, and 10 plain-Node regression specs, all wired
+  into a read-only-permission GitHub Actions pipeline.
+- **Cross-browser and accessibility coverage** — a Playwright smoke suite across Chromium,
+  Firefox, and WebKit, plus axe-based accessibility scans and automated visual/responsive QA
+  inside the E2E suite.
+- **Alembic migration integrity** — a 9-revision chain (`001` → `009`, single head) with a CI
+  gate that upgrades a fresh database and fails if the history forks or ever has more than one
+  head.
+- **Five-locale i18n parity** — 538 translation keys in each of `en`, `it`, `fr`, `de`, `es`
+  with identical key parity and `en` fallback, enforced by a regression spec.
+- **Production hardening** — `TrustedHostMiddleware` host allow-list, startup guards that
+  refuse to boot with placeholder secrets or a missing `ALLOWED_HOSTS`, and API docs/OpenAPI
+  disabled in production while the health endpoint stays available.
+
+---
+
 ## Features
 
 Verified against the current implementation:
@@ -64,7 +90,7 @@ Verified against the current implementation:
 
 **Testing**
 
-- **pytest** — backend unit/integration suite (106 tests)
+- **pytest** — backend unit/integration suite (112 tests)
 - **Playwright** — 132 end-to-end tests
 - **axe (via `@axe-core/playwright`)** — accessibility
 - Plain-Node regression specs — frontend util/SEO/performance/hardening specs
@@ -171,7 +197,7 @@ your `.env` values (it will not overwrite an existing admin).
 
 | Layer | Tool | Command | Notes |
 |---|---|---|---|
-| Backend suite | pytest | `pytest` (from `backend/`) | 106 tests |
+| Backend suite | pytest | `pytest` (from `backend/`) | 112 tests |
 | Frontend regression specs | Node | `npm test` (from `frontend/`) | SEO, performance, hardening, template, etc. |
 | Lint | oxlint | `npm run lint` | |
 | Type-check + build | tsc + Vite | `npm run build` | |
@@ -191,7 +217,7 @@ automatically in CI.
 At the current release-readiness audit, the GitHub Actions pipeline completed successfully with the
 backend, frontend, migration-integrity, Playwright E2E, and cross-browser gates passing:
 
-- 106 backend tests passing in CI
+- 112 backend tests passing in CI
 - 132 Playwright E2E tests passing in CI
 - cross-browser smoke coverage across Chromium, Firefox, and WebKit
 - automated accessibility, visual/responsive, and browser QA in the Playwright suite

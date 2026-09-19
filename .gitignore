@@ -91,3 +91,9 @@ lerna-debug.log*
 # --- OS ---
 .DS_Store
 Thumbs.db
+
+# Local Windows virtual environment backup
+backend/venv_windows_backup/
+
+# Local portfolio capture artifacts
+artifacts/

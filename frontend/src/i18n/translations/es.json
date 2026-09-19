@@ -522,7 +522,9 @@
       "email": "Correo electrónico",
       "subject": "Asunto",
       "date": "Fecha",
-      "message": "Mensaje"
+      "message": "Mensaje",
+      "reply": "Responder",
+      "replySubjectFallback": "Su mensaje a Casa Aurelia"
     },
     "restaurant": {
       "kicker": "Casa Aurelia · Información del Restaurante",
